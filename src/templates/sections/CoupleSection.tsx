@@ -1,4 +1,4 @@
-import AnimateIn from "@/components/AnimateIn";
+import { motion } from "framer-motion";
 
 interface Props {
   brideName: string;
@@ -9,32 +9,73 @@ interface Props {
   gradient: string;
 }
 
-const CoupleSection = ({ brideName, groomName, brideFamily, groomFamily, photoUrl, gradient }: Props) => (
-  <section className="py-16 px-6 bg-background">
-    <div className="max-w-lg mx-auto">
-      <AnimateIn>
-        <div className="text-center mb-10">
-          <p className="section-label justify-center">With blessings of</p>
-          <h2 className="section-title">The Couple</h2>
-        </div>
-      </AnimateIn>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <AnimateIn direction="left" delay={0.15}>
-          <div className="border border-secondary/20 bg-card p-6 text-center relative overflow-hidden">
-            <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient}`} />
-            <div className="text-4xl mb-4">👰</div>
-            <h3 className="font-display text-xl font-bold text-primary mb-2">{brideName}</h3>
-            {brideFamily && <p className="font-serif text-sm italic text-muted-foreground leading-relaxed">{brideFamily}</p>}
+const ease = [0.25, 0.1, 0.25, 1] as const;
+
+const CoupleSection = ({ brideName, groomName, brideFamily, groomFamily, photoUrl }: Props) => (
+  <section className="py-24 md:py-36 bg-background relative overflow-hidden">
+    <div className="container max-w-6xl mx-auto px-6">
+      <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+        {/* Portrait with decorative frame */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 1.4, ease }}
+          className="relative"
+        >
+          {/* Decorative frame lines */}
+          <div className="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-gold/30 rounded-tl-3xl" />
+          <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-gold/30 rounded-br-3xl" />
+
+          <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant">
+            {photoUrl ? (
+              <img
+                src={photoUrl}
+                alt={`${brideName} & ${groomName}`}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <div className="w-full h-full bg-muted flex items-center justify-center">
+                <span className="text-6xl">💑</span>
+              </div>
+            )}
           </div>
-        </AnimateIn>
-        <AnimateIn direction="right" delay={0.25}>
-          <div className="border border-secondary/20 bg-card p-6 text-center relative overflow-hidden">
-            <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient}`} />
-            <div className="text-4xl mb-4">🤵</div>
-            <h3 className="font-display text-xl font-bold text-primary mb-2">{groomName}</h3>
-            {groomFamily && <p className="font-serif text-sm italic text-muted-foreground leading-relaxed">{groomFamily}</p>}
+        </motion.div>
+
+        {/* Text content */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 1.4, delay: 0.15, ease }}
+        >
+          <span className="invite-section-label mb-6 block">With blessings of our families</span>
+          <h2 className="font-display text-foreground text-4xl md:text-6xl mb-8 leading-tight">
+            Two souls,<br />
+            <span className="text-gold-gradient">one journey</span>
+          </h2>
+
+          <div className="space-y-8">
+            <div className="relative pl-6 border-l-2 border-gold/20">
+              <h3 className="font-display text-foreground text-xl md:text-2xl mb-1">{brideName}</h3>
+              {brideFamily && (
+                <p className="font-elegant text-muted-foreground text-base italic mb-2">
+                  {brideFamily}
+                </p>
+              )}
+            </div>
+
+            <div className="relative pl-6 border-l-2 border-accent/30">
+              <h3 className="font-display text-foreground text-xl md:text-2xl mb-1">{groomName}</h3>
+              {groomFamily && (
+                <p className="font-elegant text-muted-foreground text-base italic mb-2">
+                  {groomFamily}
+                </p>
+              )}
+            </div>
           </div>
-        </AnimateIn>
+        </motion.div>
       </div>
     </div>
   </section>

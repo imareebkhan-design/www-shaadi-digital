@@ -19,6 +19,7 @@ export default {
       fontFamily: {
         display: ['"Playfair Display"', 'serif'],
         serif: ['"Cormorant Garamond"', 'serif'],
+        elegant: ['"Cormorant Garamond"', 'serif'],
         body: ['"DM Sans"', 'sans-serif'],
       },
       colors: {
@@ -56,8 +57,28 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         callout: "hsl(var(--callout))",
-        "gold-pale": "hsl(var(--gold-pale))",
-        "maroon-dark": "hsl(var(--maroon-dark))",
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          light: "hsl(var(--gold-light))",
+          dark: "hsl(var(--gold-dark))",
+          pale: "hsl(var(--gold-pale))",
+        },
+        maroon: {
+          DEFAULT: "hsl(var(--maroon))",
+          light: "hsl(var(--maroon-light))",
+          dark: "hsl(var(--maroon-dark))",
+        },
+        burgundy: "hsl(var(--burgundy))",
+        ivory: {
+          DEFAULT: "hsl(var(--ivory))",
+          warm: "hsl(var(--ivory-warm))",
+        },
+        rose: {
+          DEFAULT: "hsl(var(--rose))",
+          light: "hsl(var(--rose-light))",
+        },
+        sage: "hsl(var(--sage))",
+        marigold: "hsl(var(--marigold))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -91,12 +112,17 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in-up": "fade-in-up 0.6s ease-out forwards",
         "shimmer": "shimmer 2s infinite linear",
+        "float": "float 4s ease-in-out infinite",
       },
     },
   },

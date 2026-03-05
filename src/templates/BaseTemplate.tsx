@@ -1,5 +1,7 @@
+import { useState } from "react";
 import type { InvitationData } from "./types";
 import FloatingMusicPlayer from "@/components/FloatingMusicPlayer";
+import EnvelopeIntro from "./sections/EnvelopeIntro";
 import HeroSection from "./sections/HeroSection";
 import SaveTheDateSection from "./sections/SaveTheDateSection";
 import OurStorySection from "./sections/OurStorySection";
@@ -25,6 +27,8 @@ const placeholder = (value: string | undefined, fallback: string, isPreview: boo
   value?.trim() ? value : isPreview ? fallback : value || "";
 
 const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplateProps) => {
+  const [envelopeOpened, setEnvelopeOpened] = useState(isPreview);
+
   const brideName = placeholder(data.bride_name, "Bride's Name", isPreview);
   const groomName = placeholder(data.groom_name, "Groom's Name", isPreview);
   const brideFamily = placeholder(data.bride_family, "Bride's Family", isPreview);
@@ -36,6 +40,15 @@ const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplate
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Envelope Intro */}
+      {!envelopeOpened && (
+        <EnvelopeIntro
+          brideName={brideName}
+          groomName={groomName}
+          onOpen={() => setEnvelopeOpened(true)}
+        />
+      )}
+
       {/* Floating music player */}
       <FloatingMusicPlayer musicUrl={data.music_url} />
 
