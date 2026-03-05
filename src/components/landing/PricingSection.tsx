@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -91,8 +92,9 @@ const PricingSection = () => (
               className={`w-full font-body ${
                 p.highlight ? "" : "bg-card text-primary border border-primary hover:bg-primary hover:text-primary-foreground"
               }`}
+              asChild
             >
-              {p.cta}
+              <Link to="/signup">{p.cta}</Link>
             </Button>
           </div>
         ))}

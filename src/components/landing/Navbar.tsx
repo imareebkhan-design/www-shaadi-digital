@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -19,6 +20,12 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const scrollTo = (href: string) => {
+    setMobileOpen(false);
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -26,26 +33,26 @@ const Navbar = () => {
       }`}
     >
       <div className="container flex items-center justify-between h-16 md:h-20">
-        <a href="/" className="font-display text-xl md:text-2xl font-bold tracking-tight text-primary">
+        <Link to="/" className="font-display text-xl md:text-2xl font-bold tracking-tight text-primary">
           Shaadi<span className="text-secondary">.</span>Digital
-        </a>
+        </Link>
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
-            <a
+            <button
               key={l.href}
-              href={l.href}
+              onClick={() => scrollTo(l.href)}
               className="font-body text-sm tracking-wide text-foreground/80 hover:text-primary transition-colors"
             >
               {l.label}
-            </a>
+            </button>
           ))}
-          <Button variant="outline" size="sm" className="font-body">
-            Log In
+          <Button variant="outline" size="sm" className="font-body" asChild>
+            <Link to="/login">Log In</Link>
           </Button>
-          <Button size="sm" className="font-body">
-            Get Started
+          <Button size="sm" className="font-body" asChild>
+            <Link to="/signup">Get Started</Link>
           </Button>
         </div>
 
@@ -55,7 +62,7 @@ const Navbar = () => {
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
-          {mobileOpen ? <Menu className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
@@ -63,18 +70,21 @@ const Navbar = () => {
       {mobileOpen && (
         <div className="md:hidden bg-card border-t border-border px-4 pb-6 pt-2 space-y-4">
           {navLinks.map((l) => (
-            <a
+            <button
               key={l.href}
-              href={l.href}
-              className="block font-body text-sm text-foreground/80 py-2"
-              onClick={() => setMobileOpen(false)}
+              onClick={() => scrollTo(l.href)}
+              className="block font-body text-sm text-foreground/80 py-2 w-full text-left"
             >
               {l.label}
-            </a>
+            </button>
           ))}
           <div className="flex gap-3 pt-2">
-            <Button variant="outline" size="sm" className="flex-1 font-body">Log In</Button>
-            <Button size="sm" className="flex-1 font-body">Get Started</Button>
+            <Button variant="outline" size="sm" className="flex-1 font-body" asChild>
+              <Link to="/login">Log In</Link>
+            </Button>
+            <Button size="sm" className="flex-1 font-body" asChild>
+              <Link to="/signup">Get Started</Link>
+            </Button>
           </div>
         </div>
       )}

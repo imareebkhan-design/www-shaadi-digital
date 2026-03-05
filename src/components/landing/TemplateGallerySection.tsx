@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 
 const templates = [
@@ -29,11 +30,11 @@ const TemplateGallerySection = () => (
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {templates.map((t) => (
-          <div
+          <Link
             key={t.id}
-            className="group border border-border hover:border-secondary bg-card overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer"
+            to="/templates"
+            className="group border border-border hover:border-secondary bg-card overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer block"
           >
-            {/* Mock template preview */}
             <div className={`aspect-[3/4] ${palette[t.color] || "bg-primary"} relative flex items-center justify-center`}>
               <div className="text-center p-6">
                 <p className="font-serif italic text-card/70 text-sm mb-2">You are cordially invited</p>
@@ -51,14 +52,14 @@ const TemplateGallerySection = () => (
                 <Badge variant="outline" className="font-body text-xs">{t.tone}</Badge>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
       <div className="mt-10">
-        <a href="/templates" className="font-body text-sm text-primary hover:text-secondary transition-colors underline underline-offset-4">
+        <Link to="/templates" className="font-body text-sm text-primary hover:text-secondary transition-colors underline underline-offset-4">
           View All Templates →
-        </a>
+        </Link>
       </div>
     </div>
   </section>
