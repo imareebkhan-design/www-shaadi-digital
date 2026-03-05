@@ -1,0 +1,3587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shaadi.Digital – Digital Wedding Invitations for Indian Weddings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9941A;
+      --gold-light: #E8B84B;
+      --gold-pale: #FDF3DC;
+      --maroon: #7B1C2E;
+      --maroon-dark: #4A0E1A;
+      --cream: #FAF6EF;
+      --charcoal: #1C1410;
+      --text-muted: #6B5B4E;
+      --white: #FFFFFF;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 999;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 60px;
+      background: rgba(250,246,239,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,148,26,0.2);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700;
+      color: var(--maroon);
+      letter-spacing: 0.5px;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.8px;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--charcoal); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--maroon); color: white;
+      padding: 10px 24px; border-radius: 2px;
+      font-size: 12px; font-weight: 500; letter-spacing: 1px;
+      text-transform: uppercase; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold); }
+
+    /* ══════════════════════════════════════
+       HERO — ULTRA PREMIUM KINETIC
+    ══════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 120px 20px 80px;
+      overflow: hidden;
+      background: #F5EFE4;
+    }
+
+    /* ── layered background ── */
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(201,148,26,0.13) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 8% 85%, rgba(123,28,46,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 30% at 92% 80%, rgba(201,148,26,0.05) 0%, transparent 55%),
+        linear-gradient(180deg, #F8F2E8 0%, #F0E8D8 100%);
+    }
+
+    /* ── animated grain overlay ── */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      opacity: 0.018;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+
+    /* ── rotating mandala ── */
+    .mandala {
+      position: absolute; pointer-events: none;
+      animation: spin 80s linear infinite;
+    }
+    .mandala-1 {
+      width: 700px; height: 700px;
+      top: -200px; right: -180px;
+      opacity: 0.055;
+    }
+    .mandala-2 {
+      width: 480px; height: 480px;
+      bottom: -130px; left: -120px;
+      opacity: 0.04;
+      animation-direction: reverse;
+      animation-duration: 100s;
+    }
+    /* extra small mandala — centre watermark */
+    .mandala-3 {
+      width: 900px; height: 900px;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      opacity: 0.025;
+      animation-duration: 120s;
+    }
+
+    @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    /* mandala-3 needs its own transform origin */
+    .mandala-3 { animation: spin3 120s linear infinite; }
+    @keyframes spin3 {
+      from{transform:translate(-50%,-50%) rotate(0deg)}
+      to{transform:translate(-50%,-50%) rotate(360deg)}
+    }
+
+    /* ── floating particles ── */
+    .hero-particle {
+      position: absolute; border-radius: 50%; pointer-events: none;
+      background: radial-gradient(circle, rgba(201,148,26,0.5) 0%, transparent 70%);
+      animation: floatP var(--dur,12s) ease-in-out infinite;
+      animation-delay: var(--del,0s);
+    }
+    @keyframes floatP {
+      0%,100%{transform:translateY(0) scale(1); opacity:var(--op,0.3)}
+      50%{transform:translateY(-24px) scale(1.15); opacity:calc(var(--op,0.3)*1.6)}
+    }
+
+    /* ── hero badge ── */
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(201,148,26,0.08);
+      border: 1px solid rgba(201,148,26,0.3);
+      backdrop-filter: blur(8px);
+      padding: 7px 20px; border-radius: 100px;
+      font-size: 10px; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 36px; position: relative; z-index: 2;
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.2s forwards;
+    }
+    .hero-badge-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+    /* ══════════════════════════════════════
+       TYPEWRITER HEADLINE SYSTEM — EXPERT
+    ══════════════════════════════════════ */
+    .hero-kinetic {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      /* Reserve exact space so nothing shifts as text types in */
+      min-height: 220px;
+    }
+
+    .kh-phase1, .kh-phase2 { display: none; }
+
+    /* Fade in the whole headline block gently on load */
+    .kh-final {
+      text-align: center;
+      opacity: 0;
+      animation: khFadeIn 0.6s ease 0.3s forwards;
+    }
+    @keyframes khFadeIn {
+      to { opacity: 1; }
+    }
+
+    .kh-final h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 6.5vw, 82px);
+      font-weight: 700;
+      line-height: 1.22;
+      color: var(--maroon-dark);
+      /* Prevent layout shift as text grows */
+      min-height: 1.22em;
+    }
+
+    /* Line 2 — italic gold */
+    .kh-final h1 em {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.18em;
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 400;
+      /* Reserve the line space before text arrives */
+      min-height: 1.22em;
+      /* Subtle fade-in when line 2 is about to start */
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .kh-final h1 em.visible { opacity: 1; }
+
+    /* ── Cursor — tall, slim, gold, premium blink ── */
+    .tw-cursor {
+      display: inline-block;
+      width: 2.5px;
+      /* height set via JS to match exact font-size */
+      background: var(--gold);
+      border-radius: 2px;
+      margin-left: 3px;
+      vertical-align: middle;
+      position: relative;
+      top: -0.06em;
+      /* Smooth step blink feels more like a real cursor */
+      animation: twBlink 1.05s step-start infinite;
+      box-shadow: 0 0 6px rgba(201,148,26,0.55);
+    }
+    @keyframes twBlink {
+      0%, 100% { opacity: 1; }
+      52%       { opacity: 0; }
+    }
+    .tw-cursor.tw-off {
+      animation: none;
+      opacity: 0;
+    }
+    /* Cursor fade-out at the very end */
+    .tw-cursor.tw-fadeout {
+      animation: twFadeOut 0.8s ease forwards;
+    }
+    @keyframes twFadeOut {
+      0%   { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* ── Ornament that appears between the two typed lines ── */
+    .hero-ornament {
+      display: block;
+      font-size: 0.28em;
+      letter-spacing: 6px;
+      color: var(--gold);
+      opacity: 0;
+      margin: 4px 0 2px;
+      transition: opacity 0.5s ease;
+      font-family: 'DM Sans', sans-serif;
+      font-style: normal;
+      font-weight: 300;
+    }
+    .hero-ornament.visible { opacity: 0.65; }
+
+    /* ── gold divider line that draws in ── */
+    .hero-line {
+      width: 0; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 24px auto;
+      opacity: 0;
+      /* delay set dynamically via JS */
+      transition: none;
+    }
+    .hero-line.animate {
+      animation: drawLine 1.1s cubic-bezier(0.4,0,0.2,1) forwards;
+    }
+    @keyframes drawLine {
+      0%   { width: 0;     opacity: 0; }
+      15%  { opacity: 1; }
+      100% { width: 180px; opacity: 1; }
+    }
+
+    /* ── Stagger-in for everything below the headline ── */
+    .hero-subtext,
+    .hero-desc,
+    .hero-actions,
+    .hero-stats {
+      opacity: 0;
+      transform: translateY(18px);
+      /* triggered via JS class addition */
+      transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+    .hero-subtext.visible,
+    .hero-desc.visible,
+    .hero-actions.visible,
+    .hero-stats.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-subtext {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(17px, 2.2vw, 24px);
+      font-weight: 300; font-style: italic;
+      color: var(--text-muted);
+      max-width: 560px; line-height: 1.6;
+      position: relative; z-index: 2;
+    }
+    .hero-desc {
+      font-size: 14px; color: var(--text-muted);
+      max-width: 460px; line-height: 1.9; margin-top: 14px;
+      font-weight: 300;
+      position: relative; z-index: 2;
+    }
+    .hero-actions {
+      display: flex; gap: 14px; margin-top: 36px;
+      flex-wrap: wrap; justify-content: center;
+      position: relative; z-index: 2;
+    }
+
+    .btn-primary {
+      background: var(--maroon); color: white;
+      padding: 16px 40px; border-radius: 3px;
+      font-size: 11px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+      border: none; cursor: pointer;
+      box-shadow: 0 8px 32px rgba(123,28,46,0.28);
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .btn-primary:hover {
+      background: var(--maroon-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(123,28,46,0.35);
+    }
+
+    .btn-secondary {
+      background: transparent; color: var(--maroon);
+      padding: 15px 36px; border-radius: 3px;
+      font-size: 11px; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; text-decoration: none;
+      border: 1px solid rgba(123,28,46,0.35);
+      transition: all 0.3s; cursor: pointer;
+    }
+    .btn-secondary:hover {
+      background: var(--maroon); color: white;
+      border-color: var(--maroon);
+      transform: translateY(-2px);
+    }
+
+    /* ── stats bar ── */
+    .hero-stats {
+      display: flex; gap: 0; margin-top: 56px;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(201,148,26,0.18);
+      border-radius: 16px; overflow: hidden;
+      position: relative; z-index: 2;
+    }
+    .stat {
+      text-align: center; padding: 20px 40px;
+      position: relative;
+    }
+    .stat + .stat::before {
+      content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
+      width: 1px; background: rgba(201,148,26,0.2);
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700; color: var(--maroon);
+      letter-spacing: -0.5px;
+    }
+    .stat-label {
+      font-size: 10px; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--text-muted);
+      margin-top: 3px; font-weight: 400;
+    }
+
+    .divider { display: none; } /* replaced by stat::before */
+
+    /* ── scroll indicator ── */
+    .scroll-hint {
+      position: absolute; bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(92,26,26,0.3); z-index: 2;
+      opacity: 0;
+      animation: fadeIn 1s ease 9.5s forwards;
+    }
+    .scroll-arrow {
+      width: 20px; height: 32px;
+      border: 1px solid rgba(201,148,26,0.35);
+      border-radius: 10px;
+      display: flex; align-items: flex-start; justify-content: center;
+      padding-top: 5px;
+    }
+    .scroll-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: rgba(201,148,26,0.6);
+      animation: scrollDot 2s ease infinite;
+    }
+    @keyframes scrollDot {
+      0%{transform:translateY(0);opacity:1}
+      80%{transform:translateY(12px);opacity:0}
+      100%{transform:translateY(0);opacity:0}
+    }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 100px 60px; }
+    .section-label {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::before, .section-label::after {
+      content: ''; height: 1px; width: 30px; background: var(--gold); display: block;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 48px); font-weight: 700;
+      color: var(--maroon-dark); line-height: 1.2;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    /* ══════════════════════════════════
+       PHONE DEMO SECTION
+    ══════════════════════════════════ */
+    /* ══════════════════════════════════════
+       PHONE DEMO SECTION — iPhone 17 Pro
+    ══════════════════════════════════════ */
+    .phone-demo-section {
+      background: var(--cream);
+      padding: 100px 32px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background ambient glow */
+    .phone-demo-section::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,148,26,0.07) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+
+    .pd-dot {
+      position: absolute;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(201,148,26,0.25);
+      pointer-events: none;
+    }
+    .pd-dot-lg { width: 8px; height: 8px; background: rgba(201,148,26,0.15); }
+    .pd-heart {
+      position: absolute;
+      font-size: 13px;
+      color: rgba(201,148,26,0.2);
+      pointer-events: none;
+      font-family: serif;
+    }
+
+    .pd-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 56px;
+    }
+
+    .pd-header { text-align: center; }
+    .pd-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 400;
+      color: var(--maroon-dark);
+      line-height: 1.15;
+      margin-top: 12px;
+    }
+    .pd-title em { font-style: italic; }
+    .pd-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      font-weight: 300;
+    }
+
+    /* ── MAIN LAYOUT: phone flanked by feature cards ── */
+    .pd-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      width: 100%;
+    }
+
+    /* ── FEATURE PILLS — left & right sides ── */
+    .pd-features-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 220px;
+      flex-shrink: 0;
+    }
+    .pd-feat-card {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(201,148,26,0.18);
+      border-radius: 16px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      box-shadow: 0 4px 20px rgba(123,28,46,0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .pd-feat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(123,28,46,0.1);
+    }
+    .pd-feat-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(201,148,26,0.15), rgba(201,148,26,0.06));
+      border: 1px solid rgba(201,148,26,0.2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .pd-feat-icon svg { width: 18px; height: 18px; }
+    .pd-feat-body h4 {
+      font-size: 12px; font-weight: 600;
+      color: var(--maroon-dark);
+      letter-spacing: 0.2px;
+      margin-bottom: 4px;
+    }
+    .pd-feat-body p {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    /* Right-side stat cards */
+    .pd-stat-card {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(201,148,26,0.18);
+      border-radius: 16px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 20px rgba(123,28,46,0.06);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .pd-stat-card:hover { transform: translateY(-3px); }
+    .pd-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700;
+      color: var(--maroon);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .pd-stat-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+    }
+    .pd-badge-card {
+      background: linear-gradient(135deg, rgba(123,28,46,0.06), rgba(201,148,26,0.06));
+      border: 1px solid rgba(201,148,26,0.22);
+      border-radius: 16px;
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 500;
+      color: var(--maroon-dark);
+    }
+    .pd-badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px rgba(34,197,94,0.6);
+      flex-shrink: 0;
+      animation: greenPulse 2s ease infinite;
+    }
+    @keyframes greenPulse {
+      0%,100%{opacity:1;transform:scale(1)}
+      50%{opacity:0.6;transform:scale(0.8)}
+    }
+
+    /* ══════════════════════════════════════
+       iPHONE 17 PRO — Titanium finish
+    ══════════════════════════════════════ */
+    .pd-phone-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Soft glow behind phone */
+    .pd-phone-glow {
+      position: absolute;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,148,26,0.18) 0%, transparent 70%);
+      bottom: -60px;
+      left: 50%; transform: translateX(-50%);
+      pointer-events: none;
+      filter: blur(30px);
+    }
+
+    .pd-phone {
+      width: 300px;
+      height: 640px;
+      /* iPhone 17 Pro titanium frame — subtle brushed metal gradient */
+      background: linear-gradient(160deg,
+        #8A8178 0%, #6B6058 15%, #7A7068 30%,
+        #5C5248 50%, #7A7068 70%, #6B6058 85%, #8A8178 100%);
+      border-radius: 52px;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow:
+        /* outer titanium edge highlight */
+        inset 0 1px 1px rgba(255,255,255,0.25),
+        inset 0 -1px 1px rgba(0,0,0,0.3),
+        /* inner bezel — thinner: 3px instead of 8px */
+        0 0 0 3px #1A1410,
+        0 0 0 4px rgba(255,255,255,0.05),
+        /* drop shadow */
+        0 56px 100px rgba(30,10,10,0.45),
+        0 24px 48px rgba(201,148,26,0.12),
+        0 4px 12px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    /* Inner black bezel — thinner: 3px inset */
+    .pd-phone-inner {
+      position: absolute;
+      inset: 3px;
+      border-radius: 49px;
+      background: #0A0805;
+      overflow: hidden;
+    }
+
+    /* Screen */
+    .pd-screen {
+      position: absolute;
+      inset: 0;
+      border-radius: 49px;
+      overflow: hidden;
+      background: #0A0805;
+    }
+
+    /* ── Dynamic Island ── */
+    .pd-dynamic-island {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 32px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
+    }
+    /* Camera dot */
+    .pd-di-camera {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #1A1A1A;
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+    }
+    .pd-di-camera::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #0D0D1A;
+    }
+    /* Face ID sensor bar */
+    .pd-di-sensor {
+      width: 50px; height: 4px;
+      background: #1C1C1C;
+      border-radius: 4px;
+    }
+
+    /* Hardware buttons — titanium style */
+    .pd-btn-vol-up, .pd-btn-vol-dn, .pd-btn-power, .pd-btn-action {
+      position: absolute;
+      background: linear-gradient(180deg, #7A7068, #5C5248);
+      border-radius: 3px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 rgba(0,0,0,0.3);
+    }
+    .pd-btn-action { left: -10px; top: 80px; width: 6px; height: 28px; border-radius: 3px; }
+    .pd-btn-vol-up { left: -10px; top: 130px; width: 6px; height: 36px; }
+    .pd-btn-vol-dn { left: -10px; top: 178px; width: 6px; height: 36px; }
+    .pd-btn-power  { right: -10px; top: 145px; width: 6px; height: 56px; }
+
+    /* ── THE BUILT-IN INVITE PREVIEW ── */
+    .pd-invite-preview {
+      width: 100%;
+      height: 100%;
+      border-radius: 44px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      /* hide scrollbar */
+      scrollbar-width: none;
+    }
+    .pd-invite-preview::-webkit-scrollbar { display: none; }
+
+    /* Invite content */
+    .pd-invite-content {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    /* ── Screen 1: Hero ── */
+    .pd-slide {
+      width: 100%;
+      min-height: 640px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 56px 24px 32px;
+      flex-shrink: 0;
+    }
+
+    .pd-slide-1 {
+      background: linear-gradient(160deg, #3A0512 0%, #5C1428 45%, #2A0A10 100%);
+    }
+    /* Mandala watermark */
+    .pd-slide-1::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='90' fill='none' stroke='rgba(201,148,26,0.12)' stroke-width='0.5'/%3E%3Ccircle cx='100' cy='100' r='70' fill='none' stroke='rgba(201,148,26,0.1)' stroke-width='0.5'/%3E%3Ccircle cx='100' cy='100' r='50' fill='none' stroke='rgba(201,148,26,0.08)' stroke-width='0.5'/%3E%3Cpath d='M100 10 L110 90 L190 100 L110 110 L100 190 L90 110 L10 100 L90 90 Z' fill='none' stroke='rgba(201,148,26,0.08)' stroke-width='0.5'/%3E%3C/svg%3E");
+      background-size: 220px; background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .pd-inv-tag {
+      font-size: 7px; letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(201,148,26,0.7);
+      margin-bottom: 18px;
+      position: relative; z-index: 1;
+    }
+    .pd-inv-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 34px; font-weight: 400;
+      color: #FDF3DC;
+      line-height: 1.2;
+      text-align: center;
+      position: relative; z-index: 1;
+    }
+    .pd-inv-amp {
+      font-style: italic;
+      color: #C9941A;
+      font-size: 28px;
+      display: block;
+      margin: 4px 0;
+    }
+    .pd-inv-divider {
+      width: 48px; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(201,148,26,0.6), transparent);
+      margin: 16px auto;
+      position: relative; z-index: 1;
+    }
+    .pd-inv-event {
+      font-size: 8px; letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      position: relative; z-index: 1;
+    }
+    .pd-inv-date {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px; color: rgba(255,255,255,0.7);
+      margin-top: 10px; letter-spacing: 0.5px;
+      position: relative; z-index: 1;
+    }
+    .pd-inv-rsvp {
+      margin-top: 24px;
+      background: rgba(201,148,26,0.15);
+      border: 1px solid rgba(201,148,26,0.35);
+      color: #E8B84B;
+      font-size: 8px; letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 8px 20px; border-radius: 100px;
+      position: relative; z-index: 1;
+    }
+
+    /* ── Screen 2: Countdown ── */
+    .pd-slide-2 {
+      background: #F5EFE6;
+      padding: 48px 20px 32px;
+    }
+    .pd-slide-2-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-style: italic;
+      color: #3A0512; text-align: center;
+      margin-bottom: 4px;
+    }
+    .pd-slide-2-sub {
+      font-size: 8px; color: rgba(92,26,26,0.45);
+      letter-spacing: 1px; text-align: center;
+      margin-bottom: 24px;
+    }
+    .pd-countdown-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 8px; width: 100%;
+    }
+    .pd-cd-box {
+      background: white;
+      border: 1px solid rgba(201,148,26,0.2);
+      border-radius: 10px; padding: 12px 4px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .pd-cd-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; color: #5C1A1A; line-height: 1;
+    }
+    .pd-cd-lbl {
+      font-size: 6px; color: rgba(92,26,26,0.4);
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    /* ── Screen 3: Events ── */
+    .pd-slide-3 {
+      background: linear-gradient(160deg,#3A0512,#6B1428,#3A0512);
+      padding: 48px 20px 32px;
+      gap: 14px;
+    }
+    .pd-events-lbl {
+      font-size: 7px; letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(201,148,26,0.6);
+      text-align: center; margin-bottom: 6px;
+    }
+    .pd-event-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(201,148,26,0.2);
+      border-radius: 12px; padding: 14px 16px;
+      width: 100%;
+    }
+    .pd-ev-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px; color: #FDF3DC;
+      margin-bottom: 4px;
+    }
+    .pd-ev-detail {
+      font-size: 8px; color: rgba(255,255,255,0.4);
+      letter-spacing: 1px;
+    }
+    .pd-ev-dot {
+      display: inline-block;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: #C9941A; margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* Mute btn */
+    .pd-sound {
+      position: absolute;
+      bottom: 14px; right: 14px;
+      z-index: 40;
+      font-size: 13px;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .pd-sound:hover { background: rgba(255,255,255,0.2); }
+
+    /* Slide dots indicator */
+    .pd-slide-dots {
+      display: flex; gap: 6px;
+      justify-content: center;
+      margin-top: -32px;
+      position: relative; z-index: 10;
+    }
+    .pd-slide-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(201,148,26,0.25);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .pd-slide-dot.active {
+      background: var(--gold);
+      width: 16px;
+      border-radius: 3px;
+    }
+
+    /* ── Responsive: stack on mobile ── */
+    @media (max-width: 900px) {
+      .pd-stage { flex-direction: column; gap: 40px; }
+      .pd-features-col { flex-direction: row; width: 100%; flex-wrap: wrap; justify-content: center; }
+      .pd-feat-card { width: calc(50% - 10px); }
+    }
+    @media (max-width: 600px) {
+      .pd-feat-card { width: 100%; }
+    }
+    /* cta */
+    .pd-cta { text-align: center; }
+
+    /* ── WHY DIGITAL ── */
+    .why-section {
+      background: var(--maroon-dark);
+      position: relative; overflow: hidden;
+    }
+    /* Subtle radial glow + fine dot grid */
+    .why-section::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 60% at 15% 50%, rgba(201,148,26,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 80% at 85% 50%, rgba(92,26,26,0.5) 0%, transparent 70%);
+    }
+    .why-section::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(201,148,26,0.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+    .why-inner {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .why-content .section-label { color: var(--gold-light); }
+    .why-content .section-label::before,
+    .why-content .section-label::after { background: var(--gold-light); }
+    .why-content .section-title { color: white; }
+    .why-content .why-lead {
+      color: rgba(255,255,255,0.7); line-height: 1.95;
+      font-size: 15px; margin-top: 24px;
+      font-weight: 300;
+    }
+    .why-content .why-sub {
+      color: rgba(201,148,26,0.6);
+      font-size: 13px; margin-top: 16px;
+      line-height: 1.8; font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+    }
+    /* gold rule under heading */
+    .why-rule {
+      width: 48px; height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin: 28px 0;
+    }
+
+    /* ── CARDS ── */
+    .why-cards { display: grid; gap: 2px; }
+    .why-card {
+      background: rgba(255,255,255,0.03);
+      border: none;
+      border-left: 1px solid rgba(201,148,26,0.25);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      padding: 28px 32px;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 0 20px;
+      align-items: start;
+      transition: all 0.35s ease;
+      position: relative;
+    }
+    .why-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+    .why-card:hover {
+      background: rgba(201,148,26,0.07);
+      border-left-color: rgba(201,148,26,0.6);
+      transform: translateX(4px);
+    }
+    .why-card:hover::before { opacity: 1; }
+    .why-card:first-child { border-radius: 8px 8px 0 0; }
+    .why-card:last-child  { border-radius: 0 0 8px 8px; border-bottom-color: rgba(201,148,26,0.15); }
+
+    /* SVG icon container */
+    .why-icon {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      background: rgba(201,148,26,0.1);
+      border: 1px solid rgba(201,148,26,0.2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .why-icon svg { width: 18px; height: 18px; }
+
+    .why-card-body {}
+    .why-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-weight: 500;
+      color: white; margin-bottom: 5px;
+      letter-spacing: 0.2px;
+    }
+    .why-card p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.48);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-section { background: white; }
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+    .how-header { text-align: center; margin-bottom: 64px; }
+    .how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; position: relative; }
+    .how-steps::before {
+      content: ''; position: absolute;
+      top: 32px; left: 12%; right: 12%;
+      height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .step { text-align: center; position: relative; }
+    .step-num {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--gold-pale); border: 2px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700; color: var(--gold);
+    }
+    .step h3 { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--maroon-dark); margin-bottom: 8px; }
+    .step p { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+
+    /* ── TEMPLATES ── */
+    .templates-section { background: var(--cream); }
+    .templates-inner { max-width: 1200px; margin: 0 auto; }
+    .templates-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 48px; flex-wrap: wrap; gap: 20px;
+    }
+    .templates-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    /* ── ANIMATED TEMPLATE CARDS ── */
+    .template-card {
+      display: flex; flex-direction: column;
+      border-radius: 16px; overflow: hidden;
+      background: white;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
+      cursor: pointer;
+    }
+    .template-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 24px 60px rgba(92,26,26,0.16);
+    }
+
+    /* preview area — reel/portrait format 9:16 */
+    .template-preview {
+      position: relative;
+      width: 100%; aspect-ratio: 9/16;
+      overflow: hidden; flex-shrink: 0;
+    }
+
+    /* slide strip */
+    .tp-slides {
+      display: flex; width: 100%; height: 100%;
+      transition: transform 0.7s cubic-bezier(0.77,0,0.18,1);
+    }
+    .tp-slide {
+      min-width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 20px 16px; text-align: center; position: relative;
+    }
+
+    /* theme backgrounds */
+    .tp-1 { background: linear-gradient(160deg,#3A0512 0%,#6B1428 50%,#3A0512 100%); }
+    .tp-2 { background: linear-gradient(160deg,#0D2818 0%,#1A5C30 60%,#0D2818 100%); }
+    .tp-3 { background: linear-gradient(160deg,#0a0d1a 0%,#0e1a3a 50%,#1c2d6b 100%); }
+    .tp-4 { background: linear-gradient(160deg,#2A1800,#6B4000,#2A1800); }
+    .tp-5 { background: linear-gradient(160deg,#1a0a16 0%,#3a0e2e 50%,#5C1040 100%); }
+    .tp-6 { background: linear-gradient(160deg,#0a1a16 0%,#0e3a2e 50%,#1c6b52 100%); }
+
+    /* mandala SVG bg decoration */
+    .tp-mandala::before {
+      content:''; position:absolute; inset:0;
+      background: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='100' cy='100' r='90' fill='none' stroke='rgba(201,148,26,0.12)' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='70' fill='none' stroke='rgba(201,148,26,0.09)' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='50' fill='none' stroke='rgba(201,148,26,0.07)' stroke-width='1'/%3E%3Cline x1='100' y1='10' x2='100' y2='190' stroke='rgba(201,148,26,0.05)' stroke-width='0.5'/%3E%3Cline x1='10' y1='100' x2='190' y2='100' stroke='rgba(201,148,26,0.05)' stroke-width='0.5'/%3E%3C/svg%3E") center/55% no-repeat;
+      pointer-events:none;
+    }
+
+    /* slide dot pagination */
+    .tp-dots {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      z-index: 5; display: flex; gap: 5px;
+    }
+    .tp-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      transition: background 0.3s, transform 0.3s; cursor: pointer;
+    }
+    .tp-dot.active { background: white; transform: scale(1.3); }
+
+    /* badge inside preview */
+    .tp-badge {
+      position: absolute; top: 10px; left: 10px; z-index: 4;
+      padding: 4px 10px; border-radius: 100px;
+      font-size: 10px; font-weight: 500;
+      display: flex; align-items: center; gap: 4px;
+      backdrop-filter: blur(8px);
+    }
+    .tp-badge-limited { background: rgba(92,26,26,0.85); color: #FFCFCF; }
+    .tp-badge-new     { background: rgba(30,130,60,0.9);  color: #C8FFD8; }
+
+    /* slide text styles */
+    .tp-slide-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); margin-bottom: 6px; position: relative; z-index:1;
+    }
+    .tp-slide-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 400; color: white;
+      line-height: 1.2; position: relative; z-index:1;
+    }
+    .tp-slide-amp { color: var(--gold); font-style: italic; font-size: 26px; }
+    .tp-slide-divider {
+      width: 40px; height: 1px; background: rgba(201,148,26,0.5);
+      margin: 8px auto; position: relative; z-index:1;
+    }
+    .tp-slide-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px; font-style: italic;
+      color: rgba(201,148,26,0.75); position: relative; z-index:1;
+    }
+    .tp-slide-date {
+      font-size: 10px; color: rgba(255,255,255,0.35);
+      letter-spacing: 1px; margin-top: 4px; position: relative; z-index:1;
+    }
+
+    /* countdown slide */
+    .tp-countdown { display: flex; gap: 6px; position: relative; z-index:1; }
+    .tp-cd-item {
+      display: flex; flex-direction: column; align-items: center;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(201,148,26,0.2);
+      padding: 6px 10px; border-radius: 4px; min-width: 44px;
+    }
+    .tp-cd-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; color: #E8C97A; line-height: 1;
+    }
+    .tp-cd-label {
+      font-size: 7px; color: rgba(255,255,255,0.3);
+      letter-spacing: 1px; text-transform: uppercase; margin-top: 2px;
+    }
+    .tp-cd-title {
+      font-size: 8px; letter-spacing: 2px; color: rgba(201,148,26,0.6);
+      text-transform: uppercase; margin-bottom: 10px;
+      position: relative; z-index:1;
+    }
+
+    /* info section below preview */
+    .template-info {
+      padding: 16px 20px 18px;
+      border-top: 1px solid rgba(0,0,0,0.04);
+    }
+    .template-info h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px; color: var(--maroon-dark); margin-bottom: 8px;
+    }
+    .template-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag {
+      font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 100px;
+      background: var(--gold-pale); color: var(--gold); font-weight: 500;
+    }
+
+    /* ── FEATURES ── */
+    .features-section {
+      background: var(--cream);
+      position: relative; overflow: hidden;
+    }
+    .features-section::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,148,26,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 50% 100%, rgba(201,148,26,0.04) 0%, transparent 70%);
+    }
+    .features-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+    .features-header { text-align: center; margin-bottom: 72px; }
+    .features-header .feat-subtitle {
+      font-size: 15px; color: var(--text-muted);
+      max-width: 480px; margin: 16px auto 0;
+      line-height: 1.85; font-weight: 300;
+    }
+
+    /* bento-style grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto auto;
+      gap: 16px;
+    }
+
+    /* featured (wide) card */
+    .feature-card-wide {
+      grid-column: span 2;
+    }
+
+    .feature-card {
+      background: white;
+      border: 1px solid rgba(201,148,26,0.12);
+      border-radius: 16px;
+      padding: 36px 36px 32px;
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease, border-color 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(201,148,26,0.4), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(92,26,26,0.08);
+      border-color: rgba(201,148,26,0.3);
+    }
+    .feature-card:hover::before { opacity: 1; }
+
+    /* icon circle */
+    .feature-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(201,148,26,0.12), rgba(201,148,26,0.05));
+      border: 1px solid rgba(201,148,26,0.2);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 22px;
+    }
+    .feature-icon svg { width: 20px; height: 20px; }
+
+    /* number accent for wide card */
+    .feature-card-wide .feat-num {
+      position: absolute; top: 28px; right: 32px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px; font-weight: 400;
+      color: rgba(201,148,26,0.07);
+      line-height: 1; pointer-events: none;
+      user-select: none;
+    }
+
+    .feature-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 500;
+      color: var(--maroon-dark); margin-bottom: 10px;
+      letter-spacing: 0.1px;
+    }
+    .feature-card p {
+      font-size: 13.5px; color: var(--text-muted);
+      line-height: 1.85; font-weight: 300;
+    }
+    /* gold tag for wide card */
+    .feat-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(201,148,26,0.08);
+      border: 1px solid rgba(201,148,26,0.2);
+      color: var(--gold);
+      font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 100px;
+      margin-bottom: 18px;
+    }
+
+    /* dark accent card */
+    .feature-card-dark {
+      background: var(--maroon-dark);
+      border-color: transparent;
+    }
+    .feature-card-dark h3 { color: white; }
+    .feature-card-dark p  { color: rgba(255,255,255,0.5); }
+    .feature-card-dark .feature-icon {
+      background: rgba(201,148,26,0.15);
+      border-color: rgba(201,148,26,0.25);
+    }
+    .feature-card-dark:hover {
+      border-color: rgba(201,148,26,0.4);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.2);
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section {
+      background: var(--maroon-dark);
+      position: relative; overflow: hidden;
+    }
+    .testimonials-section::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(201,148,26,0.08) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%);
+    }
+    .testimonials-section::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,148,26,0.06) 0%, transparent 60%);
+    }
+    .test-inner {
+      position: relative; z-index: 1;
+      max-width: 1160px; margin: 0 auto;
+    }
+    .test-header { text-align: center; margin-bottom: 64px; }
+    .test-header .section-label { color: var(--gold-light); }
+    .test-header .section-label::before,
+    .test-header .section-label::after { background: var(--gold-light); }
+    .test-header .section-title { color: white; }
+    .test-header .test-aggregate {
+      display: flex; align-items: center; justify-content: center; gap: 20px;
+      margin-top: 24px;
+    }
+    .test-aggregate-stars {
+      display: flex; gap: 3px;
+    }
+    .test-aggregate-stars span {
+      color: var(--gold); font-size: 16px;
+    }
+    .test-aggregate-text {
+      font-size: 13px; color: rgba(255,255,255,0.45);
+      font-weight: 300; letter-spacing: 0.3px;
+    }
+    .test-aggregate-text strong {
+      color: rgba(255,255,255,0.75); font-weight: 500;
+    }
+    .test-divider-dot {
+      width: 3px; height: 3px; border-radius: 50%;
+      background: rgba(201,148,26,0.4);
+    }
+
+    /* masonry-style grid */
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .test-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 28px 28px 24px;
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), border-color 0.3s, background 0.3s;
+      position: relative;
+    }
+    .test-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(201,148,26,0.3);
+    }
+
+    /* featured card — slightly different bg */
+    .test-card-featured {
+      background: rgba(201,148,26,0.08);
+      border-color: rgba(201,148,26,0.25);
+    }
+    .test-card-featured:hover { border-color: rgba(201,148,26,0.5); }
+
+    /* verified badge */
+    .test-verified {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase;
+      color: rgba(201,148,26,0.7);
+      margin-bottom: 14px;
+    }
+    .test-verified svg { width: 12px; height: 12px; }
+
+    .test-stars {
+      display: flex; gap: 2px; margin-bottom: 14px;
+    }
+    .test-stars span { color: var(--gold); font-size: 13px; }
+
+    /* quote mark */
+    .test-quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px; line-height: 0.6;
+      color: rgba(201,148,26,0.2);
+      margin-bottom: 8px; display: block;
+    }
+
+    .test-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px; font-style: italic;
+      line-height: 1.75; color: rgba(255,255,255,0.8);
+      margin-bottom: 22px;
+    }
+    .test-text em { font-style: normal; color: rgba(201,148,26,0.85); }
+
+    /* divider */
+    .test-card-divider {
+      height: 1px;
+      background: linear-gradient(to right, rgba(201,148,26,0.2), transparent);
+      margin-bottom: 18px;
+    }
+
+    .test-author { display: flex; align-items: center; gap: 12px; }
+    .test-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px; font-weight: 500;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .test-author-info { flex: 1; }
+    .test-name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); }
+    .test-location { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+
+    /* platform tag */
+    .test-platform {
+      margin-left: auto;
+      font-size: 10px; color: rgba(255,255,255,0.25);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── PRICING ── */
+    .pricing-section {
+      background: var(--cream);
+      position: relative; overflow: hidden;
+    }
+    .pricing-section::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,148,26,0.07) 0%, transparent 60%);
+    }
+    .pricing-inner { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; }
+    .pricing-header { text-align: center; margin-bottom: 64px; }
+    .pricing-tagline {
+      font-size: 14px; color: var(--text-muted); margin-top: 12px;
+      font-weight: 300; letter-spacing: 0.2px;
+    }
+
+    /* trust bar */
+    .pricing-trust {
+      display: flex; align-items: center; justify-content: center;
+      gap: 24px; margin-top: 20px; flex-wrap: wrap;
+    }
+    .pricing-trust-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 12px; color: var(--text-muted); font-weight: 300;
+    }
+    .pricing-trust-item svg { width: 14px; height: 14px; color: var(--gold); }
+
+    /* toggle */
+    .pricing-toggle {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; margin-bottom: 48px;
+    }
+    .pricing-toggle-label {
+      font-size: 13px; color: var(--text-muted); font-weight: 300;
+    }
+    .pricing-toggle-label.active { color: var(--maroon-dark); font-weight: 500; }
+    .pricing-save-tag {
+      background: rgba(201,148,26,0.12); border: 1px solid rgba(201,148,26,0.25);
+      color: var(--gold); font-size: 10px; letter-spacing: 1px;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 100px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.08fr 1fr;
+      gap: 0;
+      align-items: stretch;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(92,26,26,0.1);
+    }
+
+    .price-card {
+      background: white;
+      padding: 44px 36px 40px;
+      position: relative;
+      border: none;
+      border-right: 1px solid rgba(201,148,26,0.1);
+      transition: background 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .price-card:last-child { border-right: none; }
+    .price-card:hover:not(.featured) { background: #fdfaf5; }
+
+    .price-card.featured {
+      background: var(--maroon-dark);
+      border-right: none;
+      z-index: 2;
+    }
+
+    /* popular ribbon */
+    .price-badge {
+      position: absolute; top: 0; left: 0; right: 0;
+      background: linear-gradient(90deg, var(--gold), #E8B84B);
+      color: var(--maroon-dark);
+      text-align: center; padding: 6px;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase;
+    }
+
+    .price-plan {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 6px; font-weight: 500;
+    }
+    .featured .price-plan { color: var(--gold-light); }
+    .featured .price-badge + .price-plan { margin-top: 28px; }
+
+    .price-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px; font-weight: 700; color: var(--maroon-dark);
+      line-height: 1; letter-spacing: -2px;
+    }
+    .featured .price-amount { color: white; }
+    .price-currency {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; vertical-align: super;
+      font-weight: 400; letter-spacing: 0;
+    }
+    .price-period { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-weight: 300; }
+    .featured .price-period { color: rgba(255,255,255,0.45); }
+
+    /* savings callout */
+    .price-savings {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 10px;
+      font-size: 11px; color: rgba(201,148,26,0.8);
+    }
+    .price-savings s { color: var(--text-muted); opacity: .6; }
+
+    .price-divider { height: 1px; background: rgba(201,148,26,0.12); margin: 24px 0; }
+    .featured .price-divider { background: rgba(255,255,255,0.1); }
+
+    /* feature group label */
+    .price-group-label {
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(201,148,26,0.6); margin: 18px 0 10px;
+      font-weight: 500;
+    }
+    .featured .price-group-label { color: rgba(201,148,26,0.5); }
+
+    .price-features {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 0; flex: 1;
+    }
+    .price-features li {
+      font-size: 13.5px; color: var(--text-muted);
+      display: flex; gap: 10px; align-items: flex-start;
+      line-height: 1.5; font-weight: 300;
+    }
+    .featured .price-features li { color: rgba(255,255,255,0.6); }
+    .price-features li .pf-check {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: rgba(201,148,26,0.12); border: 1px solid rgba(201,148,26,0.25);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .featured .price-features li .pf-check {
+      background: rgba(201,148,26,0.2); border-color: rgba(201,148,26,0.4);
+    }
+    .pf-check svg { width: 8px; height: 8px; }
+    .price-features li.pf-dim { opacity: .35; }
+    .price-features li.pf-new .pf-label::after {
+      content: 'NEW'; font-size: 8px; letter-spacing: 1px;
+      background: rgba(201,148,26,0.15); color: var(--gold);
+      padding: 1px 5px; border-radius: 3px; margin-left: 6px;
+      vertical-align: middle; font-style: normal;
+    }
+    .featured .price-features li.pf-new .pf-label::after {
+      background: rgba(201,148,26,0.25);
+    }
+
+    .price-btn {
+      display: block; width: 100%; padding: 15px;
+      text-align: center; border-radius: 8px;
+      font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; cursor: pointer; transition: all 0.25s;
+      margin-top: 28px;
+    }
+    .price-btn-outline {
+      border: 1.5px solid rgba(92,26,26,0.25); color: var(--maroon-dark);
+      background: transparent;
+    }
+    .price-btn-outline:hover {
+      background: var(--maroon-dark); color: white;
+      border-color: var(--maroon-dark);
+    }
+    .price-btn-solid {
+      background: linear-gradient(135deg, var(--gold), #E8B84B);
+      color: var(--maroon-dark); border: none; font-weight: 600;
+      box-shadow: 0 8px 24px rgba(201,148,26,0.35);
+    }
+    .price-btn-solid:hover {
+      box-shadow: 0 12px 32px rgba(201,148,26,0.5);
+      transform: translateY(-1px);
+    }
+    .price-note {
+      font-size: 11px; color: var(--text-muted);
+      text-align: center; margin-top: 10px; font-weight: 300;
+    }
+    .featured .price-note { color: rgba(255,255,255,0.3); }
+
+    /* ── FAQ ── */
+    .faq-section {
+      background: var(--cream);
+      position: relative; overflow: hidden;
+    }
+    .faq-section::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 40% at 50% 100%, rgba(201,148,26,0.06) 0%, transparent 70%);
+    }
+    .faq-inner {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .faq-header { position: sticky; top: 80px; }
+    .faq-header .section-title { text-align: left; }
+    .faq-header p {
+      font-size: 14px; color: var(--text-muted); line-height: 1.85;
+      font-weight: 300; margin-top: 16px;
+    }
+    .faq-contact {
+      margin-top: 36px; padding-top: 28px;
+      border-top: 1px solid rgba(201,148,26,0.15);
+    }
+    .faq-contact-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px; font-weight: 500;
+    }
+    .faq-contact-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--maroon-dark); text-decoration: none;
+      font-weight: 400; transition: color 0.2s;
+    }
+    .faq-contact-link:hover { color: var(--gold); }
+    .faq-contact-link svg { width: 14px; height: 14px; }
+
+    .faq-list { display: flex; flex-direction: column; gap: 0; }
+
+    .faq-item {
+      border-bottom: 1px solid rgba(201,148,26,0.12);
+      cursor: pointer; overflow: hidden;
+    }
+    .faq-item:first-child { border-top: 1px solid rgba(201,148,26,0.12); }
+
+    .faq-question {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 20px;
+      padding: 22px 0;
+      user-select: none;
+      transition: color 0.2s;
+    }
+    .faq-q-left {
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .faq-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px; color: rgba(201,148,26,0.4);
+      font-style: italic; flex-shrink: 0;
+      margin-top: 2px; min-width: 20px;
+    }
+    .faq-q-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; color: var(--maroon-dark);
+      line-height: 1.35; font-weight: 500;
+    }
+    .faq-item.open .faq-q-text { color: var(--gold); }
+
+    .faq-toggle {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1px solid rgba(201,148,26,0.25);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.3s;
+      color: var(--gold); font-size: 16px; line-height: 1;
+    }
+    .faq-item.open .faq-toggle {
+      background: var(--gold); color: var(--maroon-dark);
+      border-color: var(--gold);
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.22,1,0.36,1), padding 0.3s;
+    }
+    .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 22px; }
+    .faq-answer-inner {
+      padding-left: 36px;
+      font-size: 14px; color: var(--text-muted);
+      line-height: 1.9; font-weight: 300;
+    }
+    .faq-answer-inner strong { color: var(--maroon-dark); font-weight: 500; }
+
+    /* ── CTA BANNER ── */
+    .cta-section {
+      background: var(--maroon-dark);
+      text-align: center;
+      padding: 120px 40px;
+      position: relative; overflow: hidden;
+    }
+    /* mandala watermark */
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,148,26,0.06) 0%, transparent 70%);
+      border: 1px solid rgba(201,148,26,0.08);
+      box-shadow:
+        0 0 0 60px rgba(201,148,26,0.03),
+        0 0 0 120px rgba(201,148,26,0.02),
+        0 0 0 180px rgba(201,148,26,0.015);
+      pointer-events: none;
+    }
+    .cta-section::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,148,26,0.05) 0%, transparent 60%),
+        linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.15) 100%);
+    }
+    .cta-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .cta-content .section-label { justify-content: center; color: var(--gold-light); }
+    .cta-content .section-label::before, .cta-content .section-label::after { background: var(--gold-light); }
+    .cta-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 62px); font-weight: 700; color: white; line-height: 1.15;
+      margin: 16px 0 20px;
+    }
+    .cta-content h2 em { color: var(--gold-light); font-style: italic; }
+    .cta-content .cta-lead {
+      font-size: 15px; color: rgba(255,255,255,0.5);
+      max-width: 440px; margin: 0 auto 40px;
+      line-height: 1.85; font-weight: 300;
+    }
+
+    /* CTA action row */
+    .cta-actions { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .cta-btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--gold), #E8B84B);
+      color: var(--maroon-dark); font-weight: 700;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 18px 52px; border-radius: 4px; text-decoration: none;
+      box-shadow: 0 12px 40px rgba(201,148,26,0.35);
+      transition: all 0.3s;
+    }
+    .cta-btn-primary:hover {
+      box-shadow: 0 20px 60px rgba(201,148,26,0.5);
+      transform: translateY(-2px);
+    }
+    .cta-btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.5); font-size: 12px;
+      text-decoration: none; letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .cta-btn-secondary:hover { color: var(--gold-light); }
+    .cta-trust-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 20px; margin-top: 48px; flex-wrap: wrap;
+    }
+    .cta-trust-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.3px;
+    }
+    .cta-trust-item svg { width: 12px; height: 12px; color: rgba(201,148,26,0.5); }
+    .cta-trust-sep { width: 1px; height: 12px; background: rgba(255,255,255,0.1); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0D0505;
+      color: rgba(255,255,255,0.35);
+      font-size: 13px; line-height: 1.7;
+      padding: 0;
+    }
+
+    /* top newsletter bar */
+    .footer-newsletter {
+      background: rgba(201,148,26,0.06);
+      border-bottom: 1px solid rgba(201,148,26,0.1);
+      padding: 28px 60px;
+    }
+    .footer-newsletter-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .footer-nl-text { }
+    .footer-nl-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; color: white; font-style: italic;
+    }
+    .footer-nl-sub { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 2px; }
+    .footer-nl-form {
+      display: flex; gap: 0; flex-shrink: 0;
+      border: 1px solid rgba(201,148,26,0.25); border-radius: 4px; overflow: hidden;
+    }
+    .footer-nl-input {
+      background: transparent; border: none; outline: none;
+      color: white; font-size: 13px; padding: 11px 18px;
+      width: 240px; font-family: inherit;
+    }
+    .footer-nl-input::placeholder { color: rgba(255,255,255,0.2); }
+    .footer-nl-btn {
+      background: var(--gold); color: var(--maroon-dark);
+      border: none; padding: 11px 20px;
+      font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+      font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: background 0.2s;
+    }
+    .footer-nl-btn:hover { background: #E8B84B; }
+
+    /* main footer grid */
+    .footer-main {
+      padding: 60px 60px 48px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr; gap: 48px;
+    }
+    .footer-brand { }
+    .footer-brand .nav-logo { font-size: 22px; margin-bottom: 14px; display: block; }
+    .footer-brand-desc {
+      font-size: 13px; color: rgba(255,255,255,0.3);
+      line-height: 1.85; font-weight: 300; max-width: 280px; margin-bottom: 24px;
+    }
+
+    /* social icons */
+    .footer-socials { display: flex; gap: 10px; }
+    .footer-social-btn {
+      width: 34px; height: 34px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.3); text-decoration: none;
+      transition: all 0.2s;
+    }
+    .footer-social-btn:hover {
+      border-color: rgba(201,148,26,0.4);
+      color: var(--gold);
+      background: rgba(201,148,26,0.08);
+    }
+    .footer-social-btn svg { width: 14px; height: 14px; }
+
+    footer h5 {
+      color: rgba(255,255,255,0.6); font-size: 10px;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      margin-bottom: 18px; font-weight: 500;
+    }
+    footer ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    footer a { color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; font-weight: 300; }
+    footer a:hover { color: var(--gold); }
+
+    /* trust badges row */
+    .footer-badges {
+      max-width: 1100px; margin: 0 auto;
+      padding: 24px 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex; gap: 24px; flex-wrap: wrap;
+    }
+    .footer-badge {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 11px; color: rgba(255,255,255,0.2);
+    }
+    .footer-badge svg { width: 13px; height: 13px; color: rgba(201,148,26,0.4); }
+
+    .footer-bottom {
+      max-width: 1100px; margin: 0 auto;
+      padding: 20px 0 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px; color: rgba(255,255,255,0.2);
+    }
+    .footer-cities { display: flex; gap: 16px; }
+    .footer-cities a { font-size: 11px; color: rgba(255,255,255,0.2); }
+
+    /* Floating WhatsApp */
+    .whatsapp-btn {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      display: flex; align-items: center; gap: 10px;
+      background: #25D366; color: white;
+      padding: 12px 20px 12px 16px;
+      border-radius: 100px;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.2px;
+      box-shadow: 0 8px 28px rgba(37,211,102,0.35);
+      text-decoration: none; transition: all 0.3s;
+    }
+    .whatsapp-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(37,211,102,0.45);
+    }
+    .whatsapp-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      section { padding: 70px 24px; }
+      .why-inner, .features-grid, .test-grid, .pricing-grid { grid-template-columns: 1fr; }
+      .how-steps { grid-template-columns: 1fr 1fr; }
+      .how-steps::before { display: none; }
+      .templates-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .price-card.featured { transform: none; }
+      .hero-stats { gap: 24px; }
+      footer { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Shaadi<span>.Digital</span></div>
+  <ul class="nav-links">
+    <li><a href="#templates">Templates</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Particles -->
+  <div class="hero-particle" style="width:6px;height:6px;top:18%;left:12%;--dur:14s;--del:0s;--op:0.35"></div>
+  <div class="hero-particle" style="width:4px;height:4px;top:30%;left:82%;--dur:11s;--del:2s;--op:0.25"></div>
+  <div class="hero-particle" style="width:8px;height:8px;top:65%;left:7%;--dur:16s;--del:1s;--op:0.2"></div>
+  <div class="hero-particle" style="width:5px;height:5px;top:22%;left:70%;--dur:13s;--del:3s;--op:0.3"></div>
+  <div class="hero-particle" style="width:3px;height:3px;top:75%;left:88%;--dur:10s;--del:0.5s;--op:0.4"></div>
+  <div class="hero-particle" style="width:7px;height:7px;top:50%;left:4%;--dur:18s;--del:4s;--op:0.18"></div>
+  <div class="hero-particle" style="width:4px;height:4px;top:10%;left:45%;--dur:12s;--del:1.5s;--op:0.28"></div>
+  <div class="hero-particle" style="width:5px;height:5px;top:80%;left:55%;--dur:15s;--del:2.5s;--op:0.22"></div>
+
+  <!-- Rotating mandalas — 3 layers -->
+  <svg class="mandala mandala-1" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="250" cy="250" r="240" stroke="#C9941A" stroke-width="0.8"/>
+    <circle cx="250" cy="250" r="210" stroke="#C9941A" stroke-width="0.4"/>
+    <circle cx="250" cy="250" r="180" stroke="#C9941A" stroke-width="0.8"/>
+    <circle cx="250" cy="250" r="150" stroke="#C9941A" stroke-width="0.4"/>
+    <circle cx="250" cy="250" r="120" stroke="#C9941A" stroke-width="0.8"/>
+    <circle cx="250" cy="250" r="90"  stroke="#C9941A" stroke-width="0.4"/>
+    <circle cx="250" cy="250" r="60"  stroke="#C9941A" stroke-width="0.8"/>
+    <!-- 16 petals -->
+    <g stroke="#C9941A" stroke-width="0.4" opacity="0.7">
+      <line x1="250" y1="10"  x2="250" y2="490"/>
+      <line x1="10"  y1="250" x2="490" y2="250"/>
+      <line x1="60"  y1="60"  x2="440" y2="440"/>
+      <line x1="440" y1="60"  x2="60"  y2="440"/>
+      <line x1="155" y1="10"  x2="345" y2="490"/>
+      <line x1="10"  y1="155" x2="490" y2="345"/>
+      <line x1="345" y1="10"  x2="155" y2="490"/>
+      <line x1="10"  y1="345" x2="490" y2="155"/>
+    </g>
+    <!-- diamond tip markers -->
+    <polygon points="250,10 257,50 250,60 243,50" fill="#C9941A" opacity="0.6"/>
+    <polygon points="250,490 257,450 250,440 243,450" fill="#C9941A" opacity="0.6"/>
+    <polygon points="10,250 50,257 60,250 50,243" fill="#C9941A" opacity="0.6"/>
+    <polygon points="490,250 450,257 440,250 450,243" fill="#C9941A" opacity="0.6"/>
+  </svg>
+
+  <svg class="mandala mandala-2" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="200" cy="200" r="190" stroke="#7B1C2E" stroke-width="0.8"/>
+    <circle cx="200" cy="200" r="155" stroke="#7B1C2E" stroke-width="0.4"/>
+    <circle cx="200" cy="200" r="120" stroke="#7B1C2E" stroke-width="0.8"/>
+    <circle cx="200" cy="200" r="85"  stroke="#7B1C2E" stroke-width="0.4"/>
+    <g stroke="#7B1C2E" stroke-width="0.4">
+      <line x1="200" y1="10" x2="200" y2="390"/>
+      <line x1="10" y1="200" x2="390" y2="200"/>
+      <line x1="55" y1="55" x2="345" y2="345"/>
+      <line x1="345" y1="55" x2="55" y2="345"/>
+    </g>
+  </svg>
+
+  <svg class="mandala mandala-3" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="300" cy="300" r="290" stroke="#C9941A" stroke-width="0.5"/>
+    <circle cx="300" cy="300" r="240" stroke="#C9941A" stroke-width="0.3"/>
+    <circle cx="300" cy="300" r="190" stroke="#C9941A" stroke-width="0.5"/>
+    <circle cx="300" cy="300" r="140" stroke="#C9941A" stroke-width="0.3"/>
+    <g stroke="#C9941A" stroke-width="0.3" opacity="0.5">
+      <line x1="300" y1="10" x2="300" y2="590"/>
+      <line x1="10" y1="300" x2="590" y2="300"/>
+      <line x1="90" y1="90" x2="510" y2="510"/>
+      <line x1="510" y1="90" x2="90" y2="510"/>
+      <line x1="195" y1="10" x2="405" y2="590"/>
+      <line x1="10" y1="195" x2="590" y2="405"/>
+      <line x1="405" y1="10" x2="195" y2="590"/>
+      <line x1="10" y1="405" x2="590" y2="195"/>
+    </g>
+  </svg>
+
+  <!-- ── BADGE ── -->
+  <div class="hero-badge" style="z-index:2">
+    <div class="hero-badge-dot"></div>
+    India's Most Beautiful Digital Invitations
+    <div class="hero-badge-dot"></div>
+  </div>
+
+  <!-- ══ KINETIC HEADLINE ══ -->
+  <div class="hero-kinetic">
+    <div class="kh-final">
+      <h1>
+        <span id="tw-line1"></span><span class="tw-cursor" id="tw-cursor1"></span>
+        <span class="hero-ornament" id="tw-ornament">— ✦ —</span>
+        <em id="tw-em"><span id="tw-line2"></span><span class="tw-cursor tw-off" id="tw-cursor2"></span></em>
+      </h1>
+    </div>
+  </div>
+
+  <!-- Gold rule draws in after animation -->
+  <div class="hero-line"></div>
+
+  <!-- Subtext + desc appear after final headline -->
+  <p class="hero-subtext">Where tradition meets the digital world — elegantly</p>
+
+  <p class="hero-desc">
+    Stunning digital wedding invitations with live RSVP tracking, WhatsApp delivery, and real-time guest management — crafted for every Indian wedding tradition.
+  </p>
+
+  <!-- Actions -->
+  <div class="hero-actions">
+    <a href="#templates" class="btn-primary">Browse Templates — Free</a>
+    <a href="#how" class="btn-secondary">See How It Works</a>
+  </div>
+
+  <!-- Stats pill -->
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">50,000+</div>
+      <div class="stat-label">Happy Couples</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">200+</div>
+      <div class="stat-label">Templates</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4.9 ★</div>
+      <div class="stat-label">Average Rating</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">₹0</div>
+      <div class="stat-label">Paper Waste</div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"><div class="scroll-dot"></div></div>
+  </div>
+
+</section>
+
+<!-- PHONE DEMO SECTION -->
+<section class="phone-demo-section">
+
+  <!-- scattered decorative dots -->
+  <div class="pd-dot" style="top:8%;left:6%"></div>
+  <div class="pd-dot" style="top:15%;left:18%"></div>
+  <div class="pd-dot pd-dot-lg" style="top:22%;right:14%"></div>
+  <div class="pd-dot" style="top:40%;right:6%"></div>
+  <div class="pd-dot pd-dot-lg" style="bottom:25%;left:10%"></div>
+  <div class="pd-dot" style="bottom:12%;right:20%"></div>
+  <div class="pd-heart" style="top:12%;left:32%">♡</div>
+  <div class="pd-heart" style="bottom:18%;right:32%">♡</div>
+
+  <div class="pd-inner">
+
+    <!-- Label + heading -->
+    <div class="pd-header">
+      <div class="section-label">Live Preview</div>
+      <h2 class="pd-title">
+        Aapka invitation<br>
+        <em>bilkul aisa dikhega</em>
+      </h2>
+      <p class="pd-subtitle">Scroll karo, tap karo — exactly waise jaise guests dekhenge</p>
+    </div>
+
+    <!-- ── STAGE: Feature cards + Phone + Stat cards ── -->
+    <div class="pd-stage">
+
+      <!-- LEFT: Feature pills -->
+      <div class="pd-features-col">
+
+        <div class="pd-feat-card">
+          <div class="pd-feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div class="pd-feat-body">
+            <h4>End-to-End Encrypted</h4>
+            <p>Your guest list & details are fully private and secure.</p>
+          </div>
+        </div>
+
+        <div class="pd-feat-card">
+          <div class="pd-feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div class="pd-feat-body">
+            <h4>WhatsApp Ready</h4>
+            <p>One tap sends your invite link to every family group instantly.</p>
+          </div>
+        </div>
+
+        <div class="pd-feat-card">
+          <div class="pd-feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="pd-feat-body">
+            <h4>Live Countdown</h4>
+            <p>Auto-updating timer builds beautiful anticipation for your day.</p>
+          </div>
+        </div>
+
+        <div class="pd-feat-card">
+          <div class="pd-feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+            </svg>
+          </div>
+          <div class="pd-feat-body">
+            <h4>All Ceremonies</h4>
+            <p>Mehendi, Sangeet, Haldi, Baraat & more — all in one invite.</p>
+          </div>
+        </div>
+
+      </div><!-- end left col -->
+
+      <!-- CENTRE: iPhone 17 Pro -->
+      <div class="pd-phone-wrap">
+        <div class="pd-phone-glow"></div>
+
+        <div class="pd-phone">
+          <!-- Inner black bezel -->
+          <div class="pd-phone-inner">
+            <!-- Screen -->
+            <div class="pd-screen" id="pdScreen">
+
+              <!-- Live Lovable invite — scrollable inside phone -->
+              <iframe
+                id="pdIframe"
+                src="https://vivaah-spark-kit.lovable.app/"
+                allow="autoplay; fullscreen"
+                allowfullscreen
+                scrolling="yes"
+                style="width:100%;height:100%;border:none;display:block;border-radius:49px;pointer-events:auto;"
+              ></iframe>
+
+              <!-- Dynamic Island overlaid on iframe -->
+              <div class="pd-dynamic-island">
+                <div class="pd-di-camera"></div>
+                <div class="pd-di-sensor"></div>
+              </div>
+
+            </div><!-- end pd-screen -->
+          </div><!-- end pd-phone-inner -->
+
+          <!-- Hardware buttons -->
+          <div class="pd-btn-action"></div>
+          <div class="pd-btn-vol-up"></div>
+          <div class="pd-btn-vol-dn"></div>
+          <div class="pd-btn-power"></div>
+        </div><!-- end pd-phone -->
+      </div><!-- end pd-phone-wrap -->
+
+      <!-- RIGHT: Stat & badge cards -->
+      <div class="pd-features-col">
+
+        <div class="pd-badge-card">
+          <div class="pd-badge-dot"></div>
+          <span>Live RSVP tracking active</span>
+        </div>
+
+        <div class="pd-stat-card">
+          <div class="pd-stat-num">50K+</div>
+          <div class="pd-stat-label">Happy Couples</div>
+        </div>
+
+        <div class="pd-stat-card">
+          <div class="pd-stat-num">4.9 ★</div>
+          <div class="pd-stat-label">Average Rating</div>
+        </div>
+
+        <div class="pd-feat-card">
+          <div class="pd-feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </div>
+          <div class="pd-feat-body">
+            <h4>Works on Every Phone</h4>
+            <p>iPhone, Android, or feature phone — no app install needed.</p>
+          </div>
+        </div>
+
+        <div class="pd-feat-card">
+          <div class="pd-feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </div>
+          <div class="pd-feat-body">
+            <h4>Edit Anytime</h4>
+            <p>Change venue, time or details — updates live for all guests.</p>
+          </div>
+        </div>
+
+      </div><!-- end right col -->
+
+    </div><!-- end pd-stage -->
+
+    <!-- CTA below phone -->
+    <div class="pd-cta">
+      <a href="#pricing" class="btn-primary" style="padding:14px 40px;font-size:12px">
+        Apna Invitation Banao — Free Preview
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY DIGITAL -->
+<section class="why-section">
+  <div class="why-inner">
+
+    <div class="why-content">
+      <div class="section-label">Why Digital?</div>
+      <h2 class="section-title">
+        Paper invitations<br>
+        ka zamana <em>gaya</em>
+      </h2>
+      <div class="why-rule"></div>
+      <p class="why-lead">
+        Printed cards get lost in transit, cannot be corrected once dispatched, and cost far more than the occasion deserves. Shaadi.Digital replaces all of that — a single elegant link, delivered in seconds, experienced on any phone.
+      </p>
+      <p class="why-sub">
+        Crafted for NRI families, outstation guests, and couples who want every detail of their celebration to feel considered.
+      </p>
+    </div>
+
+    <div class="why-cards">
+
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <div class="why-card-body">
+          <h3>Instant Delivery via WhatsApp</h3>
+          <p>One link, shared directly to every family group. No app to download, no login required — guests open it and the invitation unfolds beautifully on any device.</p>
+        </div>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="why-card-body">
+          <h3>Live RSVP Dashboard</h3>
+          <p>Watch confirmations arrive in real time. Know exactly who is attending, who has declined, and who is yet to respond — before the caterer asks.</p>
+        </div>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+          </svg>
+        </div>
+        <div class="why-card-body">
+          <h3>Every Ceremony, One Invitation</h3>
+          <p>Mehndi, Haldi, Baraat, Reception — each event carries its own date, time, venue, and directions. Your guests always know exactly where to be.</p>
+        </div>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div class="why-card-body">
+          <h3>Save ₹10,000 or More</h3>
+          <p>No printing, no postage, no courier delays. Update the venue or timing at any point — at no additional cost, with no reprint required.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="how-header">
+      <div class="section-label" style="justify-content:center">Simple Process</div>
+      <h2 class="section-title" style="text-align:center">Ready in <em>10 Minutes</em></h2>
+      <p style="color:var(--text-muted);margin-top:12px;font-size:15px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.8;text-align:center">
+        No design skills needed. No complicated tools. Just fill in your details and your invitation is ready.
+      </p>
+    </div>
+    <div class="how-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Choose a Template</h3>
+        <p>Pick from 200+ stunning designs — traditional, modern, floral, or royal.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Add Your Details</h3>
+        <p>Fill in couple names, event dates, venues, and upload your photos.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Preview & Customise</h3>
+        <p>Preview on mobile, adjust fonts & colors, add your events.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Share & Track</h3>
+        <p>Share on WhatsApp, and watch RSVPs come in on your dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMPLATES -->
+<section class="templates-section" id="templates">
+  <div class="templates-inner">
+    <div class="templates-header">
+      <div>
+        <div class="section-label">Designs</div>
+        <h2 class="section-title">Har Wedding ke liye<br><em>Perfect Template</em></h2>
+      </div>
+      <a href="#pricing" class="btn-secondary">View All 200+ Templates</a>
+    </div>
+    <div class="templates-grid">
+
+      <!-- 1 — Royal Maroon (3 slides) -->
+      <div class="template-card" data-slides="3" data-current="0" id="tc1">
+        <div class="template-preview">
+          <div class="tp-slides" id="tslides1">
+
+            <!-- Slide 1: Names -->
+            <div class="tp-slide tp-1 tp-mandala">
+              <div class="tp-slide-name">Together Forever</div>
+              <div class="tp-slide-title">
+                Ananya<br><span class="tp-slide-amp">&amp;</span><br>Rohan
+              </div>
+              <div class="tp-slide-divider"></div>
+              <div class="tp-slide-date">25 · 02 · 2025 · Delhi</div>
+            </div>
+
+            <!-- Slide 2: Countdown -->
+            <div class="tp-slide tp-1">
+              <div class="tp-cd-title">Save the Date</div>
+              <div class="tp-countdown">
+                <div class="tp-cd-item"><div class="tp-cd-num" id="tc-days">00</div><div class="tp-cd-label">Days</div></div>
+                <div class="tp-cd-item"><div class="tp-cd-num" id="tc-hrs">00</div><div class="tp-cd-label">Hrs</div></div>
+                <div class="tp-cd-item"><div class="tp-cd-num" id="tc-min">00</div><div class="tp-cd-label">Min</div></div>
+              </div>
+            </div>
+
+            <!-- Slide 3: Invite text -->
+            <div class="tp-slide tp-1">
+              <div style="width:44px;height:44px;border-radius:50%;background:rgba(201,148,26,0.15);border:1px solid rgba(201,148,26,0.3);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px;position:relative;z-index:1">🪔</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:rgba(255,255,255,0.5);line-height:1.8;position:relative;z-index:1;padding:0 10px">
+                We warmly invite you to celebrate our wedding day with us…
+              </div>
+            </div>
+
+          </div>
+          <div class="tp-badge tp-badge-limited">👑 Limited Ed.</div>
+          <div class="tp-dots" id="tdots1">
+            <div class="tp-dot active" onclick="tcSlide('tc1',0)"></div>
+            <div class="tp-dot" onclick="tcSlide('tc1',1)"></div>
+            <div class="tp-dot" onclick="tcSlide('tc1',2)"></div>
+          </div>
+        </div>
+        <div class="template-info">
+          <h4>Royal Maroon</h4>
+          <div class="template-tags">
+            <span class="tag">North Indian</span>
+            <span class="tag">Traditional</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 — Emerald South (2 slides) -->
+      <div class="template-card" data-slides="2" data-current="0" id="tc2">
+        <div class="template-preview">
+          <div class="tp-slides" id="tslides2">
+
+            <!-- Slide 1 -->
+            <div class="tp-slide tp-2">
+              <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:65%;height:50%;border:1px solid rgba(201,148,26,0.2);border-bottom:none;border-radius:90px 90px 0 0;pointer-events:none"></div>
+              <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center">
+                <div style="font-size:18px;margin-bottom:6px;opacity:0.6">🪷</div>
+                <div class="tp-slide-title" style="font-size:20px">
+                  Kavya<br><span class="tp-slide-amp">&amp;</span><br>Siddharth
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="tp-slide tp-2" style="background:linear-gradient(160deg,#0a1e10,#163d22)">
+              <div style="font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,0.55);line-height:1.9;position:relative;z-index:1">
+                Shubh Vivah · Kalyanam<br>
+                <span style="font-size:10px;color:rgba(201,148,26,0.5)">Bangalore · April 2025</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="tp-badge tp-badge-new">✦ New</div>
+          <div class="tp-dots" id="tdots2">
+            <div class="tp-dot active" onclick="tcSlide('tc2',0)"></div>
+            <div class="tp-dot" onclick="tcSlide('tc2',1)"></div>
+          </div>
+        </div>
+        <div class="template-info">
+          <h4>Emerald South</h4>
+          <div class="template-tags">
+            <span class="tag">South Indian</span>
+            <span class="tag">Elegant</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 — Midnight Blue -->
+      <div class="template-card" id="tc3">
+        <div class="template-preview">
+          <div class="tp-slides" id="tslides3">
+            <div class="tp-slide tp-3 tp-mandala">
+              <div class="tp-slide-name">With blessings of</div>
+              <div class="tp-slide-title">
+                Meera<br><span class="tp-slide-amp">&amp;</span><br>Vivek
+              </div>
+              <div class="tp-slide-divider"></div>
+              <div class="tp-slide-sub">Lagan Patrika</div>
+              <div class="tp-slide-date">10 · 04 · 2025 · Mumbai</div>
+            </div>
+          </div>
+        </div>
+        <div class="template-info">
+          <h4>Midnight Blue</h4>
+          <div class="template-tags">
+            <span class="tag">Modern</span>
+            <span class="tag">Minimalist</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 — Golden Sehra (2 slides) -->
+      <div class="template-card" data-slides="2" data-current="0" id="tc4">
+        <div class="template-preview">
+          <div class="tp-slides" id="tslides4">
+
+            <!-- Slide 1 -->
+            <div class="tp-slide tp-4">
+              <div style="font-size:9px;letter-spacing:1px;color:rgba(255,220,100,0.4);margin-bottom:8px;position:relative;z-index:1">ੴ ਸਤਿ ਨਾਮੁ</div>
+              <div style="font-size:32px;opacity:0.3;position:relative;z-index:1">☬</div>
+              <div class="tp-slide-title" style="color:rgba(255,220,100,0.9)">
+                Simran<br>&amp;<br>Harjeet
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="tp-slide tp-4">
+              <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(255,220,100,0.55);line-height:1.9;position:relative;z-index:1">
+                Anand Karaj<br>
+                <span style="font-size:10px;color:rgba(255,220,100,0.35)">22 · 11 · 2025 · Amritsar</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="tp-dots" id="tdots4">
+            <div class="tp-dot active" onclick="tcSlide('tc4',0)"></div>
+            <div class="tp-dot" onclick="tcSlide('tc4',1)"></div>
+          </div>
+        </div>
+        <div class="template-info">
+          <h4>Golden Sehra</h4>
+          <div class="template-tags">
+            <span class="tag">Punjabi</span>
+            <span class="tag">Sikh</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 — Pearl Nikah -->
+      <div class="template-card" id="tc5">
+        <div class="template-preview">
+          <div class="tp-slides" id="tslides5">
+            <div class="tp-slide tp-5">
+              <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(201,148,26,0.04) 8px,rgba(201,148,26,0.04) 9px)"></div>
+              <div style="font-size:10px;letter-spacing:1px;color:rgba(201,148,26,0.5);margin-bottom:8px;position:relative;z-index:1">﷽</div>
+              <div style="font-size:26px;opacity:0.3;position:relative;z-index:1">☪️</div>
+              <div class="tp-slide-title">
+                Aisha<br>&amp;<br>Zayan
+              </div>
+              <div class="tp-slide-divider"></div>
+              <div class="tp-slide-sub">Nikah</div>
+              <div class="tp-slide-date">05 · 12 · 2025 · Hyderabad</div>
+            </div>
+          </div>
+        </div>
+        <div class="template-info">
+          <h4>Pearl Nikah</h4>
+          <div class="template-tags">
+            <span class="tag">Muslim</span>
+            <span class="tag">Elegant</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 — Teal Luxury (2 slides) -->
+      <div class="template-card" data-slides="2" data-current="0" id="tc6">
+        <div class="template-preview">
+          <div class="tp-slides" id="tslides6">
+
+            <!-- Slide 1 -->
+            <div class="tp-slide tp-6 tp-mandala">
+              <div class="tp-slide-name">Om Shubham Karoti</div>
+              <div class="tp-slide-title">
+                Kavya<br><span class="tp-slide-amp">&amp;</span><br>Siddharth
+              </div>
+              <div class="tp-slide-divider"></div>
+              <div class="tp-slide-sub">Vivah Patrika</div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="tp-slide tp-6" style="background:linear-gradient(160deg,#061410,#0e2e24)">
+              <div class="tp-cd-title">Save the Date</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:rgba(201,148,26,0.7);line-height:1;position:relative;z-index:1">18</div>
+              <div style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.3);text-transform:uppercase;position:relative;z-index:1">January 2026</div>
+              <div class="tp-slide-divider" style="margin-top:10px"></div>
+              <div class="tp-slide-date">Pune · Maharashtra</div>
+            </div>
+
+          </div>
+          <div class="tp-dots" id="tdots6">
+            <div class="tp-dot active" onclick="tcSlide('tc6',0)"></div>
+            <div class="tp-dot" onclick="tcSlide('tc6',1)"></div>
+          </div>
+        </div>
+        <div class="template-info">
+          <h4>Teal Luxury</h4>
+          <div class="template-tags">
+            <span class="tag">Marathi</span>
+            <span class="tag">Royal</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="features-inner">
+    <div class="features-header">
+      <div class="section-label" style="justify-content:center">Everything Included</div>
+      <h2 class="section-title" style="text-align:center">Sab kuch ek jagah,<br><em>ek price mein</em></h2>
+      <p class="feat-subtitle">Every feature your wedding needs — designed together, priced as one.</p>
+    </div>
+
+    <div class="features-grid">
+
+      <!-- Wide featured card — row 1, col 1–2 -->
+      <div class="feature-card feature-card-wide">
+        <span class="feat-num">01</span>
+        <span class="feat-tag">
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+          Signature Feature
+        </span>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+        </div>
+        <h3>Fully Personalised, No Designer Required</h3>
+        <p>Choose your palette, typography, and layout. Upload your own photographs. Add a custom melody. Every element of your invitation reflects exactly who you are — and the platform does all the design work for you.</p>
+      </div>
+
+      <!-- Tall dark card — row 1, col 3 / row 2, col 3 -->
+      <div class="feature-card feature-card-dark" style="grid-row: span 2;">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+            <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>Flawless on Every Screen</h3>
+        <p>Designed from the ground up for mobile — your invitation renders beautifully on every device, from the latest iPhone to an entry-level Android. No app to download. No zoom required.</p>
+        <div style="margin-top:24px;padding-top:24px;border-top:1px solid rgba(201,148,26,0.15)">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(201,148,26,0.6);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">Works on</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:12px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:8px">
+              <div style="width:4px;height:4px;border-radius:50%;background:rgba(201,148,26,0.5)"></div>iPhone & iOS
+            </div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:8px">
+              <div style="width:4px;height:4px;border-radius:50%;background:rgba(201,148,26,0.5)"></div>Android (all versions)
+            </div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:8px">
+              <div style="width:4px;height:4px;border-radius:50%;background:rgba(201,148,26,0.5)"></div>WhatsApp in-app browser
+            </div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:8px">
+              <div style="width:4px;height:4px;border-radius:50%;background:rgba(201,148,26,0.5)"></div>Desktop & tablet
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: two regular cards -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <h3>Every Ceremony, One Invitation</h3>
+        <p>Mehndi, Haldi, Sangeet, Baraat, Reception — each with its own date, time, and venue. One link carries everything.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <h3>Turn-by-Turn Directions</h3>
+        <p>Embedded maps open directly in Google Maps or Apple Maps. Your guests arrive on time — without a single "address bhej do" call.</p>
+      </div>
+
+      <!-- Row 3: three regular cards -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h3>Live RSVP Dashboard</h3>
+        <p>Attendance, dietary notes, and headcounts — all in a real-time dashboard. Your caterer will thank you.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </div>
+        <h3>Automated Reminders</h3>
+        <p>Guests who haven't responded receive gentle nudges automatically. You stay focused on the celebrations.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h3>Private by Default</h3>
+        <p>Your invitation is never public. Password-protect it, share only with your guest list, and edit the details at any time — free of charge.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="test-inner">
+    <div class="test-header">
+      <div class="section-label" style="justify-content:center;color:var(--gold-light)">Love Stories</div>
+      <h2 class="section-title" style="text-align:center;color:white">50,000+ couples ne<br><em>humein choose kiya</em></h2>
+      <div class="test-aggregate">
+        <div class="test-aggregate-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <div class="test-aggregate-text"><strong>4.9 / 5</strong> average rating</div>
+        <div class="test-divider-dot"></div>
+        <div class="test-aggregate-text"><strong>50,000+</strong> weddings</div>
+        <div class="test-divider-dot"></div>
+        <div class="test-aggregate-text"><strong>India's #1</strong> digital invite platform</div>
+      </div>
+    </div>
+
+    <div class="test-grid">
+
+      <!-- Card 1 — NRI family, detailed -->
+      <div class="test-card">
+        <div class="test-verified">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Verified purchase
+        </div>
+        <div class="test-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <span class="test-quote-mark">"</span>
+        <p class="test-text">Hamare relatives Delhi, Mumbai aur New Jersey mein hain. Sab ne invite ek minute mein open kiya — <em>kisi ne ek baar bhi 'link kaam nahi kar raha' nahi kaha.</em> RSVP dashboard ne catering planning ekdum smooth kar di.</p>
+        <div class="test-card-divider"></div>
+        <div class="test-author">
+          <div class="test-avatar" style="background:linear-gradient(135deg,#5C1A1A,#8C2A2A);color:white">RS</div>
+          <div class="test-author-info">
+            <div class="test-name">Ritu & Sameer Sharma</div>
+            <div class="test-location">Delhi NCR · Royal Maroon template · Nov 2024</div>
+          </div>
+          <div class="test-platform">Google</div>
+        </div>
+      </div>
+
+      <!-- Card 2 — Featured, longer, design praise -->
+      <div class="test-card test-card-featured">
+        <div class="test-verified">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Verified purchase
+        </div>
+        <div class="test-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <span class="test-quote-mark">"</span>
+        <p class="test-text">Meri saheliyaan poochh rahi thi — <em>'yaar, ye invite kisne design kiya?'</em> Sach mein, mujhe ek bhi design decision nahi lena pada. Template choose ki, naam daala, music upload ki — bas ho gaya. Shaadi ke baad bhi sab log link save karke rakhte hain.</p>
+        <div class="test-card-divider"></div>
+        <div class="test-author">
+          <div class="test-avatar" style="background:linear-gradient(135deg,#1A3A5C,#2A5C8C);color:white">PN</div>
+          <div class="test-author-info">
+            <div class="test-name">Priyanka & Nikhil Nair</div>
+            <div class="test-location">Kochi · Emerald South template · Dec 2024</div>
+          </div>
+          <div class="test-platform">Instagram</div>
+        </div>
+      </div>
+
+      <!-- Card 3 — Last-minute venue change -->
+      <div class="test-card">
+        <div class="test-verified">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Verified purchase
+        </div>
+        <div class="test-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <span class="test-quote-mark">"</span>
+        <p class="test-text">Shaadi se 4 din pehle venue change hua. <em>2 minutes mein update kar diya</em> — 340 guests ke phones pe automatically naya address pahunch gaya. Agar printed cards hote toh sochna bhi nahi chahta tha.</p>
+        <div class="test-card-divider"></div>
+        <div class="test-author">
+          <div class="test-avatar" style="background:linear-gradient(135deg,#1A4A2A,#2A7A3A);color:white">AK</div>
+          <div class="test-author-info">
+            <div class="test-name">Arjun & Kavitha Menon</div>
+            <div class="test-location">Bangalore · Golden Sehra template · Jan 2025</div>
+          </div>
+          <div class="test-platform">Google</div>
+        </div>
+      </div>
+
+      <!-- Card 4 — Punjabi family, WhatsApp detail -->
+      <div class="test-card">
+        <div class="test-verified">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Verified purchase
+        </div>
+        <div class="test-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <span class="test-quote-mark">"</span>
+        <p class="test-text">Meri family ke 12 WhatsApp groups hain — sab mein ek link share kiya. <em>Kisi ne ek bhi baar 'address bhej do' nahi likha.</em> Pehli baar shaadi planning mein koi cheez simple lagi.</p>
+        <div class="test-card-divider"></div>
+        <div class="test-author">
+          <div class="test-avatar" style="background:linear-gradient(135deg,#4A2A1A,#8C5A2A);color:white">HK</div>
+          <div class="test-author-info">
+            <div class="test-name">Harpreet & Kulwinder Singh</div>
+            <div class="test-location">Amritsar · Golden Sehra template · Oct 2024</div>
+          </div>
+          <div class="test-platform">Google</div>
+        </div>
+      </div>
+
+      <!-- Card 5 — Nikah, Muslim couple -->
+      <div class="test-card">
+        <div class="test-verified">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Verified purchase
+        </div>
+        <div class="test-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <span class="test-quote-mark">"</span>
+        <p class="test-text">Hum chahte the ki invite mein <em>Nikah, Walima aur Mehndi teeno alag alag dikhein</em> — aur exactly waisa hua. Har event ka alag time aur Google Maps link. Bahut professional laga.</p>
+        <div class="test-card-divider"></div>
+        <div class="test-author">
+          <div class="test-avatar" style="background:linear-gradient(135deg,#1A2A4A,#2A3A6A);color:white">AZ</div>
+          <div class="test-author-info">
+            <div class="test-name">Aisha & Zayan Qureshi</div>
+            <div class="test-location">Hyderabad · Pearl Nikah template · Feb 2025</div>
+          </div>
+          <div class="test-platform">WhatsApp review</div>
+        </div>
+      </div>
+
+      <!-- Card 6 — South Indian, Tamil -->
+      <div class="test-card">
+        <div class="test-verified">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Verified purchase
+        </div>
+        <div class="test-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <span class="test-quote-mark">"</span>
+        <p class="test-text">Chennai mein typically printed invites ka itna tradition hai — but <em>mere in-laws bhi impressed ho gaye.</em> Emerald South template bilkul hum jaisa laga. Support team ne ek ghante mein reply kiya jab ek doubt tha.</p>
+        <div class="test-card-divider"></div>
+        <div class="test-author">
+          <div class="test-avatar" style="background:linear-gradient(135deg,#1A3A1A,#2A6A3A);color:white">KS</div>
+          <div class="test-author-info">
+            <div class="test-name">Kavya & Siddharth Iyer</div>
+            <div class="test-location">Chennai · Emerald South template · Mar 2025</div>
+          </div>
+          <div class="test-platform">Google</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-header">
+      <div class="section-label" style="justify-content:center">Simple Pricing</div>
+      <h2 class="section-title" style="text-align:center">Ek baar invest karo,<br><em>hamesha ke liye yaad karo</em></h2>
+      <p class="pricing-tagline">No hidden charges. No per-guest fees. No subscription. Pay once, yours for a full year.</p>
+      <div class="pricing-trust">
+        <div class="pricing-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          100% secure payment
+        </div>
+        <div class="pricing-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          UPI · Cards · Net Banking
+        </div>
+        <div class="pricing-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Instant access after payment
+        </div>
+        <div class="pricing-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Free preview before you pay
+        </div>
+      </div>
+    </div>
+
+    <div class="pricing-grid">
+
+      <!-- BASIC -->
+      <div class="price-card">
+        <div class="price-plan">Shuruat</div>
+        <div class="price-amount"><span class="price-currency">₹</span>999</div>
+        <div class="price-period">One-time · Active for 1 year</div>
+        <div class="price-divider"></div>
+
+        <div class="price-group-label">Invitation</div>
+        <ul class="price-features">
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">1 Digital Invitation</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Choose from 50+ templates</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Custom names, dates & photos</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Background music upload</span>
+          </li>
+        </ul>
+
+        <div class="price-group-label">Events & Sharing</div>
+        <ul class="price-features">
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Up to 3 event pages</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Google Maps per event</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">WhatsApp one-tap sharing</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">50 RSVP responses</span>
+          </li>
+        </ul>
+
+        <a href="#" class="price-btn price-btn-outline">Start Free Preview</a>
+        <p class="price-note">Preview free · Pay only to share</p>
+      </div>
+
+      <!-- PREMIUM (featured) -->
+      <div class="price-card featured">
+        <div class="price-badge">Most Popular — 89% choose this</div>
+        <div class="price-plan">Shaadi</div>
+        <div class="price-amount"><span class="price-currency">₹</span>1,999</div>
+        <div class="price-period">One-time · Active for 1 year</div>
+        <div class="price-savings"><s>₹3,499</s> &nbsp;Save ₹1,500 today</div>
+        <div class="price-divider"></div>
+
+        <div class="price-group-label">Everything in Shuruat, plus</div>
+        <ul class="price-features">
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Unlimited event pages</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Unlimited RSVP responses</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Live RSVP dashboard + analytics</span>
+          </li>
+          <li class="pf-new">
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">AI-personalised invite copy</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Auto guest reminders (3 rounds)</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Password protection</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Custom shaadi.digital/yourname link</span>
+          </li>
+          <li class="pf-new">
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Dietary preference tracking</span>
+          </li>
+          <li class="pf-new">
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">WhatsApp broadcast list export</span>
+          </li>
+        </ul>
+
+        <a href="#" class="price-btn price-btn-solid">Begin Your Invitation</a>
+        <p class="price-note">Preview free · No card needed</p>
+      </div>
+
+      <!-- ELITE -->
+      <div class="price-card">
+        <div class="price-plan">Shaahi</div>
+        <div class="price-amount"><span class="price-currency">₹</span>3,499</div>
+        <div class="price-period">One-time · Active for 1 year</div>
+        <div class="price-divider"></div>
+
+        <div class="price-group-label">Everything in Shaadi, plus</div>
+        <ul class="price-features">
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Custom designed by our team</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Cinematic video intro slide</span>
+          </li>
+          <li class="pf-new">
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Digital shagun / gift registry</span>
+          </li>
+          <li class="pf-new">
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Live photo wall (guests upload)</span>
+          </li>
+          <li class="pf-new">
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">NRI timezone auto-detection</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Dedicated relationship manager</span>
+          </li>
+          <li>
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Priority 24/7 WhatsApp support</span>
+          </li>
+          <li class="pf-new">
+            <div class="pf-check"><svg viewBox="0 0 10 10" fill="none" stroke="#C9941A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 5 4 7 8 3"/></svg></div>
+            <span class="pf-label">Post-wedding memory album</span>
+          </li>
+        </ul>
+
+        <a href="#" class="price-btn price-btn-outline">Talk to Our Team</a>
+        <p class="price-note">White-glove service · Limited slots</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+
+    <!-- Sticky left panel -->
+    <div class="faq-header">
+      <div class="section-label">Got Questions?</div>
+      <h2 class="section-title">Aksar Pooche<br>Jaate hain jo<br><em>Sawaal</em></h2>
+      <p>Koi bhi doubt ho toh neeche dekho — ya seedha humse baat karo.</p>
+      <div class="faq-contact">
+        <div class="faq-contact-label">Still unsure?</div>
+        <a href="https://wa.me/919999999999" class="faq-contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Chat with us on WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <!-- Accordion list -->
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <div class="faq-q-left">
+            <span class="faq-num">01</span>
+            <span class="faq-q-text">Kya mujhe koi design ya technical knowledge chahiye?</span>
+          </div>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <strong>Bilkul nahi.</strong> Platform itni simple hai ki koi bhi — dadi ho ya teenager — bina kisi help ke 10 minute mein poora invite ready kar sakta hai. Template choose karo, naam aur details bharo, photos upload karo — bas itna. Koi coding nahi, koi design software nahi.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <div class="faq-q-left">
+            <span class="faq-num">02</span>
+            <span class="faq-q-text">Invite share karne ka sabse acha tarika kya hai?</span>
+          </div>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <strong>Seedha WhatsApp pe.</strong> Ek unique link milta hai jo aap apne saare family aur friend groups mein share kar sakte ho. Guests ko koi app download nahi karna, koi account nahi banana — bas link kholo, invite dekho, RSVP karo. Purane phones pe bhi perfectly kaam karta hai.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <div class="faq-q-left">
+            <span class="faq-num">03</span>
+            <span class="faq-q-text">Payment ke baad invite kab milega?</span>
+          </div>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <strong>Turant — payment confirm hote hi.</strong> Koi waiting nahi, koi approval process nahi. UPI, credit/debit card, net banking, aur Razorpay se pay kar sakte ho. Checkout 100% secure hai aur GST invoice bhi milti hai.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <div class="faq-q-left">
+            <span class="faq-num">04</span>
+            <span class="faq-q-text">Kya baad mein kuch bhi update ho sakta hai?</span>
+          </div>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <strong>Haan — hamesha aur free mein.</strong> Venue change hua? Timing shift hui? Koi nayi ceremony add karni hai? Sab kuch edit kar sakte ho. Purana link same rehta hai, aur guests ko automatically updated version dikhai deta hai. Dubara share karna bhi zaruri nahi.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <div class="faq-q-left">
+            <span class="faq-num">05</span>
+            <span class="faq-q-text">Kya ek invite mein Mehndi, Haldi, Baraat sab aa sakta hai?</span>
+          </div>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <strong>Haan, aur yahi sabse badi khaasiyat hai.</strong> Shaadi aur Shaahi plans mein unlimited events add kar sakte ho — Mehndi, Haldi, Sangeet, Baraat, Reception, Griha Pravesh — sab ek hi invitation mein. Har event ka apna time, venue, aur Google Maps link hoga.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <div class="faq-q-left">
+            <span class="faq-num">06</span>
+            <span class="faq-q-text">NRI ya foreign mein baithe guests ke liye koi problem hogi?</span>
+          </div>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <strong>Koi problem nahi.</strong> Invitation world mein kahin se bhi open ho sakta hai. Shaahi plan mein timezone auto-detection bhi hai — US, UK, ya Australia mein baithe relative ko apne local time mein event timing dikhegi. Koi confusion nahi, koi calls nahi.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <div class="faq-q-left">
+            <span class="faq-num">07</span>
+            <span class="faq-q-text">Kya invitation private rakha ja sakta hai?</span>
+          </div>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <strong>Haan — default hi private hai.</strong> Aapka invite kabhi bhi public search mein nahi dikhega. Password protection option bhi hai taaki sirf wahi log dekh sakein jinhein aap chahte hain. Guest list completely aapke control mein hai.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <div class="faq-q-left">
+            <span class="faq-num">08</span>
+            <span class="faq-q-text">RSVP track karna kitna easy hai?</span>
+          </div>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <strong>Ek dashboard mein sab kuch.</strong> Kaun aa raha hai, kaun nahi, kaun ne abhi tak jawab nahi diya — sab real-time dikhta hai. Dietary preferences bhi track hoti hain. Auto-reminders un guests ko bhejte hain jinhone respond nahi kiya. Caterer ko estimate dena — ekdum easy.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-section">
+  <div class="cta-content">
+    <div class="section-label">Begin Your Story</div>
+    <h2>
+      Woh invitation jo<br>
+      sab yaad <em>rakhein</em>
+    </h2>
+    <p class="cta-lead">
+      50,000+ couples ne apni shaadi ko Shaadi.Digital ke saath aur bhi khaas banaya. Ab aapki baari hai — preview bilkul free hai.
+    </p>
+    <div class="cta-actions">
+      <a href="#pricing" class="cta-btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Free Preview — No Card Needed
+      </a>
+      <a href="#templates" class="cta-btn-secondary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Browse all templates first
+      </a>
+    </div>
+    <div class="cta-trust-row">
+      <div class="cta-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        100% secure
+      </div>
+      <div class="cta-trust-sep"></div>
+      <div class="cta-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Ready in 10 minutes
+      </div>
+      <div class="cta-trust-sep"></div>
+      <div class="cta-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Pay only when you love it
+      </div>
+      <div class="cta-trust-sep"></div>
+      <div class="cta-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Updates free forever
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+
+  <!-- Newsletter bar -->
+  <div class="footer-newsletter">
+    <div class="footer-newsletter-inner">
+      <div class="footer-nl-text">
+        <div class="footer-nl-title">Wedding planning tips, template launches & more</div>
+        <div class="footer-nl-sub">Join 12,000+ couples who get our monthly digest</div>
+      </div>
+      <div class="footer-nl-form">
+        <input class="footer-nl-input" type="email" placeholder="your@email.com" />
+        <button class="footer-nl-btn">Subscribe</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main grid -->
+  <div class="footer-main">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo">Shaadi<span>.Digital</span></div>
+        <p class="footer-brand-desc">India's most loved digital wedding invitation platform — beautiful, personal, and crafted for every Indian tradition, from Punjabi Shaadi to South Indian Kalyanam.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social-btn" title="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" class="footer-social-btn" title="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </a>
+          <a href="#" class="footer-social-btn" title="Pinterest">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.77 1.22-5.17 1.22-5.17s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.34.67 1.34 1.48 0 .9-.58 2.26-.87 3.51-.25 1.05.52 1.9 1.55 1.9 1.85 0 3.1-2.38 3.1-5.19 0-2.14-1.44-3.74-4.04-3.74-2.94 0-4.77 2.2-4.77 4.65 0 .84.24 1.44.62 1.9.17.2.19.28.13.51-.04.17-.14.58-.18.74-.06.24-.24.32-.44.23-1.24-.51-1.82-1.88-1.82-3.42 0-2.53 2.14-5.56 6.39-5.56 3.43 0 5.68 2.49 5.68 5.17 0 3.54-1.96 6.17-4.84 6.17-1.88 0-3.13-1.04-3.13-1.04l-.9 3.51c-.27 1.01-.79 2.03-1.28 2.83.97.3 1.99.46 3.05.46 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          </a>
+          <a href="https://wa.me/919999999999" class="footer-social-btn" title="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#templates">Templates</a></li>
+          <li><a href="#features">All Features</a></li>
+          <li><a href="#pricing">RSVP Dashboard</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#">What's New</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Wedding Blog</a></li>
+          <li><a href="#">Press & Media</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Support</h5>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="https://wa.me/919999999999">WhatsApp Support</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Refund Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Trust badges -->
+    <div class="footer-badges">
+      <div class="footer-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        256-bit SSL Encrypted
+      </div>
+      <div class="footer-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        UPI · Razorpay · Cards
+      </div>
+      <div class="footer-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        GDPR & IT Act Compliant
+      </div>
+      <div class="footer-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        50,000+ couples served
+      </div>
+      <div class="footer-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        4.9 / 5 average rating
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <span>© 2026 Shaadi.Digital · Crafted with care in India</span>
+      <div class="footer-cities">
+        <a href="#">Delhi</a><a href="#">Mumbai</a><a href="#">Bangalore</a>
+        <a href="#">Chennai</a><a href="#">Hyderabad</a><a href="#">Kolkata</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp float -->
+<a href="https://wa.me/919999999999" class="whatsapp-btn" target="_blank" title="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  Chat with us
+</a>
+
+<script>
+  /* ══════════════════════════════════════════════════════════════
+     TYPEWRITER ENGINE — Expert Premium Edition
+     Principles:
+       • Variable typing speed per character (natural rhythm)
+       • Slight hesitation before certain chars (space, vowels)
+       • Cursor height matches live computed font-size
+       • All downstream reveals triggered via JS, no CSS var hacks
+       • No layout shift — em line reserved before typing begins
+       • Smooth fade-out cursor at the end
+  ══════════════════════════════════════════════════════════════ */
+  (function () {
+
+    // ── Config ────────────────────────────────────────────────
+    const LINE1       = 'Aapki Shaadi';
+    const LINE2       = 'Aapka Andaaz';
+    const BASE_SPEED  = 95;   // ms — premium, deliberate pace
+    const JITTER      = 28;   // ±ms random variance for naturalness
+    const SPACE_PAUSE = 160;  // extra pause at spaces
+    const START_DELAY = 700;  // ms before first character
+    const INTER_PAUSE = 520;  // ms pause between line 1 end → line 2 start
+
+    // ── DOM refs ──────────────────────────────────────────────
+    const el1     = document.getElementById('tw-line1');
+    const el2     = document.getElementById('tw-line2');
+    const cur1    = document.getElementById('tw-cursor1');
+    const cur2    = document.getElementById('tw-cursor2');
+    const emEl    = document.getElementById('tw-em');
+    const ornament= document.getElementById('tw-ornament');
+    const heroLine= document.querySelector('.hero-line');
+    const subtext = document.querySelector('.hero-subtext');
+    const desc    = document.querySelector('.hero-desc');
+    const actions = document.querySelector('.hero-actions');
+    const stats   = document.querySelector('.hero-stats');
+
+    // ── Set cursor height to match the live rendered font-size ─
+    function sizeCursor(cursor, refEl) {
+      const fs = parseFloat(getComputedStyle(refEl).fontSize);
+      cursor.style.height = (fs * 0.80) + 'px';
+      cursor.style.width  = '2.5px';
+    }
+
+    // ── Type one line, character by character ─────────────────
+    function typeText(targetEl, text, onDone) {
+      let i = 0;
+      function tick() {
+        targetEl.textContent = text.slice(0, i + 1);
+        i++;
+        if (i >= text.length) {
+          if (onDone) setTimeout(onDone, INTER_PAUSE);
+          return;
+        }
+        // Natural speed variation
+        const ch     = text[i] || '';
+        const isSpace = ch === ' ';
+        const delay  = BASE_SPEED
+                     + (Math.random() * JITTER * 2 - JITTER)
+                     + (isSpace ? SPACE_PAUSE : 0);
+        setTimeout(tick, Math.max(40, delay));
+      }
+      // First char gets no jitter so it feels snappy to start
+      setTimeout(tick, 0);
+    }
+
+    // ── Reveal element below the fold (stagger by offset) ─────
+    function reveal(el, extraDelay) {
+      if (!el) return;
+      setTimeout(function () {
+        el.classList.add('visible');
+      }, extraDelay || 0);
+    }
+
+    // ── Main sequence ─────────────────────────────────────────
+    setTimeout(function () {
+
+      // Size cursor 1 against h1
+      sizeCursor(cur1, el1.closest('h1'));
+
+      // Activate cursor 1
+      cur1.classList.remove('tw-off');
+
+      // TYPE LINE 1
+      typeText(el1, LINE1, function onLine1Done() {
+
+        // Show ornament divider with a soft fade
+        ornament.classList.add('visible');
+
+        // Transition cursor from line1 → line2
+        cur1.classList.add('tw-off');
+
+        // Fade in the em element so line 2 space appears
+        emEl.classList.add('visible');
+
+        // Small extra pause before cursor 2 activates
+        setTimeout(function () {
+          sizeCursor(cur2, el2.closest('em'));
+          cur2.classList.remove('tw-off');
+
+          // TYPE LINE 2
+          typeText(el2, LINE2, function onLine2Done() {
+
+            // Cursor lingers a beat then fades gracefully
+            setTimeout(function () {
+              cur2.classList.remove('tw-off');
+              cur2.classList.add('tw-fadeout');
+            }, 900);
+
+            // ── Cascade reveal of everything below ──
+            // Hero line draws in
+            setTimeout(function () {
+              if (heroLine) heroLine.classList.add('animate');
+            }, 300);
+
+            reveal(subtext, 500);
+            reveal(desc,    850);
+            reveal(actions, 1150);
+            reveal(stats,   1450);
+
+          }); // end line2 done
+
+        }, 120); // brief gap before cur2 activates
+
+      }); // end line1 done
+
+    }, START_DELAY);
+
+  })();
+
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.why-card, .step, .template-card, .feature-card, .test-card, .price-card, .faq-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.boxShadow = window.scrollY > 40 ? '0 4px 32px rgba(0,0,0,0.08)' : 'none';
+  });
+
+  /* ── PHONE IFRAME ── */
+  (function() {
+    const iframe = document.getElementById('pdIframe');
+    // On first user interaction, ensure iframe can play any audio
+    document.addEventListener('click', function tryPlay() {
+      try {
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'shaadi-sound', muted: false }, '*');
+        }
+      } catch(e) {}
+      document.removeEventListener('click', tryPlay);
+    }, { once: true });
+  })();
+
+  function tcSlide(cardId, index) {
+    const card = document.getElementById(cardId);
+    const num  = cardId.replace('tc','');
+    const slidesEl = document.getElementById('tslides' + num);
+    const dotsEl   = document.getElementById('tdots' + num);
+    if (!slidesEl) return;
+    card.dataset.current = index;
+    slidesEl.style.transform = `translateX(-${index * 100}%)`;
+    if (dotsEl) {
+      dotsEl.querySelectorAll('.tp-dot').forEach((d,i) => d.classList.toggle('active', i === index));
+    }
+  }
+
+  function tcAutoAdvance(cardId) {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+    const total = parseInt(card.dataset.slides || '1');
+    if (total <= 1) return;
+    setInterval(() => {
+      if (card.dataset.paused === '1') return;
+      const cur = parseInt(card.dataset.current || '0');
+      tcSlide(cardId, (cur + 1) % total);
+    }, 2600);
+  }
+
+  // Auto-advance multi-slide cards with staggered start
+  setTimeout(() => tcAutoAdvance('tc1'), 0);
+  setTimeout(() => tcAutoAdvance('tc2'), 600);
+  setTimeout(() => tcAutoAdvance('tc4'), 1200);
+  setTimeout(() => tcAutoAdvance('tc6'), 1800);
+
+  // Pause on hover
+  ['tc1','tc2','tc4','tc6'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('mouseenter', () => el.dataset.paused = '1');
+      el.addEventListener('mouseleave', () => el.dataset.paused = '0');
+    }
+  });
+
+  // Live countdown for Royal Maroon card
+  function updateTcCountdown() {
+    const diff = Math.max(0, new Date('2025-11-15T21:00:00+05:30') - new Date());
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = String(v).padStart(2,'0'); };
+    set('tc-days', Math.floor(diff / 86400000));
+    set('tc-hrs',  Math.floor((diff % 86400000) / 3600000));
+    set('tc-min',  Math.floor((diff % 3600000) / 60000));
+  }
+  updateTcCountdown();
+  setInterval(updateTcCountdown, 60000);
+</script>
+</body>
+</html>
