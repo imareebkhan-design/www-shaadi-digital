@@ -49,7 +49,7 @@ const Navbar = () => {
 
       <button
         onClick={() => navigate("/signup")}
-        className="hidden md:inline-block bg-primary text-primary-foreground px-6 py-2.5 text-xs font-medium tracking-[1px] uppercase hover:bg-secondary transition-colors"
+        className="hidden md:inline-block bg-primary text-primary-foreground px-6 py-2.5 text-xs font-medium tracking-[1px] uppercase rounded-full hover:bg-secondary transition-colors"
       >
         Get Started
       </button>
@@ -57,7 +57,7 @@ const Navbar = () => {
       {/* Mobile: just CTA */}
       <button
         onClick={() => navigate("/signup")}
-        className="md:hidden bg-primary text-primary-foreground px-4 py-2 text-xs font-medium tracking-[1px] uppercase"
+        className="md:hidden bg-primary text-primary-foreground px-4 py-2 text-xs font-medium tracking-[1px] uppercase rounded-full"
       >
         Start
       </button>

@@ -144,7 +144,7 @@ const PricingSection = () => (
 
             <Link
               to="/signup"
-              className={`block w-full py-[15px] text-center rounded-lg text-[11px] font-medium tracking-[2px] uppercase mt-7 transition-all duration-250 ${
+              className={`block w-full py-[15px] text-center rounded-full text-[11px] font-medium tracking-[2px] uppercase mt-7 transition-all duration-250 ${
                 p.btnStyle === "solid"
                   ? "bg-gradient-to-br from-secondary to-[#E8B84B] font-semibold shadow-[0_8px_24px_rgba(201,148,26,0.35)] hover:shadow-[0_12px_32px_rgba(201,148,26,0.5)] hover:-translate-y-px"
                   : `border-[1.5px] ${p.featured ? "border-white/15 text-white/70 hover:bg-white/10" : "border-primary/25 hover:bg-[hsl(var(--maroon-dark))] hover:text-white hover:border-[hsl(var(--maroon-dark))]"}`

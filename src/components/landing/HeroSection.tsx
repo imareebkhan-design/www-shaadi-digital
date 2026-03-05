@@ -226,14 +226,14 @@ const HeroSection = () => {
       <div className={`relative z-[2] flex flex-wrap gap-3.5 justify-center mt-9 transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${actionsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
         <Link
           to="/templates"
-          className="relative overflow-hidden bg-primary text-primary-foreground px-10 py-4 text-[11px] font-semibold tracking-[2px] uppercase hover:bg-[hsl(var(--maroon-dark))] hover:-translate-y-[3px] transition-all duration-300 shadow-[0_8px_32px_rgba(123,28,46,0.28)]"
+          className="relative overflow-hidden bg-primary text-primary-foreground px-10 py-4 text-[11px] font-semibold tracking-[2px] uppercase rounded-full hover:bg-[hsl(var(--maroon-dark))] hover:-translate-y-[3px] transition-all duration-300 shadow-[0_8px_32px_rgba(123,28,46,0.28)]"
         >
           <span className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
           Browse Templates — Free
         </Link>
         <button
           onClick={() => document.querySelector("#how")?.scrollIntoView({ behavior: "smooth" })}
-          className="bg-transparent text-primary px-9 py-[15px] text-[11px] font-medium tracking-[2px] uppercase border border-primary/35 hover:bg-primary hover:text-primary-foreground hover:border-primary hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+          className="bg-transparent text-primary px-9 py-[15px] text-[11px] font-medium tracking-[2px] uppercase rounded-full border border-primary/35 hover:bg-primary hover:text-primary-foreground hover:border-primary hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
         >
           See How It Works
         </button>
