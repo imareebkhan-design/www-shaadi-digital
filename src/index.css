@@ -6,40 +6,70 @@
 
 @layer base {
   :root {
-    --background: 36 47% 95%;
-    --foreground: 20 25% 9%;
+    /* Ivory / Cream base */
+    --background: 35 33% 96%;
+    --foreground: 20 20% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 20 25% 9%;
+    --card: 35 30% 98%;
+    --card-foreground: 20 20% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 25% 9%;
+    --popover: 35 30% 98%;
+    --popover-foreground: 20 20% 15%;
 
-    --primary: 349 62% 29%;
-    --primary-foreground: 36 47% 95%;
+    /* Deep Maroon - primary */
+    --primary: 345 60% 25%;
+    --primary-foreground: 40 50% 95%;
 
-    --secondary: 42 72% 44%;
-    --secondary-foreground: 20 25% 9%;
+    /* Warm Gold - secondary */
+    --secondary: 40 65% 55%;
+    --secondary-foreground: 20 20% 12%;
 
-    --muted: 36 30% 90%;
-    --muted-foreground: 25 14% 37%;
+    /* Soft Ivory - muted */
+    --muted: 35 25% 92%;
+    --muted-foreground: 20 12% 50%;
 
-    --accent: 42 72% 44%;
-    --accent-foreground: 0 0% 100%;
+    /* Rose Pink - accent */
+    --accent: 350 45% 65%;
+    --accent-foreground: 35 30% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 42 40% 82%;
-    --input: 42 40% 82%;
-    --ring: 349 62% 29%;
+    --border: 35 20% 88%;
+    --input: 35 20% 88%;
+    --ring: 40 65% 55%;
 
     --radius: 0.25rem;
 
     --callout: 40 85% 93%;
 
+    /* Wedding design tokens */
+    --gold: 40 72% 52%;
+    --gold-light: 42 80% 72%;
+    --gold-dark: 38 65% 38%;
     --gold-pale: 42 90% 93%;
+    --maroon: 345 60% 25%;
+    --maroon-light: 345 45% 40%;
     --maroon-dark: 349 68% 17%;
+    --burgundy: 340 55% 20%;
+    --ivory: 35 33% 96%;
+    --ivory-warm: 30 40% 93%;
+    --rose: 350 45% 65%;
+    --rose-light: 350 50% 80%;
+    --sage: 140 15% 55%;
+    --marigold: 35 90% 55%;
+
+    /* Gradients */
+    --gradient-gold: linear-gradient(135deg, hsl(40 72% 52%), hsl(42 80% 72%));
+    --gradient-maroon: linear-gradient(135deg, hsl(345 60% 25%), hsl(340 55% 20%));
+    --gradient-royal: linear-gradient(180deg, hsl(345 60% 25%) 0%, hsl(340 55% 15%) 100%);
+    --gradient-warm: linear-gradient(180deg, hsl(35 33% 96%) 0%, hsl(30 40% 93%) 100%);
+    --gradient-hero-overlay: linear-gradient(180deg, hsla(345 60% 15% / 0.7) 0%, hsla(340 55% 10% / 0.85) 100%);
+
+    /* Shadows */
+    --shadow-gold: 0 4px 20px -4px hsl(40 72% 52% / 0.3);
+    --shadow-elegant: 0 10px 40px -10px hsl(20 20% 15% / 0.15);
+    --shadow-card: 0 2px 12px -2px hsl(20 20% 15% / 0.08);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -52,25 +82,25 @@
   }
 
   .dark {
-    --background: 20 25% 9%;
-    --foreground: 36 47% 95%;
-    --card: 20 20% 14%;
-    --card-foreground: 36 47% 95%;
-    --popover: 20 20% 14%;
-    --popover-foreground: 36 47% 95%;
-    --primary: 349 62% 29%;
-    --primary-foreground: 36 47% 95%;
-    --secondary: 42 72% 44%;
-    --secondary-foreground: 20 25% 9%;
-    --muted: 20 15% 20%;
-    --muted-foreground: 25 14% 60%;
-    --accent: 42 72% 44%;
-    --accent-foreground: 0 0% 100%;
+    --background: 20 20% 8%;
+    --foreground: 35 30% 92%;
+    --card: 20 18% 12%;
+    --card-foreground: 35 30% 92%;
+    --popover: 20 18% 12%;
+    --popover-foreground: 35 30% 92%;
+    --primary: 40 72% 52%;
+    --primary-foreground: 20 20% 8%;
+    --secondary: 345 45% 35%;
+    --secondary-foreground: 35 30% 92%;
+    --muted: 20 15% 18%;
+    --muted-foreground: 35 15% 60%;
+    --accent: 350 45% 55%;
+    --accent-foreground: 35 30% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 20 15% 25%;
-    --input: 20 15% 25%;
-    --ring: 42 72% 44%;
+    --border: 20 12% 22%;
+    --input: 20 12% 22%;
+    --ring: 40 65% 55%;
     --callout: 40 30% 15%;
     --gold-pale: 42 30% 15%;
     --maroon-dark: 349 68% 12%;
@@ -123,6 +153,78 @@
   .section-title em {
     @apply italic text-secondary not-italic;
     font-style: italic;
+  }
+
+  /* Reference-style section header */
+  .invite-section-label {
+    @apply inline-block font-body tracking-[0.5em] uppercase;
+    font-size: 10px;
+    color: hsl(var(--muted-foreground) / 0.6);
+  }
+
+  .invite-section-title {
+    @apply font-display text-foreground;
+    font-size: clamp(2rem, 5vw, 4.5rem);
+  }
+
+  /* Gold text gradient */
+  .text-gold-gradient {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-royal {
+    background: var(--gradient-royal);
+  }
+
+  .bg-gradient-warm {
+    background: var(--gradient-warm);
+  }
+
+  .bg-gradient-gold {
+    background: var(--gradient-gold);
+  }
+
+  .bg-hero-overlay {
+    background: var(--gradient-hero-overlay);
+  }
+
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .shadow-card-wedding {
+    box-shadow: var(--shadow-card);
+  }
+
+  .gold-border {
+    border: 1px solid hsl(var(--gold) / 0.3);
+  }
+
+  .gold-border-strong {
+    border: 2px solid hsl(var(--gold) / 0.5);
+  }
+
+  /* Ornamental divider */
+  .ornamental-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .ornamental-divider::before,
+  .ornamental-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gradient-gold);
+    opacity: 0.4;
   }
 
   .cross-pattern {

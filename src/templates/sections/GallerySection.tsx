@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import AnimateIn from "@/components/AnimateIn";
 
 interface Props {
   photos?: string[];
@@ -9,150 +9,130 @@ interface Props {
   isPreview: boolean;
 }
 
+const ease = [0.25, 0.1, 0.25, 1] as const;
+
 const GallerySection = ({ photos, brideName, groomName, isPreview }: Props) => {
   const images = photos && photos.length > 0 ? photos : null;
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [selected, setSelected] = useState<number | null>(null);
 
   if (!images && !isPreview) return null;
 
-  const bentoClasses = [
-    "col-span-2 row-span-2",
-    "col-span-1 row-span-1",
-    "col-span-1 row-span-1",
-    "col-span-1 row-span-2",
-    "col-span-1 row-span-1",
-    "col-span-2 row-span-1",
-    "col-span-1 row-span-1",
-    "col-span-1 row-span-1",
-  ];
-
   const displayImages = images?.slice(0, 8) || [];
 
+  const navigate = (dir: number) => {
+    if (selected === null) return;
+    setSelected((selected + dir + displayImages.length) % displayImages.length);
+  };
+
   return (
-    <section className="py-16 px-6 bg-background">
-      <div className="max-w-2xl mx-auto">
-        <AnimateIn>
-          <div className="text-center mb-10">
-            <p className="section-label justify-center">Moments</p>
-            <h2 className="section-title">Gallery</h2>
-          </div>
-        </AnimateIn>
+    <section className="py-24 md:py-36 bg-background relative overflow-hidden">
+      <div className="container max-w-6xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 1.2, ease }}
+          className="text-center mb-16"
+        >
+          <span className="invite-section-label mb-6 block">Captured moments</span>
+          <h2 className="invite-section-title">Gallery</h2>
+        </motion.div>
 
         {images ? (
-          <div className="grid grid-cols-3 auto-rows-[140px] md:auto-rows-[180px] gap-2">
+          <div className="columns-2 md:columns-3 gap-3 md:gap-4 space-y-3 md:space-y-4">
             {displayImages.map((url, i) => (
-              <AnimateIn key={i} delay={i * 0.08} className={`${bentoClasses[i] || "col-span-1 row-span-1"} overflow-hidden cursor-pointer`}>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: i * 0.12, ease }}
+                className="break-inside-avoid rounded-xl overflow-hidden cursor-pointer group relative"
+                onClick={() => setSelected(i)}
+              >
                 <img
                   src={url}
                   alt={`${brideName} & ${groomName} - ${i + 1}`}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110"
                   loading="lazy"
-                  onClick={() => setLightboxIndex(i)}
                 />
-              </AnimateIn>
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </motion.div>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-3 auto-rows-[140px] gap-2">
+          <div className="columns-2 md:columns-3 gap-3 md:gap-4 space-y-3 md:space-y-4">
             {Array.from({ length: 6 }).map((_, i) => (
-              <AnimateIn key={i} delay={i * 0.08} className={`${bentoClasses[i] || "col-span-1"}`}>
-                <div className="w-full h-full bg-muted border border-secondary/10 flex items-center justify-center text-muted-foreground text-xs font-body">
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: i * 0.12, ease }}
+                className="break-inside-avoid rounded-xl overflow-hidden"
+              >
+                <div className={`w-full bg-muted/50 gold-border flex items-center justify-center text-muted-foreground text-xs font-body ${i % 3 === 0 ? "h-64" : "h-48"}`}>
                   Photo {i + 1}
                 </div>
-              </AnimateIn>
+              </motion.div>
             ))}
           </div>
         )}
       </div>
 
-      {/* Lightbox */}
-      {lightboxIndex !== null && images && (
-        <Lightbox
-          images={displayImages}
-          currentIndex={lightboxIndex}
-          alt={`${brideName} & ${groomName}`}
-          onClose={() => setLightboxIndex(null)}
-          onNavigate={setLightboxIndex}
-        />
-      )}
+      {/* Modern Lightbox */}
+      <AnimatePresence>
+        {selected !== null && images && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-foreground/95 backdrop-blur-xl flex items-center justify-center"
+            onClick={() => setSelected(null)}
+          >
+            <button
+              onClick={() => setSelected(null)}
+              className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center text-primary-foreground/80 hover:bg-primary-foreground/20 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {displayImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => { e.stopPropagation(); navigate(-1); }}
+                  className="absolute left-4 md:left-8 z-10 w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center text-primary-foreground/80 hover:bg-primary-foreground/20 transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); navigate(1); }}
+                  className="absolute right-4 md:right-8 z-10 w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center text-primary-foreground/80 hover:bg-primary-foreground/20 transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </>
+            )}
+
+            <motion.img
+              key={selected}
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.5, ease }}
+              src={displayImages[selected]}
+              alt={`${brideName} & ${groomName} - ${selected + 1}`}
+              className="max-w-[90vw] max-h-[85vh] rounded-2xl object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-body text-xs text-primary-foreground/40 tracking-widest">
+              {selected + 1} / {displayImages.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
-  );
-};
-
-/* ── Lightbox sub-component ── */
-
-interface LightboxProps {
-  images: string[];
-  currentIndex: number;
-  alt: string;
-  onClose: () => void;
-  onNavigate: (index: number) => void;
-}
-
-const Lightbox = ({ images, currentIndex, alt, onClose, onNavigate }: LightboxProps) => {
-  const prev = useCallback(() => onNavigate((currentIndex - 1 + images.length) % images.length), [currentIndex, images.length, onNavigate]);
-  const next = useCallback(() => onNavigate((currentIndex + 1) % images.length), [currentIndex, images.length, onNavigate]);
-
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft") prev();
-      if (e.key === "ArrowRight") next();
-    };
-    document.addEventListener("keydown", handleKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = "";
-    };
-  }, [onClose, prev, next]);
-
-  return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{ background: "rgba(0,0,0,0.92)", animation: "lightbox-fade-in 0.3s ease" }}
-      onClick={onClose}
-    >
-      {/* Close button */}
-      <button onClick={onClose} className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors z-10">
-        <X className="w-7 h-7" />
-      </button>
-
-      {/* Prev */}
-      {images.length > 1 && (
-        <button
-          onClick={(e) => { e.stopPropagation(); prev(); }}
-          className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors z-10"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-      )}
-
-      {/* Image */}
-      <img
-        key={currentIndex}
-        src={images[currentIndex]}
-        alt={`${alt} - ${currentIndex + 1}`}
-        className="max-w-[90vw] max-h-[85vh] object-contain select-none"
-        style={{ animation: "lightbox-fade-in 0.3s ease" }}
-        onClick={(e) => e.stopPropagation()}
-      />
-
-      {/* Next */}
-      {images.length > 1 && (
-        <button
-          onClick={(e) => { e.stopPropagation(); next(); }}
-          className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors z-10"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
-      )}
-
-      {/* Counter */}
-      <p className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/40 text-xs font-body tracking-widest">
-        {currentIndex + 1} / {images.length}
-      </p>
-    </div>
   );
 };
 
