@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from "react";
+import { useRef, forwardRef, type ReactNode } from "react";
 import { motion, useInView } from "framer-motion";
 
 interface AnimateInProps {
@@ -14,22 +14,26 @@ const offsets = {
   right: { x: 40, y: 0 },
 };
 
-const AnimateIn = ({ children, direction = "up", delay = 0, className }: AnimateInProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const offset = offsets[direction];
+const AnimateIn = forwardRef<HTMLDivElement, AnimateInProps>(
+  ({ children, direction = "up", delay = 0, className }, _forwardedRef) => {
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, { once: true, margin: "-60px" });
+    const offset = offsets[direction];
 
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: offset.x, y: offset.y }}
-      animate={isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: offset.x, y: offset.y }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
+    return (
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, x: offset.x, y: offset.y }}
+        animate={isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: offset.x, y: offset.y }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay }}
+        className={className}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+);
+
+AnimateIn.displayName = "AnimateIn";
 
 export default AnimateIn;

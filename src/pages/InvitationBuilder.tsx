@@ -174,12 +174,18 @@ const InvitationBuilder = () => {
         bride_family: formData.bride_family || null,
         groom_family: formData.groom_family || null,
         personal_message: formData.personal_message || null,
+        our_story: (formData as any).our_story || null,
         wedding_date: formData.wedding_date || null,
         photo_url: formData.photo_url || null,
+        gallery_photos: (formData as any).gallery_photos || [],
         language: formData.language,
         upi_id: formData.upi_id || null,
         gift_registry_url: formData.gift_registry_url || null,
-      })
+        dresscode_enabled: (formData as any).dresscode_enabled || false,
+        dresscode_text: (formData as any).dresscode_text || null,
+        dresscode_colors: (formData as any).dresscode_colors || [],
+        music_url: (formData as any).music_url || null,
+      } as any)
       .eq("id", invitationId);
 
     for (const event of formData.events) {

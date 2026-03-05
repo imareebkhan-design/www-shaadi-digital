@@ -11,6 +11,16 @@ interface Props {
   errors: Record<string, string>;
 }
 
+const STORAGE_BASE = `https://yqrwvrbhaxkkytsqtvlw.supabase.co/storage/v1/object/public/music-tracks`;
+
+const musicPresets = [
+  { label: "Soft Piano", emoji: "🎹", url: `${STORAGE_BASE}/soft-piano.mp3` },
+  { label: "Classical Sitar", emoji: "🪕", url: `${STORAGE_BASE}/classical-sitar.mp3` },
+  { label: "Acoustic Guitar", emoji: "🎸", url: `${STORAGE_BASE}/acoustic-guitar.mp3` },
+  { label: "Shehnai", emoji: "🎺", url: `${STORAGE_BASE}/shehnai.mp3` },
+  { label: "Violin Romance", emoji: "🎻", url: `${STORAGE_BASE}/violin-romance.mp3` },
+];
+
 const languages = [
   { value: "english" as const, label: "English" },
   { value: "hindi" as const, label: "हिन्दी" },
@@ -158,6 +168,38 @@ const Step3PhotoLanguage = ({ data, onChange, errors }: Props) => {
             value={data.gift_registry_url}
             onChange={(e) => onChange({ gift_registry_url: e.target.value })}
           />
+        </div>
+
+        {/* Background Music */}
+        <div>
+          <label className="font-body text-sm font-medium text-foreground block mb-1">
+            Background Music <span className="text-muted-foreground">(optional)</span>
+          </label>
+          <p className="font-body text-xs text-muted-foreground mb-3">
+            Paste a direct MP3 link, or choose from our curated tracks below
+          </p>
+          <Input
+            placeholder="https://example.com/track.mp3"
+            value={data.music_url || ""}
+            onChange={(e) => onChange({ music_url: e.target.value })}
+            className="mb-3"
+          />
+          <div className="flex flex-wrap gap-2">
+            {musicPresets.map((preset) => (
+              <button
+                key={preset.label}
+                type="button"
+                onClick={() => onChange({ music_url: preset.url })}
+                className={`px-3.5 py-1.5 text-xs font-body font-medium border transition-colors ${
+                  data.music_url === preset.url
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-card text-foreground border-border hover:border-secondary"
+                }`}
+              >
+                {preset.emoji} {preset.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>

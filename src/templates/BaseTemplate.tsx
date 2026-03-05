@@ -1,4 +1,5 @@
 import type { InvitationData } from "./types";
+import FloatingMusicPlayer from "@/components/FloatingMusicPlayer";
 import HeroSection from "./sections/HeroSection";
 import SaveTheDateSection from "./sections/SaveTheDateSection";
 import OurStorySection from "./sections/OurStorySection";
@@ -35,6 +36,9 @@ const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplate
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Floating music player */}
+      <FloatingMusicPlayer musicUrl={data.music_url} />
+
       {/* 1. HERO */}
       <HeroSection
         brideName={brideName}

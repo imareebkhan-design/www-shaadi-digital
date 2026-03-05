@@ -15,11 +15,17 @@ export interface BuilderFormData {
   bride_family: string;
   groom_family: string;
   personal_message: string;
+  our_story: string;
   events: EventData[];
   photo_url: string | null;
+  gallery_photos: string[];
   language: "english" | "hindi" | "tamil" | "punjabi" | "urdu";
   upi_id: string;
   gift_registry_url: string;
+  dresscode_enabled: boolean;
+  dresscode_text: string;
+  dresscode_colors: string[];
+  music_url: string;
 }
 
 export const defaultEvents = (ceremonyLabel: string): EventData[] => [
