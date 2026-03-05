@@ -240,7 +240,22 @@ const InvitationBuilder = () => {
     if (!invitationId || !user) return;
     setPublishLoading(true);
     await saveToSupabase();
-    const slug = `${formData.bride_name.toLowerCase()}-${formData.groom_name.toLowerCase()}-${Date.now().toString(36)}`;
+
+    // Generate slug: slugify names
+    const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").trim();
+    let slug = `${slugify(formData.bride_name)}-and-${slugify(formData.groom_name)}`;
+
+    // Check uniqueness
+    const { data: existing } = await supabase
+      .from("invitations")
+      .select("id")
+      .eq("slug", slug)
+      .maybeSingle();
+
+    if (existing) {
+      slug = `${slug}-${Math.floor(1000 + Math.random() * 9000)}`;
+    }
+
     const { error } = await supabase
       .from("invitations")
       .update({ status: "published", plan, slug })
