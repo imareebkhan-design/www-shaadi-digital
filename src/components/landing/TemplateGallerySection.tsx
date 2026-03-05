@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 
 const templates = [
-  { name: "Royal Maroon", subtitle: "Together forever", couple: "Ananya & Rohan", ceremony: "Wedding Invitation", date: "25 · 02 · 2025 · Delhi", tags: ["North Indian", "Traditional"], bg: "bg-gradient-to-br from-[#1a0a0f] via-[#4a0e1a] to-[#7b1c2e]" },
-  { name: "Emerald South", subtitle: "Shubh Vivah", couple: "Priya & Arjun", ceremony: "Kalyanam", date: "15 · 03 · 2025 · Chennai", tags: ["South Indian", "Elegant"], bg: "bg-gradient-to-br from-[#0d1a0a] via-[#1a3a0e] to-[#2d6b1c]" },
-  { name: "Midnight Blue", subtitle: "With blessings of", couple: "Meera & Vivek", ceremony: "Lagan Patrika", date: "10 · 04 · 2025 · Mumbai", tags: ["Modern", "Minimalist"], bg: "bg-gradient-to-br from-[#0a0d1a] via-[#0e1a3a] to-[#1c2d6b]" },
-  { name: "Golden Punjabi", subtitle: "ਰੱਬ ਦੀ ਮਿਹਰ", couple: "Simran & Harjeet", ceremony: "Anand Karaj", date: "22 · 11 · 2025 · Amritsar", tags: ["Punjabi", "Sikh"], bg: "bg-gradient-to-br from-[#1a160a] via-[#3a2e0e] to-[#6b521c]" },
-  { name: "Rose Garden", subtitle: "Two souls, one love", couple: "Aisha & Zayan", ceremony: "Nikah", date: "05 · 12 · 2025 · Hyderabad", tags: ["Muslim", "Floral"], bg: "bg-gradient-to-br from-[#1a0a16] via-[#3a0e2e] to-[#6b1c52]" },
-  { name: "Teal Luxury", subtitle: "Om Shubham Karoti", couple: "Kavya & Siddharth", ceremony: "Vivah Patrika", date: "18 · 01 · 2026 · Pune", tags: ["Marathi", "Royal"], bg: "bg-gradient-to-br from-[#0a1a16] via-[#0e3a2e] to-[#1c6b52]" },
+  { name: "Royal Maroon", subtitle: "Together Forever", couple: "Ananya & Rohan", ceremony: "Wedding Invitation", date: "25 · 02 · 2025 · Delhi", tags: ["North Indian", "Traditional"], bg: "linear-gradient(160deg,#3A0512 0%,#6B1428 50%,#3A0512 100%)" },
+  { name: "Emerald South", subtitle: "Shubh Vivah", couple: "Priya & Arjun", ceremony: "Kalyanam", date: "15 · 03 · 2025 · Chennai", tags: ["South Indian", "Elegant"], bg: "linear-gradient(160deg,#0D2818 0%,#1A5C30 60%,#0D2818 100%)" },
+  { name: "Midnight Blue", subtitle: "With Blessings Of", couple: "Meera & Vivek", ceremony: "Lagan Patrika", date: "10 · 04 · 2025 · Mumbai", tags: ["Modern", "Minimalist"], bg: "linear-gradient(160deg,#0a0d1a,#0e1a3a,#1c2d6b)" },
+  { name: "Golden Punjabi", subtitle: "ਰੱਬ ਦੀ ਮਿਹਰ", couple: "Simran & Harjeet", ceremony: "Anand Karaj", date: "22 · 11 · 2025 · Amritsar", tags: ["Punjabi", "Sikh"], bg: "linear-gradient(160deg,#2A1800,#6B4000,#2A1800)" },
+  { name: "Rose Garden", subtitle: "Two Souls, One Love", couple: "Aisha & Zayan", ceremony: "Nikah", date: "05 · 12 · 2025 · Hyderabad", tags: ["Muslim", "Floral"], bg: "linear-gradient(160deg,#3a0e2e,#6b1c52,#3a0e2e)" },
+  { name: "Teal Luxury", subtitle: "Om Shubham Karoti", couple: "Kavya & Siddharth", ceremony: "Vivah Patrika", date: "18 · 01 · 2026 · Pune", tags: ["Marathi", "Royal"], bg: "linear-gradient(160deg,#0a1a16,#0e3a2e,#1c6b52)" },
 ];
 
 const TemplateGallerySection = () => (
@@ -30,25 +30,31 @@ const TemplateGallerySection = () => (
           <Link
             key={t.name}
             to="/templates"
-            className="rounded overflow-hidden bg-card border border-secondary/15 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_24px_64px_rgba(0,0,0,0.1)] hover:border-secondary block group"
+            className="rounded-[18px] overflow-hidden bg-card border border-secondary/15 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_24px_64px_rgba(92,26,26,0.15)] hover:border-secondary block group"
           >
-            <div className={`h-[280px] relative overflow-hidden flex items-center justify-center ${t.bg}`}>
+            {/* Preview area */}
+            <div
+              className="relative overflow-hidden flex items-center justify-center"
+              style={{ aspectRatio: "4/3", background: t.bg }}
+            >
               {/* Mandala overlay */}
               <div className="absolute inset-0 opacity-40" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='rgba(201,148,26,0.2)' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='60' fill='none' stroke='rgba(201,148,26,0.15)' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='40' fill='none' stroke='rgba(201,148,26,0.1)' stroke-width='1'/%3E%3C/svg%3E")`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                backgroundSize: "cover",
+                backgroundPosition: "center",
               }} />
               <div className="text-center p-6 relative z-10">
-                <p className="font-serif text-[13px] tracking-[3px] uppercase text-white/50 mb-2">{t.subtitle}</p>
-                <p className="font-display text-[26px] font-bold text-white mb-1">{t.couple}</p>
-                <div className="w-[60px] h-px bg-secondary mx-auto my-2.5" />
-                <p className="font-serif text-sm italic text-secondary/80">{t.ceremony}</p>
+                <p className="font-body text-[11px] tracking-[3px] uppercase text-white/50 mb-2">{t.subtitle}</p>
+                <p className="font-display text-[24px] md:text-[26px] font-bold text-white mb-1">{t.couple}</p>
+                <div className="w-[50px] h-px mx-auto my-2.5" style={{ background: "#C9941A" }} />
+                <p className="font-serif text-sm italic" style={{ color: "#C9941A" }}>{t.ceremony}</p>
                 <p className="text-[11px] text-white/40 tracking-[1px] mt-2">{t.date}</p>
               </div>
             </div>
-            <div className="p-5">
-              <h4 className="font-display text-base font-semibold" style={{ color: 'hsl(var(--maroon-dark))' }}>{t.name}</h4>
+
+            {/* Info below — separate, never overlapping */}
+            <div className="p-5" style={{ borderTop: "1px solid rgba(0,0,0,0.04)" }}>
+              <h4 className="font-display text-base font-semibold" style={{ color: "#2C1810" }}>{t.name}</h4>
               <div className="flex gap-1.5 flex-wrap mt-2">
                 {t.tags.map((tag) => (
                   <span key={tag} className="text-[10px] tracking-[0.8px] uppercase px-2.5 py-0.5 rounded-full bg-[hsl(var(--gold-pale))] text-secondary font-medium">
