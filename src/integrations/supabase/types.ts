@@ -14,6 +14,201 @@ export type Database = {
   }
   public: {
     Tables: {
+      events: {
+        Row: {
+          created_at: string
+          event_date: string | null
+          event_name: string
+          event_time: string | null
+          event_type: Database["public"]["Enums"]["event_type"]
+          id: string
+          invitation_id: string
+          is_enabled: boolean
+          maps_url: string | null
+          venue_address: string | null
+          venue_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_date?: string | null
+          event_name: string
+          event_time?: string | null
+          event_type: Database["public"]["Enums"]["event_type"]
+          id?: string
+          invitation_id: string
+          is_enabled?: boolean
+          maps_url?: string | null
+          venue_address?: string | null
+          venue_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_date?: string | null
+          event_name?: string
+          event_time?: string | null
+          event_type?: Database["public"]["Enums"]["event_type"]
+          id?: string
+          invitation_id?: string
+          is_enabled?: boolean
+          maps_url?: string | null
+          venue_address?: string | null
+          venue_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invitations: {
+        Row: {
+          bride_family: string | null
+          bride_name: string | null
+          created_at: string
+          gift_registry_url: string | null
+          groom_family: string | null
+          groom_name: string | null
+          id: string
+          language: Database["public"]["Enums"]["invitation_language"]
+          personal_message: string | null
+          photo_url: string | null
+          plan: Database["public"]["Enums"]["invitation_plan"] | null
+          slug: string | null
+          status: Database["public"]["Enums"]["invitation_status"]
+          template_id: string
+          updated_at: string
+          upi_id: string | null
+          user_id: string
+          wedding_date: string | null
+        }
+        Insert: {
+          bride_family?: string | null
+          bride_name?: string | null
+          created_at?: string
+          gift_registry_url?: string | null
+          groom_family?: string | null
+          groom_name?: string | null
+          id?: string
+          language?: Database["public"]["Enums"]["invitation_language"]
+          personal_message?: string | null
+          photo_url?: string | null
+          plan?: Database["public"]["Enums"]["invitation_plan"] | null
+          slug?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"]
+          template_id: string
+          updated_at?: string
+          upi_id?: string | null
+          user_id: string
+          wedding_date?: string | null
+        }
+        Update: {
+          bride_family?: string | null
+          bride_name?: string | null
+          created_at?: string
+          gift_registry_url?: string | null
+          groom_family?: string | null
+          groom_name?: string | null
+          id?: string
+          language?: Database["public"]["Enums"]["invitation_language"]
+          personal_message?: string | null
+          photo_url?: string | null
+          plan?: Database["public"]["Enums"]["invitation_plan"] | null
+          slug?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"]
+          template_id?: string
+          updated_at?: string
+          upi_id?: string | null
+          user_id?: string
+          wedding_date?: string | null
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          invitation_id: string
+          plan: Database["public"]["Enums"]["invitation_plan"]
+          razorpay_order_id: string
+          razorpay_payment_id: string | null
+          status: Database["public"]["Enums"]["payment_status"]
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          invitation_id: string
+          plan: Database["public"]["Enums"]["invitation_plan"]
+          razorpay_order_id: string
+          razorpay_payment_id?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          invitation_id?: string
+          plan?: Database["public"]["Enums"]["invitation_plan"]
+          razorpay_order_id?: string
+          razorpay_payment_id?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rsvps: {
+        Row: {
+          guest_count: number
+          guest_name: string
+          id: string
+          invitation_id: string
+          meal_preference: Database["public"]["Enums"]["meal_preference"]
+          note: string | null
+          submitted_at: string
+        }
+        Insert: {
+          guest_count?: number
+          guest_name: string
+          id?: string
+          invitation_id: string
+          meal_preference?: Database["public"]["Enums"]["meal_preference"]
+          note?: string | null
+          submitted_at?: string
+        }
+        Update: {
+          guest_count?: number
+          guest_name?: string
+          id?: string
+          invitation_id?: string
+          meal_preference?: Database["public"]["Enums"]["meal_preference"]
+          note?: string | null
+          submitted_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rsvps_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           auth_user_id: string
@@ -49,7 +244,18 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      event_type:
+        | "mehndi"
+        | "haldi"
+        | "sangeet"
+        | "baraat"
+        | "ceremony"
+        | "reception"
+      invitation_language: "english" | "hindi" | "tamil" | "punjabi" | "urdu"
+      invitation_plan: "basic" | "premium" | "elite"
+      invitation_status: "draft" | "published"
+      meal_preference: "veg" | "non_veg" | "jain" | "no_preference"
+      payment_status: "pending" | "success" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -176,6 +382,20 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      event_type: [
+        "mehndi",
+        "haldi",
+        "sangeet",
+        "baraat",
+        "ceremony",
+        "reception",
+      ],
+      invitation_language: ["english", "hindi", "tamil", "punjabi", "urdu"],
+      invitation_plan: ["basic", "premium", "elite"],
+      invitation_status: ["draft", "published"],
+      meal_preference: ["veg", "non_veg", "jain", "no_preference"],
+      payment_status: ["pending", "success", "failed"],
+    },
   },
 } as const
