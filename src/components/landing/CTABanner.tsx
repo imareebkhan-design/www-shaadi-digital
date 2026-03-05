@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const CTABanner = () => (
@@ -15,8 +16,9 @@ const CTABanner = () => (
       <Button
         size="lg"
         className="font-body text-base px-10 py-6 bg-secondary text-foreground hover:bg-secondary/90"
+        asChild
       >
-        Create Your Invite — Free to Start
+        <Link to="/templates">Create Your Invite — Free to Start</Link>
       </Button>
     </div>
   </section>

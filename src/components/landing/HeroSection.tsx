@@ -1,10 +1,10 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${heroBg})` }}
@@ -25,10 +25,15 @@ const HeroSection = () => {
           Share via WhatsApp. Track RSVPs in real time.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
-          <Button size="lg" className="font-body text-base px-8 py-6">
-            Browse Templates
+          <Button size="lg" className="font-body text-base px-8 py-6" asChild>
+            <Link to="/templates">Browse Templates</Link>
           </Button>
-          <Button size="lg" variant="outline" className="font-body text-base px-8 py-6 border-secondary text-secondary hover:bg-secondary hover:text-card">
+          <Button
+            size="lg"
+            variant="outline"
+            className="font-body text-base px-8 py-6 border-secondary text-secondary hover:bg-secondary hover:text-card"
+            onClick={() => document.querySelector("#how-it-works")?.scrollIntoView({ behavior: "smooth" })}
+          >
             See How It Works
           </Button>
         </div>
