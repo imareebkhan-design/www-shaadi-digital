@@ -69,11 +69,17 @@ export type Database = {
           bride_family: string | null
           bride_name: string | null
           created_at: string
+          dresscode_colors: Json | null
+          dresscode_enabled: boolean | null
+          dresscode_text: string | null
+          gallery_photos: Json | null
           gift_registry_url: string | null
           groom_family: string | null
           groom_name: string | null
           id: string
           language: Database["public"]["Enums"]["invitation_language"]
+          music_url: string | null
+          our_story: string | null
           personal_message: string | null
           photo_url: string | null
           plan: Database["public"]["Enums"]["invitation_plan"] | null
@@ -89,11 +95,17 @@ export type Database = {
           bride_family?: string | null
           bride_name?: string | null
           created_at?: string
+          dresscode_colors?: Json | null
+          dresscode_enabled?: boolean | null
+          dresscode_text?: string | null
+          gallery_photos?: Json | null
           gift_registry_url?: string | null
           groom_family?: string | null
           groom_name?: string | null
           id?: string
           language?: Database["public"]["Enums"]["invitation_language"]
+          music_url?: string | null
+          our_story?: string | null
           personal_message?: string | null
           photo_url?: string | null
           plan?: Database["public"]["Enums"]["invitation_plan"] | null
@@ -109,11 +121,17 @@ export type Database = {
           bride_family?: string | null
           bride_name?: string | null
           created_at?: string
+          dresscode_colors?: Json | null
+          dresscode_enabled?: boolean | null
+          dresscode_text?: string | null
+          gallery_photos?: Json | null
           gift_registry_url?: string | null
           groom_family?: string | null
           groom_name?: string | null
           id?: string
           language?: Database["public"]["Enums"]["invitation_language"]
+          music_url?: string | null
+          our_story?: string | null
           personal_message?: string | null
           photo_url?: string | null
           plan?: Database["public"]["Enums"]["invitation_plan"] | null

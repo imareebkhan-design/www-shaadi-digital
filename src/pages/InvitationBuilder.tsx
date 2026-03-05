@@ -21,8 +21,10 @@ const defaultFormData = (ceremonyLabel: string): InvitationData => ({
   bride_family: "",
   groom_family: "",
   personal_message: "",
+  our_story: "",
   wedding_date: "",
   photo_url: undefined,
+  gallery_photos: [],
   language: "english",
   events: [
     { event_type: "mehndi", event_name: "Mehndi", is_enabled: false, event_date: "", event_time: "", venue_name: "", venue_address: "", maps_url: "" },
@@ -34,6 +36,10 @@ const defaultFormData = (ceremonyLabel: string): InvitationData => ({
   ],
   upi_id: "",
   gift_registry_url: "",
+  dresscode_enabled: false,
+  dresscode_text: "",
+  dresscode_colors: [],
+  music_url: "",
 });
 
 const getCeremonyLabel = (community: string): string => {
