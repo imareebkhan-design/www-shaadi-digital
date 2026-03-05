@@ -278,7 +278,7 @@ const InvitationBuilder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col" onBlur={handleBlur}>
+    <div className="min-h-screen bg-background" onBlur={handleBlur}>
       {/* Save status indicator */}
       {saveStatus !== "idle" && (
         <div className="fixed top-3 right-3 z-50 flex items-center gap-1.5 bg-card border border-border px-3 py-1.5 shadow-sm font-body text-xs text-muted-foreground">
@@ -289,18 +289,18 @@ const InvitationBuilder = () => {
             </>
           ) : (
             <>
-              <Check className="w-3 h-3 text-green-600" />
+              <Check className="w-3 h-3 text-emerald-600" />
               Saved ✓
             </>
           )}
         </div>
       )}
 
-      <StepIndicator currentStep={step} totalSteps={5} />
+      <div className="flex h-screen">
+        {/* ─── LEFT: Form panel (40%) ─── */}
+        <div className={`${isMobile ? "w-full" : "w-2/5"} h-screen overflow-y-auto border-r border-border`}>
+          <StepIndicator currentStep={step} totalSteps={5} />
 
-      <div className="flex-1 flex">
-        {/* Form panel */}
-        <div className={`${isMobile ? "w-full" : "w-2/5"} overflow-y-auto`}>
           <div className="p-6 md:p-8 max-w-xl mx-auto">
             {renderStep()}
 
@@ -317,39 +317,57 @@ const InvitationBuilder = () => {
           </div>
         </div>
 
-        {/* Live preview panel — desktop only */}
-        {!isMobile && step <= 3 && (
-          <div className="w-3/5 border-l border-border bg-muted/30 overflow-y-auto">
-            <div className="p-6 flex justify-center">
-              <div className="w-[375px] shadow-2xl border border-border">
-                <TemplateComponent data={formData} isPreview={false} />
-              </div>
+        {/* ─── RIGHT: Phone frame preview (60%) — desktop only ─── */}
+        {!isMobile && (
+          <div className="w-3/5 h-screen sticky top-0 flex items-center justify-center bg-muted/30">
+            <div
+              className="overflow-hidden"
+              style={{
+                width: 320,
+                height: 600,
+                borderRadius: 32,
+                border: "6px solid #333",
+                overflowY: "auto",
+                boxShadow: "0 25px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05)",
+              }}
+            >
+              <TemplateComponent data={formData} isPreview={false} />
             </div>
           </div>
         )}
       </div>
 
-      {/* Mobile floating preview button */}
+      {/* ─── Mobile: Floating preview button ─── */}
       {isMobile && step <= 3 && (
         <button
           onClick={() => setShowMobilePreview(true)}
-          className="fixed bottom-6 right-6 bg-primary text-primary-foreground shadow-lg px-5 py-3 flex items-center gap-2 font-body text-sm z-50"
+          className="fixed bottom-6 right-6 bg-primary text-primary-foreground shadow-lg px-5 py-3 flex items-center gap-2 font-body text-sm z-50 rounded-none"
         >
           <Eye className="w-4 h-4" /> Preview
         </button>
       )}
 
-      {/* Mobile preview modal */}
+      {/* ─── Mobile: Bottom sheet preview ─── */}
       {showMobilePreview && (
-        <div className="fixed inset-0 z-50 bg-background">
-          <div className="flex items-center justify-between p-4 border-b border-border">
-            <h3 className="font-display text-lg text-primary">Live Preview</h3>
-            <button onClick={() => setShowMobilePreview(false)}>
-              <X className="w-5 h-5 text-foreground" />
-            </button>
-          </div>
-          <div className="overflow-y-auto" style={{ height: "calc(100vh - 60px)" }}>
-            <TemplateComponent data={formData} isPreview={false} />
+        <div className="fixed inset-0 z-50 bg-foreground/50" onClick={() => setShowMobilePreview(false)}>
+          <div
+            className="absolute bottom-0 left-0 right-0 bg-background rounded-t-2xl overflow-hidden animate-in slide-in-from-bottom duration-300"
+            style={{ height: "85vh" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Handle bar */}
+            <div className="flex items-center justify-center pt-3 pb-2">
+              <div className="w-10 h-1 bg-border rounded-full" />
+            </div>
+            <div className="flex items-center justify-between px-4 pb-3 border-b border-border">
+              <h3 className="font-display text-lg text-primary">Live Preview</h3>
+              <button onClick={() => setShowMobilePreview(false)}>
+                <X className="w-5 h-5 text-foreground" />
+              </button>
+            </div>
+            <div className="overflow-y-auto" style={{ height: "calc(85vh - 60px)" }}>
+              <TemplateComponent data={formData} isPreview={false} />
+            </div>
           </div>
         </div>
       )}
