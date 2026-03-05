@@ -108,7 +108,9 @@ const Dashboard = () => {
 
   const shareWhatsApp = () => {
     if (inviteUrl) {
-      const text = `You're invited to ${invitation?.bride_name || "our"} & ${invitation?.groom_name || "our"}'s wedding! 💒✨\n\n${inviteUrl}`;
+      const bride = invitation?.bride_name || "Our";
+      const groom = invitation?.groom_name || "";
+      const text = `You're invited! 🎊 ${bride} & ${groom}'s Wedding — View our invitation: ${inviteUrl}`;
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
     }
   };
