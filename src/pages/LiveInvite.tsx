@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { TEMPLATE_REGISTRY } from "@/templates";
 import type { InvitationData } from "@/templates/types";
+import { invitationDataToConfig } from "@/templates/types";
+import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import RsvpForm from "@/components/invite/RsvpForm";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -104,10 +106,10 @@ const LiveInvite = () => {
   }
 
   // Look up template
-  const templateEntry = TEMPLATE_REGISTRY[invitation.template_id];
-  const TemplateComponent = templateEntry?.component;
+  const templateId = invitation.template_id;
+  const templateEntry = TEMPLATE_REGISTRY[templateId];
 
-  if (!TemplateComponent) {
+  if (!templateEntry) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-8 text-center">
         <div className="text-5xl mb-6">⚠️</div>
@@ -122,12 +124,13 @@ const LiveInvite = () => {
     );
   }
 
-  const brideName = invitationData.bride_name;
-  const groomName = invitationData.groom_name;
+  const config = invitationDataToConfig(invitationData);
+  const brideName = config.couple.brideName;
+  const groomName = config.couple.groomName;
 
   return (
     <div className="min-h-screen bg-background">
-      <TemplateComponent data={invitationData} isPreview={false} />
+      <WeddingTemplate config={config} templateId={templateId} />
 
       <div id="rsvp-form">
         <RsvpForm invitationId={invitation.id} brideName={brideName} groomName={groomName} />

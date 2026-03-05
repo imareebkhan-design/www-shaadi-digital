@@ -4,6 +4,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { TEMPLATE_REGISTRY } from "@/templates";
 import type { InvitationData } from "@/templates/types";
+import { invitationDataToConfig } from "@/templates/types";
+import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import StepIndicator from "@/components/builder/StepIndicator";
 import Step1CoupleNames from "@/components/builder/Step1CoupleNames";
 import Step2Events from "@/components/builder/Step2Events";
@@ -294,7 +296,7 @@ const InvitationBuilder = () => {
       case 4: return (
         <Step4Preview
           data={formData}
-          TemplateComponent={TemplateComponent}
+          templateId={templateId!}
           onProceed={() => setStep(5)}
           onGoBack={() => setStep(3)}
         />
@@ -358,7 +360,7 @@ const InvitationBuilder = () => {
                 boxShadow: "0 25px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05)",
               }}
             >
-              <TemplateComponent data={formData} isPreview={false} />
+              <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
             </div>
           </div>
         )}
@@ -393,7 +395,7 @@ const InvitationBuilder = () => {
               </button>
             </div>
             <div className="overflow-y-auto" style={{ height: "calc(85vh - 60px)" }}>
-              <TemplateComponent data={formData} isPreview={false} />
+              <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
             </div>
           </div>
         </div>
