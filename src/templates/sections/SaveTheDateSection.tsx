@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import AnimateIn from "@/components/AnimateIn";
 
 interface Props {
   weddingDate: string;
@@ -37,20 +38,24 @@ const SaveTheDateSection = ({ weddingDate, isPreview }: Props) => {
 
   return (
     <section className="py-16 px-6 bg-background">
-      <div className="max-w-lg mx-auto text-center">
-        <p className="section-label justify-center">Save the Date</p>
-        <h2 className="section-title mb-10">Counting Down</h2>
-        <div className="grid grid-cols-4 gap-3">
-          {units.map((u) => (
-            <div key={u.label} className="bg-card border border-secondary/20 p-4 md:p-6">
-              <span className="font-display text-3xl md:text-5xl font-bold" style={{ color: "hsl(var(--maroon-dark))" }}>
-                {String(u.value).padStart(2, "0")}
-              </span>
-              <p className="font-body text-[10px] md:text-xs tracking-[2px] uppercase text-muted-foreground mt-2">{u.label}</p>
-            </div>
-          ))}
+      <AnimateIn>
+        <div className="max-w-lg mx-auto text-center">
+          <p className="section-label justify-center">Save the Date</p>
+          <h2 className="section-title mb-10">Counting Down</h2>
+          <div className="grid grid-cols-4 gap-3">
+            {units.map((u, i) => (
+              <AnimateIn key={u.label} delay={i * 0.1}>
+                <div className="bg-card border border-secondary/20 p-4 md:p-6">
+                  <span className="font-display text-3xl md:text-5xl font-bold" style={{ color: "hsl(var(--maroon-dark))" }}>
+                    {String(u.value).padStart(2, "0")}
+                  </span>
+                  <p className="font-body text-[10px] md:text-xs tracking-[2px] uppercase text-muted-foreground mt-2">{u.label}</p>
+                </div>
+              </AnimateIn>
+            ))}
+          </div>
         </div>
-      </div>
+      </AnimateIn>
     </section>
   );
 };

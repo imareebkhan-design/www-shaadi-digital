@@ -1,4 +1,5 @@
 import { Share2, Calendar as CalendarIcon } from "lucide-react";
+import AnimateIn from "@/components/AnimateIn";
 
 interface Props {
   brideName: string;
@@ -52,28 +53,28 @@ const FooterSection = ({ brideName, groomName, weddingDate, events }: Props) => 
 
   return (
     <footer className="py-12 px-6 bg-foreground">
-      <div className="max-w-md mx-auto text-center">
-        {/* Names & date */}
-        <h3 className="font-display text-2xl font-bold text-white mb-1">{brideName} & {groomName}</h3>
-        {formattedDate && <p className="font-body text-xs tracking-[2px] uppercase text-white/40 mb-8">{formattedDate}</p>}
+      <AnimateIn>
+        <div className="max-w-md mx-auto text-center">
+          <h3 className="font-display text-2xl font-bold text-white mb-1">{brideName} & {groomName}</h3>
+          {formattedDate && <p className="font-body text-xs tracking-[2px] uppercase text-white/40 mb-8">{formattedDate}</p>}
 
-        {/* Share & calendar buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
-          <button onClick={shareWhatsApp} className="flex items-center gap-2 bg-[#25D366] text-white px-5 py-3 text-xs font-medium tracking-[0.5px] uppercase hover:bg-[#128C7E] transition-colors">
-            <Share2 className="w-4 h-4" /> Share on WhatsApp
-          </button>
-          <button onClick={addToGoogleCalendar} className="flex items-center gap-2 border border-white/20 text-white/70 px-5 py-3 text-xs font-medium tracking-[0.5px] uppercase hover:text-white hover:border-white/40 transition-colors">
-            <CalendarIcon className="w-4 h-4" /> Google Calendar
-          </button>
-          <button onClick={addToAppleCalendar} className="flex items-center gap-2 border border-white/20 text-white/70 px-5 py-3 text-xs font-medium tracking-[0.5px] uppercase hover:text-white hover:border-white/40 transition-colors">
-            <CalendarIcon className="w-4 h-4" /> Apple Calendar
-          </button>
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            <button onClick={shareWhatsApp} className="flex items-center gap-2 bg-[#25D366] text-white px-5 py-3 text-xs font-medium tracking-[0.5px] uppercase hover:bg-[#128C7E] transition-colors">
+              <Share2 className="w-4 h-4" /> Share on WhatsApp
+            </button>
+            <button onClick={addToGoogleCalendar} className="flex items-center gap-2 border border-white/20 text-white/70 px-5 py-3 text-xs font-medium tracking-[0.5px] uppercase hover:text-white hover:border-white/40 transition-colors">
+              <CalendarIcon className="w-4 h-4" /> Google Calendar
+            </button>
+            <button onClick={addToAppleCalendar} className="flex items-center gap-2 border border-white/20 text-white/70 px-5 py-3 text-xs font-medium tracking-[0.5px] uppercase hover:text-white hover:border-white/40 transition-colors">
+              <CalendarIcon className="w-4 h-4" /> Apple Calendar
+            </button>
+          </div>
+
+          <p className="text-xs text-white/30 mt-4">
+            Made with ❤️ on <span className="font-display">Shaadi<span className="text-secondary">.</span>Digital</span>
+          </p>
         </div>
-
-        <p className="text-xs text-white/30 mt-4">
-          Made with ❤️ on <span className="font-display">Shaadi<span className="text-secondary">.</span>Digital</span>
-        </p>
-      </div>
+      </AnimateIn>
     </footer>
   );
 };
