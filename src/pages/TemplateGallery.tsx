@@ -1,23 +1,49 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye } from "lucide-react";
+import { Eye, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
-import { templates, TemplateData } from "@/data/templates";
+import { TEMPLATE_REGISTRY, DEMO_DATA } from "@/templates";
+import type { TemplateRegistryEntry } from "@/templates";
 import { useAuth } from "@/contexts/AuthContext";
 
-const filters = ["All", "North Indian", "South Indian", "Muslim", "Sikh", "Modern"];
+const filters = ["All", "North Indian", "South Indian", "Sikh", "Muslim", "Modern"];
+
+const TemplateThumbnail = ({ entry }: { entry: TemplateRegistryEntry }) => {
+  const Component = entry.component;
+  return (
+    <div style={{ width: "100%", paddingBottom: "133%", position: "relative", overflow: "hidden" }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "400%",
+          height: "400%",
+          transform: "scale(0.25)",
+          transformOrigin: "top left",
+          pointerEvents: "none",
+          overflow: "hidden",
+        }}
+      >
+        <Component data={DEMO_DATA} isPreview={true} />
+      </div>
+    </div>
+  );
+};
 
 const TemplateGallery = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  const entries = useMemo(() => Object.values(TEMPLATE_REGISTRY), []);
+
   const filtered = activeFilter === "All"
-    ? templates
-    : templates.filter((t) => t.community === activeFilter);
+    ? entries
+    : entries.filter((t) => t.community === activeFilter);
 
   return (
     <div className="min-h-screen bg-background">
@@ -37,7 +63,7 @@ const TemplateGallery = () => {
             </p>
           </div>
 
-          {/* Filter bar */}
+          {/* Filter pills */}
           <div className="flex flex-wrap justify-center gap-2 mb-12">
             {filters.map((f) => (
               <button
@@ -59,48 +85,39 @@ const TemplateGallery = () => {
             {filtered.map((t) => (
               <div
                 key={t.id}
-                className="group border border-border hover:border-secondary bg-card overflow-hidden transition-all duration-300 hover:shadow-lg"
+                className="group border border-border hover:border-secondary bg-card overflow-hidden transition-all duration-300 hover:shadow-lg relative"
               >
-                {/* Preview panel */}
-                <div className={`aspect-[3/4] bg-gradient-to-br ${t.gradient} relative flex items-center justify-center p-6`}>
-                  {/* Decorative corners */}
-                  <span className="absolute top-4 left-4 text-2xl text-white/15">{t.motif}</span>
-                  <span className="absolute top-4 right-4 text-2xl text-white/15">{t.motif}</span>
-                  <span className="absolute bottom-4 left-4 text-2xl text-white/15">{t.motif}</span>
-                  <span className="absolute bottom-4 right-4 text-2xl text-white/15">{t.motif}</span>
-
-                  <div className="text-center">
-                    <p className="font-serif italic text-white/50 text-xs tracking-widest uppercase mb-4">
-                      Together with their families
-                    </p>
-                    <p className="font-display text-3xl font-bold text-white mb-1">{t.bride}</p>
-                    <p className="font-serif italic text-secondary text-xl my-2">&</p>
-                    <p className="font-display text-3xl font-bold text-white">{t.groom}</p>
-                    <div className="w-10 h-px bg-secondary/60 mx-auto my-5" />
-                    <p className="font-body text-white/50 text-xs tracking-wider">{t.date}</p>
+                {/* Premium badge */}
+                {t.is_premium && (
+                  <div className="absolute top-3 right-3 z-10 bg-secondary text-secondary-foreground px-2.5 py-1 flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider">
+                    <Crown className="w-3 h-3" /> Premium
                   </div>
-                </div>
+                )}
+
+                {/* Live thumbnail */}
+                <TemplateThumbnail entry={t} />
 
                 {/* Info */}
                 <div className="p-5">
                   <h3 className="font-display text-lg font-semibold text-foreground mb-2">{t.name}</h3>
-                  <div className="flex gap-2 mb-4">
+                  <div className="flex gap-2 mb-1">
                     <Badge variant="secondary" className="font-body text-xs">{t.community}</Badge>
-                    <Badge variant="outline" className="font-body text-xs">{t.style}</Badge>
+                    <Badge variant="outline" className="font-body text-xs">{t.tone}</Badge>
                   </div>
+                  <p className="font-body text-xs text-muted-foreground mb-4">{t.description}</p>
                   <div className="flex gap-3">
                     <Button
                       variant="outline"
                       size="sm"
-                      className="flex-1 font-body text-xs gap-1.5"
-                      onClick={() => navigate(`/preview/${t.id}`)}
+                      className="flex-1 font-body text-xs gap-1.5 rounded-none"
+                      onClick={() => navigate(`/templates/preview/${t.id}`)}
                     >
                       <Eye className="w-3.5 h-3.5" />
                       Preview
                     </Button>
                     <Button
                       size="sm"
-                      className="flex-1 font-body text-xs"
+                      className="flex-1 font-body text-xs rounded-none"
                       onClick={() => {
                         if (user) {
                           navigate(`/builder/${t.id}`);
