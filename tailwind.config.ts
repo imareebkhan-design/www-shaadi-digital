@@ -56,6 +56,8 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         callout: "hsl(var(--callout))",
+        "gold-pale": "hsl(var(--gold-pale))",
+        "maroon-dark": "hsl(var(--maroon-dark))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

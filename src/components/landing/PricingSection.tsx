@@ -1,101 +1,88 @@
 import { Link } from "react-router-dom";
-import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const plans = [
   {
     name: "Basic",
-    price: "₹499",
-    desc: "Perfect for a simple, elegant invite",
-    features: [
-      "1 Premium Template",
-      "Up to 3 Events",
-      "WhatsApp Sharing",
-      "50 RSVP Responses",
-      "30-Day Active Link",
-    ],
-    cta: "Get Started",
-    highlight: false,
+    price: "999",
+    period: "One-time · Valid 1 year",
+    features: ["1 Digital Invitation", "50 RSVP responses", "3 Event pages", "WhatsApp sharing", "Google Maps integration", "Mobile optimized"],
+    featured: false,
   },
   {
     name: "Premium",
-    price: "₹999",
-    desc: "Most popular — everything you need",
-    features: [
-      "All Templates Unlocked",
-      "Up to 6 Events",
-      "WhatsApp + QR Sharing",
-      "Unlimited RSVPs",
-      "Google Maps Embed",
-      "Photo Upload",
-      "1-Year Active Link",
-    ],
-    cta: "Choose Premium",
-    highlight: true,
+    price: "1,999",
+    period: "One-time · Valid 1 year",
+    features: ["1 Digital Invitation", "Unlimited RSVP responses", "Unlimited Event pages", "WhatsApp sharing", "RSVP Dashboard + Analytics", "Password protection", "Custom domain link", "Auto guest reminders"],
+    featured: true,
   },
   {
     name: "Elite",
-    price: "₹2,499",
-    desc: "White-glove assisted experience",
-    features: [
-      "Everything in Premium",
-      "Dedicated Design Assist",
-      "Custom Colour Tweaks",
-      "Priority Support",
-      "Guest List CSV Export",
-      "Lifetime Link",
-    ],
-    cta: "Go Elite",
-    highlight: false,
+    price: "3,499",
+    period: "One-time · Valid 1 year",
+    features: ["Everything in Premium", "Custom designed invite", "Dedicated support", "Video & music support", "Digital gift registry link", "Premium NRI timezone settings", "Priority 24/7 support"],
+    featured: false,
   },
 ];
 
 const PricingSection = () => (
   <section id="pricing" className="section-padding bg-background">
-    <div className="container text-center">
-      <p className="font-serif italic text-secondary text-base mb-2">Transparent Pricing</p>
-      <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">
-        Choose Your Plan
-      </h2>
-      <div className="gold-divider mb-12" />
+    <div className="max-w-[1100px] mx-auto">
+      <div className="text-center mb-14">
+        <div className="section-label justify-center">Simple Pricing</div>
+        <h2 className="section-title text-center">Transparent <em>Indian Pricing</em></h2>
+        <p className="text-muted-foreground mt-3 text-[15px]">No hidden charges. No per-guest fees. Just one simple plan for your big day.</p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
         {plans.map((p) => (
           <div
             key={p.name}
-            className={`border p-8 flex flex-col text-left transition-all duration-300 ${
-              p.highlight
-                ? "border-secondary bg-card shadow-lg scale-[1.02] relative"
-                : "border-border bg-card hover:border-secondary"
+            className={`rounded p-10 relative transition-all duration-300 ${
+              p.featured
+                ? "border border-secondary scale-[1.04] shadow-lg"
+                : "bg-card border border-secondary/20 hover:border-secondary hover:shadow-[0_16px_48px_rgba(0,0,0,0.08)]"
             }`}
+            style={p.featured ? { background: 'hsl(var(--maroon-dark))' } : undefined}
           >
-            {p.highlight && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary text-card font-body text-xs font-semibold px-4 py-1">
-                MOST POPULAR
-              </span>
+            {p.featured && (
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary text-foreground px-4 py-1 rounded-full text-[10px] font-semibold tracking-[1.5px] uppercase">
+                Most Popular
+              </div>
             )}
-            <h3 className="font-display text-xl font-bold text-foreground mb-1">{p.name}</h3>
-            <p className="font-body text-xs text-muted-foreground mb-4">{p.desc}</p>
-            <p className="font-display text-4xl font-bold text-primary mb-6">
-              {p.price}
-              <span className="font-body text-sm font-normal text-muted-foreground"> / invite</span>
-            </p>
-            <ul className="space-y-3 mb-8 flex-1">
+
+            <div className={`text-[11px] tracking-[2px] uppercase mb-2 ${p.featured ? "text-secondary/80" : "text-secondary"}`}>
+              {p.name}
+            </div>
+
+            <div className={`font-display text-[44px] font-bold leading-none ${p.featured ? "text-white" : ""}`} style={!p.featured ? { color: 'hsl(var(--maroon-dark))' } : undefined}>
+              <span className="text-lg align-super">₹</span>{p.price}
+            </div>
+
+            <div className={`text-[13px] mt-1 ${p.featured ? "text-white/50" : "text-muted-foreground"}`}>
+              {p.period}
+            </div>
+
+            <div className={`h-px my-6 ${p.featured ? "bg-white/10" : "bg-secondary/15"}`} />
+
+            <ul className="flex flex-col gap-3 mb-8">
               {p.features.map((f) => (
-                <li key={f} className="flex items-start gap-2">
-                  <Check className="w-4 h-4 text-secondary mt-0.5 shrink-0" />
-                  <span className="font-body text-sm text-foreground/80">{f}</span>
+                <li key={f} className={`text-sm flex gap-2.5 items-start ${p.featured ? "text-white/65" : "text-muted-foreground"}`}>
+                  <span className="text-secondary font-semibold shrink-0">✓</span>
+                  {f}
                 </li>
               ))}
             </ul>
-            <Button
-              className={`w-full font-body ${
-                p.highlight ? "" : "bg-card text-primary border border-primary hover:bg-primary hover:text-primary-foreground"
+
+            <Link
+              to="/signup"
+              className={`block w-full text-center py-3.5 text-xs font-medium tracking-[1.5px] uppercase transition-all ${
+                p.featured
+                  ? "bg-secondary text-foreground hover:brightness-110 font-semibold"
+                  : "border-[1.5px] border-primary text-primary hover:bg-primary hover:text-primary-foreground"
               }`}
-              asChild
             >
-              <Link to="/signup">{p.cta}</Link>
-            </Button>
+              Get Started
+            </Link>
           </div>
         ))}
       </div>

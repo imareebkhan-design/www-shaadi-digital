@@ -1,31 +1,39 @@
-import { Leaf, Globe, RefreshCw, IndianRupee, Smartphone, BarChart3 } from "lucide-react";
-
-const reasons = [
-  { icon: IndianRupee, title: "Save ₹5,000–50,000+", desc: "A fraction of the cost of printed cards" },
-  { icon: Smartphone, title: "Instant WhatsApp Sharing", desc: "One tap to share with every guest" },
-  { icon: RefreshCw, title: "Update Anytime", desc: "Change venue or date? Update live — no reprints" },
-  { icon: Globe, title: "NRI Accessible", desc: "Overseas family gets the invite instantly" },
-  { icon: BarChart3, title: "Real-Time RSVPs", desc: "Know exactly who's coming, with meal preferences" },
-  { icon: Leaf, title: "Eco-Friendly", desc: "Zero paper waste. Green celebrations" },
+const cards = [
+  { icon: "💬", title: "WhatsApp-Ready Sharing", desc: "One click — share your beautiful invite to all your family groups instantly. Works perfectly on all phones." },
+  { icon: "✅", title: "Live RSVP Tracking", desc: "See who's coming, who's not, and who hasn't responded — all in your dashboard, in real time." },
+  { icon: "🗺️", title: "Google Maps & Events", desc: "Add Mehndi, Haldi, Baraat, Reception — all with dates, times, venues & directions built in." },
+  { icon: "💰", title: "Save ₹10,000+", desc: "Compare to printed invitations: no printing, no postage, no courier. Update for free anytime." },
 ];
 
 const WhyDigitalSection = () => (
-  <section className="section-padding bg-card">
-    <div className="container text-center">
-      <p className="font-serif italic text-secondary text-base mb-2">The Smarter Choice</p>
-      <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">
-        Why Go Digital?
-      </h2>
-      <div className="gold-divider mb-12" />
+  <section className="section-padding relative overflow-hidden" style={{ background: 'hsl(var(--maroon-dark))' }}>
+    <div className="absolute inset-0 cross-pattern" />
+    <div className="relative max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+      {/* Left content */}
+      <div>
+        <div className="section-label !text-secondary/80 before:!bg-secondary/80 after:!bg-secondary/80">Why Digital?</div>
+        <h2 className="section-title !text-white">
+          Paper Invitations<br />
+          ka zamana <em className="italic text-secondary">gaya</em>
+        </h2>
+        <p className="text-white/65 leading-[1.9] text-[15px] mt-5">
+          Paper invitations get lost, can't be updated, and cost thousands. With Shaadi.Digital, send a beautiful personalized link via WhatsApp — your guests RSVP instantly, and you see it all in real time.
+        </p>
+        <p className="text-white/65 leading-[1.9] text-[15px] mt-3">
+          Perfect for NRI families, outstation guests, and anyone who wants a seamless, modern wedding experience without losing the traditional Indian charm. 🪔
+        </p>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        {reasons.map((r) => (
-          <div key={r.title} className="flex flex-col items-center text-center p-6">
-            <div className="w-14 h-14 flex items-center justify-center bg-callout rounded-full mb-4">
-              <r.icon className="w-6 h-6 text-secondary" />
-            </div>
-            <h3 className="font-display text-lg font-semibold text-foreground mb-2">{r.title}</h3>
-            <p className="font-body text-sm text-muted-foreground">{r.desc}</p>
+      {/* Right cards */}
+      <div className="flex flex-col gap-4">
+        {cards.map((c) => (
+          <div
+            key={c.title}
+            className="bg-white/5 border border-secondary/20 rounded p-6 transition-all hover:bg-secondary/10 hover:border-secondary/50 hover:translate-x-1.5 cursor-default"
+          >
+            <div className="text-2xl mb-2.5">{c.icon}</div>
+            <h3 className="font-display text-[17px] text-white mb-1.5">{c.title}</h3>
+            <p className="text-[13px] text-white/55 leading-[1.7]">{c.desc}</p>
           </div>
         ))}
       </div>

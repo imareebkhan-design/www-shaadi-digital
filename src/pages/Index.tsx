@@ -9,6 +9,7 @@ import PricingSection from "@/components/landing/PricingSection";
 import FAQSection from "@/components/landing/FAQSection";
 import CTABanner from "@/components/landing/CTABanner";
 import Footer from "@/components/landing/Footer";
+import WhatsAppButton from "@/components/landing/WhatsAppButton";
 
 const Index = () => {
   return (
@@ -24,6 +25,7 @@ const Index = () => {
       <FAQSection />
       <CTABanner />
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 };

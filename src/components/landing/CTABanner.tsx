@@ -1,25 +1,31 @@
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 
 const CTABanner = () => (
-  <section className="section-padding bg-primary relative overflow-hidden">
-    <div className="absolute inset-0 mandala-bg opacity-30" />
-    <div className="relative container text-center max-w-3xl">
-      <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-        Your Love Story Deserves
-        <br />
-        <span className="text-secondary">A Beautiful Invitation</span>
+  <section className="relative overflow-hidden text-center py-24 px-10" style={{ background: 'hsl(var(--maroon-dark))' }}>
+    {/* Background Hindi text */}
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[300px] font-bold text-white/[0.03] whitespace-nowrap pointer-events-none select-none">
+      शादी
+    </div>
+
+    <div className="relative z-10">
+      <div className="section-label justify-center !text-secondary/80 before:!bg-secondary/80 after:!bg-secondary/80">Start Today</div>
+      <h2 className="font-display font-bold text-white leading-[1.2] mb-5 text-[clamp(30px,5vw,58px)]">
+        Apni Shaadi ka<br />
+        <em className="italic text-secondary">Perfect Invitation</em><br />
+        abhi banao
       </h2>
-      <p className="font-body text-primary-foreground/70 text-base mb-8 max-w-xl mx-auto">
-        Join thousands of Indian couples who chose digital. Create your personalised wedding invite in under 10 minutes.
+      <p className="text-base text-white/60 max-w-[480px] mx-auto mb-9 leading-[1.8]">
+        Join 50,000+ Indian couples who made their special day even more memorable with Shaadi.Digital.
       </p>
-      <Button
-        size="lg"
-        className="font-body text-base px-10 py-6 bg-secondary text-foreground hover:bg-secondary/90"
-        asChild
+      <Link
+        to="/templates"
+        className="inline-block bg-secondary text-foreground px-12 py-[18px] text-[13px] font-semibold tracking-[1.2px] uppercase hover:bg-white transition-colors"
       >
-        <Link to="/templates">Create Your Invite — Free to Start</Link>
-      </Button>
+        Browse Templates — Free Preview
+      </Link>
+      <p className="mt-5 text-xs text-white/35 tracking-[0.5px]">
+        No credit card required · Preview for free · Pay only when you love it
+      </p>
     </div>
   </section>
 );
