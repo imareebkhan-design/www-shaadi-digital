@@ -1,59 +1,48 @@
-import { Heart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => (
-  <footer className="bg-foreground py-12 px-4">
-    <div className="container max-w-6xl">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-        <div>
-          <p className="font-display text-xl font-bold text-card mb-3">
-            Shaadi<span className="text-secondary">.</span>Digital
-          </p>
-          <p className="font-body text-sm text-card/50 leading-relaxed">
-            India's premium digital wedding invitation platform. Beautiful, personalised, instant.
-          </p>
-        </div>
-
-        <div>
-          <p className="font-body text-xs font-semibold text-card/40 uppercase tracking-widest mb-4">Platform</p>
-          <ul className="space-y-2">
-            {["Templates", "How It Works", "Pricing", "FAQ"].map((l) => (
-              <li key={l}>
-                <a href={`#${l.toLowerCase().replace(/ /g, "-")}`} className="font-body text-sm text-card/60 hover:text-secondary transition-colors">
-                  {l}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <p className="font-body text-xs font-semibold text-card/40 uppercase tracking-widest mb-4">Legal</p>
-          <ul className="space-y-2">
-            {["Privacy Policy", "Terms of Service", "Refund Policy"].map((l) => (
-              <li key={l}>
-                <a href="#" className="font-body text-sm text-card/60 hover:text-secondary transition-colors">
-                  {l}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <p className="font-body text-xs font-semibold text-card/40 uppercase tracking-widest mb-4">Contact</p>
-          <p className="font-body text-sm text-card/60">hello@shaadi.digital</p>
-          <p className="font-body text-sm text-card/60 mt-1">Mumbai, India</p>
-        </div>
-      </div>
-
-      <div className="border-t border-card/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="font-body text-xs text-card/40">
-          © 2026 Shaadi.Digital. All rights reserved.
-        </p>
-        <p className="font-body text-xs text-card/40 flex items-center gap-1">
-          Made with <Heart className="w-3 h-3 text-secondary fill-secondary" /> in India
+  <footer className="bg-foreground text-white/40 px-6 md:px-16 py-16 text-[13px] leading-[1.7]">
+    <div className="max-w-[1100px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-10">
+      <div>
+        <Link to="/" className="font-display text-2xl font-bold text-primary-foreground block mb-3">
+          Shaadi<span className="text-secondary">.</span>Digital
+        </Link>
+        <p className="text-white/35 leading-[1.8]">
+          India's most loved digital wedding invitation platform. Beautiful, personal, and built for every Indian wedding tradition.
         </p>
       </div>
+
+      <div>
+        <h5 className="text-white/70 text-[11px] tracking-[2px] uppercase mb-4 font-semibold">Product</h5>
+        <ul className="flex flex-col gap-2">
+          {["Templates", "Features", "RSVP Dashboard", "Pricing"].map((l) => (
+            <li key={l}><a href="#" className="text-white/40 hover:text-secondary transition-colors">{l}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h5 className="text-white/70 text-[11px] tracking-[2px] uppercase mb-4 font-semibold">Company</h5>
+        <ul className="flex flex-col gap-2">
+          {["About Us", "Blog", "Press", "Contact"].map((l) => (
+            <li key={l}><a href="#" className="text-white/40 hover:text-secondary transition-colors">{l}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h5 className="text-white/70 text-[11px] tracking-[2px] uppercase mb-4 font-semibold">Support</h5>
+        <ul className="flex flex-col gap-2">
+          {["Help Center", "WhatsApp Us", "Privacy Policy", "Refund Policy"].map((l) => (
+            <li key={l}><a href="#" className="text-white/40 hover:text-secondary transition-colors">{l}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div className="max-w-[1100px] mx-auto border-t border-white/[0.06] pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+      <span>© 2026 Shaadi.Digital · Made with ❤️ in India 🇮🇳</span>
+      <span>Delhi · Mumbai · Bangalore · Chennai · Hyderabad</span>
     </div>
   </footer>
 );

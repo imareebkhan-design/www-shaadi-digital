@@ -1,93 +1,66 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Link, useNavigate } from "react-router-dom";
 
 const navLinks = [
   { label: "Templates", href: "#templates" },
-  { label: "How It Works", href: "#how-it-works" },
+  { label: "Features", href: "#features" },
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
 ];
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [shadow, setShadow] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setShadow(window.scrollY > 40);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const scrollTo = (href: string) => {
-    setMobileOpen(false);
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-card/95 backdrop-blur-md shadow-sm" : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-16 py-4 bg-background/92 backdrop-blur-md border-b border-secondary/20 transition-shadow duration-300 ${
+        shadow ? "shadow-[0_4px_32px_rgba(0,0,0,0.08)]" : ""
       }`}
     >
-      <div className="container flex items-center justify-between h-16 md:h-20">
-        <Link to="/" className="font-display text-xl md:text-2xl font-bold tracking-tight text-primary">
-          Shaadi<span className="text-secondary">.</span>Digital
-        </Link>
+      <Link to="/" className="font-display text-[22px] font-bold tracking-[0.5px] text-primary">
+        Shaadi<span className="text-secondary">.</span>Digital
+      </Link>
 
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((l) => (
+      {/* Desktop links */}
+      <ul className="hidden md:flex gap-8 list-none">
+        {navLinks.map((l) => (
+          <li key={l.href}>
             <button
-              key={l.href}
               onClick={() => scrollTo(l.href)}
-              className="font-body text-sm tracking-wide text-foreground/80 hover:text-primary transition-colors"
+              className="text-[13px] font-medium tracking-[0.8px] uppercase text-foreground hover:text-secondary transition-colors"
             >
               {l.label}
             </button>
-          ))}
-          <Button variant="outline" size="sm" className="font-body" asChild>
-            <Link to="/login">Log In</Link>
-          </Button>
-          <Button size="sm" className="font-body" asChild>
-            <Link to="/signup">Get Started</Link>
-          </Button>
-        </div>
+          </li>
+        ))}
+      </ul>
 
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden text-primary"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
+      <button
+        onClick={() => navigate("/signup")}
+        className="hidden md:inline-block bg-primary text-primary-foreground px-6 py-2.5 text-xs font-medium tracking-[1px] uppercase hover:bg-secondary transition-colors"
+      >
+        Get Started
+      </button>
 
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="md:hidden bg-card border-t border-border px-4 pb-6 pt-2 space-y-4">
-          {navLinks.map((l) => (
-            <button
-              key={l.href}
-              onClick={() => scrollTo(l.href)}
-              className="block font-body text-sm text-foreground/80 py-2 w-full text-left"
-            >
-              {l.label}
-            </button>
-          ))}
-          <div className="flex gap-3 pt-2">
-            <Button variant="outline" size="sm" className="flex-1 font-body" asChild>
-              <Link to="/login">Log In</Link>
-            </Button>
-            <Button size="sm" className="flex-1 font-body" asChild>
-              <Link to="/signup">Get Started</Link>
-            </Button>
-          </div>
-        </div>
-      )}
+      {/* Mobile: just CTA */}
+      <button
+        onClick={() => navigate("/signup")}
+        className="md:hidden bg-primary text-primary-foreground px-4 py-2 text-xs font-medium tracking-[1px] uppercase"
+      >
+        Start
+      </button>
     </nav>
   );
 };

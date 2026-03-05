@@ -1,38 +1,34 @@
-import {
-  Palette, Globe, MapPin, Users, Smartphone, Calendar,
-  Camera, MessageSquare, Shield
-} from "lucide-react";
-
 const features = [
-  { icon: Palette, title: "Community-Specific Designs", desc: "Templates authentic to North Indian, South Indian, Sikh, and Muslim weddings" },
-  { icon: Globe, title: "Multi-Language Support", desc: "English, Hindi, Tamil, Punjabi, and Urdu" },
-  { icon: MapPin, title: "Google Maps Integration", desc: "Embedded live maps for every venue" },
-  { icon: Users, title: "RSVP Management", desc: "Guest count, meal preferences, and notes — all in one dashboard" },
-  { icon: Smartphone, title: "WhatsApp-First Sharing", desc: "One-tap sharing with a pre-written message" },
-  { icon: Calendar, title: "Multi-Event Support", desc: "Mehndi, Haldi, Sangeet, Baraat, Ceremony, and Reception" },
-  { icon: Camera, title: "Photo Upload", desc: "Add your couple photo — auto-cropped to fit the template" },
-  { icon: MessageSquare, title: "Personal Message", desc: "Add a heartfelt note to your guests" },
-  { icon: Shield, title: "Secure & Private", desc: "Your data is encrypted and never shared" },
+  { icon: "🎨", title: "Custom Design", desc: "Full personalization — choose colors, fonts, add photos, and make it truly yours. No design skills needed." },
+  { icon: "📱", title: "Mobile Optimized", desc: "Your invite looks stunning on every phone — from iPhone 15 to the oldest Android. Perfect for every guest." },
+  { icon: "🗓️", title: "Multiple Events", desc: "Mehndi, Haldi, Sangeet, Baraat, Reception — add all events with individual timings, venues & maps." },
+  { icon: "📍", title: "Live Google Maps", desc: 'Guests can navigate directly from the invite to your venue. No more "bhai, address kya hai?" messages.' },
+  { icon: "📊", title: "RSVP Dashboard", desc: "See attendance counts, dietary preferences, and notes from guests in real time. Plan catering perfectly." },
+  { icon: "🔔", title: "Reminder Alerts", desc: "Auto-send reminders to guests who haven't responded. Never chase RSVPs via phone calls again." },
+  { icon: "🌐", title: "NRI Friendly", desc: "Indian Standard Time, timezone notes for international guests — perfect for families spread across the globe." },
+  { icon: "🔒", title: "Private & Secure", desc: "Password-protect your invite. Only people with your link — or the password — can view it." },
+  { icon: "♾️", title: "Free Updates", desc: "Venue changed? Date shifted? Edit and update your invite anytime, and all guests get the new version instantly." },
 ];
 
 const FeaturesSection = () => (
-  <section className="section-padding bg-background">
-    <div className="container text-center">
-      <p className="font-serif italic text-secondary text-base mb-2">Everything You Need</p>
-      <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">
-        Powerful Features
-      </h2>
-      <div className="gold-divider mb-12" />
+  <section id="features" className="section-padding bg-card">
+    <div className="max-w-[1100px] mx-auto">
+      <div className="text-center mb-16">
+        <div className="section-label justify-center">Everything Included</div>
+        <h2 className="section-title text-center">Sab kuch ek jagah,<br /><em>ek price mein</em></h2>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {features.map((f) => (
           <div
             key={f.title}
-            className="border border-border bg-card p-6 text-left hover:border-secondary hover:shadow-md transition-all duration-300"
+            className="p-8 border border-secondary/15 rounded transition-all duration-300 relative overflow-hidden group hover:border-secondary/40 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)]"
           >
-            <f.icon className="w-6 h-6 text-secondary mb-4" />
-            <h3 className="font-display text-base font-semibold text-foreground mb-2">{f.title}</h3>
-            <p className="font-body text-sm text-muted-foreground">{f.desc}</p>
+            {/* Bottom gold bar */}
+            <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-secondary scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
+            <div className="text-[32px] mb-4">{f.icon}</div>
+            <h3 className="font-display text-[19px] mb-2.5" style={{ color: 'hsl(var(--maroon-dark))' }}>{f.title}</h3>
+            <p className="text-sm text-muted-foreground leading-[1.8]">{f.desc}</p>
           </div>
         ))}
       </div>
