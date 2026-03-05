@@ -30,7 +30,7 @@ const TemplatePreview = () => {
           <ArrowLeft className="w-4 h-4" /> Back
         </button>
         <h1 className="font-display text-base md:text-lg text-white font-semibold">{template.name}</h1>
-        <button onClick={handleUseTemplate} className="hidden md:flex items-center gap-1.5 bg-primary text-primary-foreground px-5 py-2 text-xs font-body font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors">
+        <button onClick={handleUseTemplate} className="hidden md:flex items-center gap-1.5 bg-primary text-primary-foreground px-5 py-2 text-xs font-body font-medium tracking-wide uppercase rounded-full hover:bg-primary/90 transition-colors">
           Use This Template <ArrowRight className="w-3.5 h-3.5" />
         </button>
         <div className="md:hidden w-16" />
@@ -54,7 +54,7 @@ const TemplatePreview = () => {
 
       {/* Sticky bottom CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-50 p-4 border-t border-white/10" style={{ background: "rgba(15,15,15,0.95)", backdropFilter: "blur(12px)" }}>
-        <button onClick={handleUseTemplate} className="w-full max-w-md mx-auto flex items-center justify-center gap-2 bg-primary text-primary-foreground py-4 text-[13px] font-body font-medium tracking-[1px] uppercase hover:bg-primary/90 transition-colors">
+        <button onClick={handleUseTemplate} className="w-full max-w-md mx-auto flex items-center justify-center gap-2 bg-primary text-primary-foreground py-4 text-[13px] font-body font-medium tracking-[1px] uppercase rounded-full hover:bg-primary/90 transition-colors">
           Use This Template <ArrowRight className="w-4 h-4" />
         </button>
       </div>
