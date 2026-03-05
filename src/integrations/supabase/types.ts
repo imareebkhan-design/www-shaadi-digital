@@ -216,7 +216,7 @@ export type Database = {
           email: string | null
           full_name: string
           id: string
-          mobile: string
+          mobile: string | null
         }
         Insert: {
           auth_user_id: string
@@ -224,7 +224,7 @@ export type Database = {
           email?: string | null
           full_name: string
           id?: string
-          mobile: string
+          mobile?: string | null
         }
         Update: {
           auth_user_id?: string
@@ -232,7 +232,7 @@ export type Database = {
           email?: string | null
           full_name?: string
           id?: string
-          mobile?: string
+          mobile?: string | null
         }
         Relationships: []
       }
