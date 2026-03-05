@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import TemplateGallery from "./pages/TemplateGallery";
+import TemplatePreview from "./pages/TemplatePreview";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import InvitationBuilder from "./pages/InvitationBuilder";
@@ -27,6 +28,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/templates" element={<TemplateGallery />} />
+            <Route path="/templates/preview/:templateId" element={<TemplatePreview />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/builder/:templateId" element={<InvitationBuilder />} />
