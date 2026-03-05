@@ -1,13 +1,11 @@
-import { useState } from "react";
+import { useState, ComponentType } from "react";
 import { Button } from "@/components/ui/button";
 import { Monitor, Tablet, Smartphone } from "lucide-react";
-import LivePreview from "./LivePreview";
-import { BuilderFormData } from "@/types/builder";
-import { TemplateData } from "@/data/templates";
+import type { InvitationData, TemplateProps } from "@/templates/types";
 
 interface Props {
-  data: BuilderFormData;
-  template: TemplateData;
+  data: InvitationData;
+  TemplateComponent: ComponentType<TemplateProps>;
   onProceed: () => void;
   onGoBack: () => void;
 }
@@ -18,7 +16,7 @@ const viewports = [
   { key: "desktop", label: "Desktop", width: 1024, icon: Monitor },
 ] as const;
 
-const Step4Preview = ({ data, template, onProceed, onGoBack }: Props) => {
+const Step4Preview = ({ data, TemplateComponent, onProceed, onGoBack }: Props) => {
   const [viewport, setViewport] = useState<"mobile" | "tablet" | "desktop">("mobile");
   const activeVp = viewports.find((v) => v.key === viewport)!;
 
@@ -57,7 +55,7 @@ const Step4Preview = ({ data, template, onProceed, onGoBack }: Props) => {
           }}
         >
           <div className="overflow-y-auto" style={{ maxHeight: "70vh" }}>
-            <LivePreview data={data} template={template} />
+            <TemplateComponent data={data} isPreview={false} />
           </div>
         </div>
       </div>
