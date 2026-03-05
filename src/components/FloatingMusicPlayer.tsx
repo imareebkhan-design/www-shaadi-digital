@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 
 interface Props {
   musicUrl?: string;
@@ -35,17 +36,19 @@ const FloatingMusicPlayer = ({ musicUrl }: Props) => {
   };
 
   return (
-    <button
+    <motion.button
       onClick={toggle}
       aria-label={playing ? "Mute music" : "Play music"}
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 1.0 }}
       className="fixed top-4 right-4 z-50 w-10 h-10 flex items-center justify-center rounded-full bg-foreground/60 backdrop-blur-sm text-lg transition-transform hover:scale-110 active:scale-95"
     >
-      {/* Pulse ring when playing */}
       {playing && (
         <span className="absolute inset-0 rounded-full border-2 border-secondary animate-music-pulse" />
       )}
       <span className="relative z-10">{playing ? "🎵" : "🔇"}</span>
-    </button>
+    </motion.button>
   );
 };
 
