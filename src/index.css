@@ -278,4 +278,15 @@
   .animate-fade-up-3 { animation: fadeUp 1s ease 0.3s both; }
   .animate-fade-up-4 { animation: fadeUp 1s ease 0.4s both; }
   .animate-fade-up-5 { animation: fadeUp 1s ease 0.5s both; }
+
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes spin3 { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+  @keyframes floatP {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-24px) scale(1.15); }
+  }
+  @keyframes twBlink { 0%, 100% { opacity: 1; } 52% { opacity: 0; } }
+  @keyframes twFadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes drawLine { 0% { width: 0; opacity: 0; } 15% { opacity: 1; } 100% { width: 180px; opacity: 1; } }
+  @keyframes scrollDot { 0% { transform: translateY(0); opacity: 1; } 80% { transform: translateY(12px); opacity: 0; } 100% { transform: translateY(0); opacity: 0; } }
 }
