@@ -10,6 +10,8 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import InvitationBuilder from "./pages/InvitationBuilder";
 import Dashboard from "./pages/Dashboard";
+import LiveInvite from "./pages/LiveInvite";
+import RsvpPage from "./pages/RsvpPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/builder/:templateId" element={<InvitationBuilder />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/invite/:slug" element={<LiveInvite />} />
+            <Route path="/rsvp/:slug" element={<RsvpPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
