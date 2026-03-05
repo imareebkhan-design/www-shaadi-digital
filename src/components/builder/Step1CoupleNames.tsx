@@ -84,6 +84,29 @@ const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
           {data.personal_message.length}/120 characters
         </p>
       </div>
+
+      <div>
+        <label className="font-body text-sm font-medium text-foreground block mb-1">
+          Your Love Story <span className="text-muted-foreground">(optional)</span>
+        </label>
+        <p className="font-body text-xs text-muted-foreground mb-2">
+          Share a few lines about how you met. This appears beautifully on your invite.
+        </p>
+        <Textarea
+          placeholder="We met on a rainy evening in Delhi, and from that very first cup of chai…"
+          value={data.our_story || ""}
+          onChange={(e) => {
+            if (e.target.value.length <= 300) {
+              onChange({ our_story: e.target.value });
+            }
+          }}
+          rows={4}
+          className="resize-none"
+        />
+        <p className="text-xs text-muted-foreground mt-1 text-right">
+          {(data.our_story || "").length}/300 characters
+        </p>
+      </div>
     </div>
   );
 };
