@@ -1,8 +1,41 @@
 const cards = [
-  { icon: "💬", title: "Instant Delivery via WhatsApp", desc: "One link, shared directly to every family group. No app to download, no login required — guests open it and the invitation unfolds beautifully on any device." },
-  { icon: "👥", title: "Live RSVP Dashboard", desc: "Watch confirmations arrive in real time. Know exactly who is attending, who has declined, and who is yet to respond — before the caterer asks." },
-  { icon: "📍", title: "Every Ceremony, One Invitation", desc: "Mehndi, Haldi, Baraat, Reception — each event carries its own date, time, venue, and directions. Your guests always know exactly where to be." },
-  { icon: "💰", title: "Save ₹10,000 or More", desc: "No printing, no postage, no courier delays. Update the venue or timing at any point — at no additional cost, with no reprint required." },
+  {
+    title: "Instant Delivery via WhatsApp",
+    desc: "One link, shared directly to every family group. No app to download, no login required — guests open it and the invitation unfolds beautifully on any device.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    ),
+  },
+  {
+    title: "Live RSVP Dashboard",
+    desc: "Watch confirmations arrive in real time. Know exactly who is attending, who has declined, and who is yet to respond — before the caterer asks.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+  },
+  {
+    title: "Every Ceremony, One Invitation",
+    desc: "Mehndi, Haldi, Baraat, Reception — each event carries its own date, time, venue, and directions. Your guests always know exactly where to be.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+        <polygon points="3 11 22 2 13 21 11 13 3 11" />
+      </svg>
+    ),
+  },
+  {
+    title: "Save ₹10,000 or More",
+    desc: "No printing, no postage, no courier delays. Update the venue or timing at any point — at no additional cost, with no reprint required.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C9941A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+        <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      </svg>
+    ),
+  },
 ];
 
 const WhyDigitalSection = () => (
@@ -41,7 +74,9 @@ const WhyDigitalSection = () => (
             key={c.title}
             className={`bg-white/[0.03] border-l border-secondary/25 border-b border-b-white/[0.04] p-7 grid grid-cols-[48px_1fr] gap-x-5 items-start relative transition-all duration-[350ms] hover:bg-secondary/[0.07] hover:border-l-secondary/60 hover:translate-x-1 cursor-default ${i === 0 ? "rounded-t-lg" : ""} ${i === cards.length - 1 ? "rounded-b-lg !border-b-secondary/15" : ""}`}
           >
-            <div className="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0 mt-0.5 text-lg">{c.icon}</div>
+            <div className="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
+              {c.icon}
+            </div>
             <div>
               <h3 className="font-serif text-[18px] font-medium text-white mb-1.5 tracking-[0.2px]">{c.title}</h3>
               <p className="text-[13px] text-white/[0.48] leading-[1.75] font-light">{c.desc}</p>
