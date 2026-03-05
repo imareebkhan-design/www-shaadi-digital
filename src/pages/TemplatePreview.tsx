@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Navigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { TEMPLATE_REGISTRY, DEMO_DATA } from "@/templates";
+import { TEMPLATE_REGISTRY, DEMO_CONFIG } from "@/templates";
+import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import { useAuth } from "@/contexts/AuthContext";
 
 const TemplatePreview = () => {
@@ -11,8 +12,6 @@ const TemplatePreview = () => {
   const template = templateId ? TEMPLATE_REGISTRY[templateId] : null;
 
   if (!template) return <Navigate to="/templates" replace />;
-
-  const TemplateComponent = template.component;
 
   const handleUseTemplate = () => {
     if (user) {
@@ -49,7 +48,7 @@ const TemplatePreview = () => {
             boxShadow: "0 0 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05)",
           }}
         >
-          <TemplateComponent data={DEMO_DATA} isPreview={true} />
+          <WeddingTemplate config={DEMO_CONFIG} templateId={templateId!} isPreview />
         </div>
       </div>
 

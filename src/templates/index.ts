@@ -13,6 +13,9 @@ import PearlNikah from "./PearlNikah";
 import BlushModern from "./BlushModern";
 
 export type { InvitationData, InvitationEvent, TemplateProps } from "./types";
+export type { WeddingTemplateConfig, CoupleConfig, EventConfig } from "./types";
+export { configToInvitationData, invitationDataToConfig } from "./types";
+export { WeddingTemplate } from "./WeddingTemplate";
 
 export interface TemplateRegistryEntry {
   id: string;
@@ -153,6 +156,27 @@ export const DEMO_DATA: InvitationData = {
     { event_type: "sangeet", event_name: "Sangeet", event_date: "2025-11-14", event_time: "19:00", venue_name: "The Grand Ballroom", venue_address: "The Leela Palace, New Delhi", maps_url: "", is_enabled: true },
     { event_type: "ceremony", event_name: "Vivah", event_date: "2025-11-15", event_time: "21:00", venue_name: "The Leela Palace", venue_address: "Chanakyapuri, New Delhi", maps_url: "", is_enabled: true },
     { event_type: "reception", event_name: "Reception", event_date: "2025-11-16", event_time: "19:00", venue_name: "The Leela Palace", venue_address: "Chanakyapuri, New Delhi", maps_url: "", is_enabled: true },
+  ],
+};
+
+/** Config-format demo data for the public WeddingTemplate API */
+export const DEMO_CONFIG: import("./types").WeddingTemplateConfig = {
+  couple: {
+    brideName: "Ananya",
+    groomName: "Rohan",
+    brideFamily: "Daughter of Shri Ramesh & Smt. Sunita Sharma, New Delhi",
+    groomFamily: "Son of Shri Vijay & Smt. Meena Kapoor, Mumbai",
+    story: "We met on a rainy evening in Delhi, and from that very first cup of chai together, we knew something beautiful had begun.",
+  },
+  weddingDate: "2025-11-15",
+  personalMessage: "Together with our families, we joyfully invite you to celebrate our wedding.",
+  language: "english",
+  events: [
+    { type: "mehndi", name: "Mehndi", date: "2025-11-13", time: "16:00", venueName: "Sharma Residence", venueAddress: "Vasant Kunj, New Delhi" },
+    { type: "haldi", name: "Haldi", date: "2025-11-14", time: "10:00", venueName: "Sharma Residence", venueAddress: "Vasant Kunj, New Delhi" },
+    { type: "sangeet", name: "Sangeet", date: "2025-11-14", time: "19:00", venueName: "The Grand Ballroom", venueAddress: "The Leela Palace, New Delhi" },
+    { type: "ceremony", name: "Vivah", date: "2025-11-15", time: "21:00", venueName: "The Leela Palace", venueAddress: "Chanakyapuri, New Delhi" },
+    { type: "reception", name: "Reception", date: "2025-11-16", time: "19:00", venueName: "The Leela Palace", venueAddress: "Chanakyapuri, New Delhi" },
   ],
 };
 
