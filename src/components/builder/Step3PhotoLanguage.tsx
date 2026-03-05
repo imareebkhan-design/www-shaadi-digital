@@ -151,6 +151,16 @@ const Step3PhotoLanguage = ({ data, onChange, errors }: Props) => {
       <div className="space-y-4 pt-2">
         <div>
           <label className="font-body text-sm font-medium text-foreground block mb-1.5">
+            Dress Code <span className="text-muted-foreground">(optional)</span>
+          </label>
+          <Input
+            placeholder="e.g. Traditional Indian, Pastels, Formal Western"
+            value={data.dresscode_text || ""}
+            onChange={(e) => onChange({ dresscode_text: e.target.value, dresscode_enabled: !!e.target.value.trim() })}
+          />
+        </div>
+        <div>
+          <label className="font-body text-sm font-medium text-foreground block mb-1.5">
             UPI ID for Gifts <span className="text-muted-foreground">(optional)</span>
           </label>
           <Input
