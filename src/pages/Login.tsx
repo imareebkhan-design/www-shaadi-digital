@@ -146,15 +146,24 @@ const Login = () => {
             </Button>
           </div>
 
-          <div className="mt-8 text-center">
+          <div className="mt-8 text-center space-y-3">
             <p className="text-sm text-muted-foreground font-body">
-              Don't have an account?{" "}
+              New here?{" "}
               <Link to="/signup" className="text-primary font-medium hover:underline">
-                Sign up
+                Create your free invitation
+              </Link>
+            </p>
+            <p className="text-sm font-body">
+              <Link to="/templates" className="text-primary font-medium hover:underline">
+                Browse templates →
               </Link>
             </p>
           </div>
         </div>
+
+        <p className="text-sm text-muted-foreground font-body text-center mt-6 leading-relaxed max-w-md mx-auto">
+          Welcome back! Your wedding dashboard is waiting — check live RSVPs, update venue or timing details, and send gentle reminders to guests who haven't responded yet. Everything updates instantly for all your guests.
+        </p>
       </div>
     </div>
   );
