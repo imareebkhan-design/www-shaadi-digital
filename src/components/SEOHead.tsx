@@ -36,6 +36,11 @@ const SEOHead = ({
       {canonical && <link rel="canonical" href={canonical} />}
       <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
+      <meta name="language" content="en-IN" />
+      <meta name="geo.region" content="IN" />
+      <meta name="geo.placename" content="India" />
+      <link rel="alternate" hrefLang="en-in" href="https://shaadi.digital/" />
+
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={ogImage} />
