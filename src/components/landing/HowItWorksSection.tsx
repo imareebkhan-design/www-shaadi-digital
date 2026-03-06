@@ -12,7 +12,7 @@ const HowItWorksSection = () => (
         <div className="section-label justify-center">Simple Process</div>
         <h2 className="section-title text-center">Ready in <em>10 Minutes</em></h2>
         <p className="text-muted-foreground mt-3 text-[15px] max-w-[480px] mx-auto leading-[1.8]">
-          No design skills needed. No complicated tools. Just fill in your details and your invitation is ready.
+          No design skills needed. No complicated tools. Just <a href="/signup" className="text-primary font-medium hover:underline">sign up free</a>, fill in your details and your invitation is ready.
         </p>
       </div>
 

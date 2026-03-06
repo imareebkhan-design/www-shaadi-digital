@@ -219,7 +219,7 @@ const HeroSection = () => {
 
       {/* Description */}
       <p className={`relative z-[2] text-sm text-muted-foreground max-w-[460px] leading-[1.9] mt-3.5 font-light transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${descVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
-        Stunning digital wedding invitations with live RSVP tracking, WhatsApp delivery, and real-time guest management — crafted for every Indian wedding tradition.
+        Stunning digital wedding invitations with live RSVP tracking, WhatsApp delivery, and real-time guest management — crafted for every Indian wedding tradition. <Link to="/signup" className="text-primary font-medium hover:underline">Create yours free</Link>.
       </p>
 
       {/* Actions */}

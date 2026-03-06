@@ -66,6 +66,11 @@ const WhyDigitalSection = () => (
         <p className="text-secondary/60 text-base mt-4 leading-[1.8] italic font-serif">
           Crafted for NRI families, outstation guests, and couples who want every detail of their celebration to feel considered.
         </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a href="/templates" className="text-[12px] tracking-[1px] uppercase font-medium text-[hsl(var(--gold-light))] hover:underline">Browse templates →</a>
+          <span className="text-white/15">|</span>
+          <a href="/login" className="text-[12px] tracking-[1px] uppercase font-medium text-white/40 hover:text-[hsl(var(--gold-light))] transition-colors">Already a member? Sign in →</a>
+        </div>
       </div>
 
       <div className="flex flex-col gap-0.5">
