@@ -117,7 +117,7 @@ const TemplateGallery = () => {
     <div className="min-h-screen" style={{ background: "#F2EDE4" }}>
       <SEOHead
         title="200+ Digital Wedding Invitation Templates | Shaadi.Digital"
-        description="Browse stunning digital wedding invitation templates for Hindu, Muslim, Sikh & South Indian weddings. Choose your style, customise, and share."
+        description="Browse 200+ digital wedding invitation templates for every Indian tradition — Hindu, Muslim, Sikh, South Indian & more. Customize free, pay only when you love it."
         canonical="https://shaadi.digital/templates"
       />
       <Navbar />

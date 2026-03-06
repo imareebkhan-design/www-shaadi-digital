@@ -18,7 +18,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Digital Wedding Invitations India | Shaadi.Digital"
-        description="Create stunning digital wedding invitations for Indian weddings — Hindu, Muslim, Sikh & South Indian. Share via WhatsApp. RSVP tracking, music & more."
+        description="India's most loved digital wedding invitations. 200+ templates for every tradition — Punjabi, South Indian, Muslim & more. WhatsApp delivery, live RSVP tracking. Starting ₹999."
         canonical="https://shaadi.digital/"
       />
       <Navbar />
