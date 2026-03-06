@@ -26,9 +26,15 @@ const CTABanner = () => (
         <Link to="/templates" className="inline-flex items-center gap-2.5 bg-gradient-to-br from-secondary to-[#E8B84B] font-bold text-[11px] tracking-[2px] uppercase px-[52px] py-[18px] rounded-full shadow-[0_12px_40px_rgba(201,148,26,0.35)] hover:shadow-[0_20px_60px_rgba(201,148,26,0.5)] hover:-translate-y-0.5 transition-all duration-300" style={{ color: "hsl(var(--maroon-dark))" }}>
           ❤️ Free Preview — No Card Needed
         </Link>
-        <a href="#templates" className="inline-flex items-center gap-2 text-white/50 text-xs hover:text-[hsl(var(--gold-light))] transition-colors">
-          🔲 Browse all templates first
-        </a>
+        <div className="flex items-center gap-4">
+          <Link to="/templates" className="inline-flex items-center gap-2 text-white/50 text-xs hover:text-[hsl(var(--gold-light))] transition-colors">
+            🔲 Browse all templates
+          </Link>
+          <span className="text-white/15">·</span>
+          <Link to="/login" className="inline-flex items-center gap-2 text-white/50 text-xs hover:text-[hsl(var(--gold-light))] transition-colors">
+            Already a member? Sign in
+          </Link>
+        </div>
       </div>
 
       <div className="flex items-center justify-center gap-5 mt-12 flex-wrap">
