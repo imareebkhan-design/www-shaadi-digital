@@ -15,6 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import LiveInvite from "./pages/LiveInvite";
 import RsvpPage from "./pages/RsvpPage";
 import Pricing from "./pages/Pricing";
+import BlogIndex from "./pages/BlogIndex";
 import NotFound from "./pages/NotFound";
 import BrandBadge from "@/components/BrandBadge";
 
