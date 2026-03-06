@@ -180,8 +180,12 @@ const SignUp = () => {
                 Log in
               </Link>
             </p>
-          </div>
         </div>
+
+        <p className="text-sm text-muted-foreground font-body text-center mt-6 leading-relaxed max-w-md mx-auto">
+          Already browsing? You're moments away from a beautiful digital wedding invitation. Join 50,000+ couples who chose Shaadi.Digital — pick your template, add your details, and share via WhatsApp in under 10 minutes. Preview is completely free, no card required.
+        </p>
+      </div>
       </div>
     </div>
   );
