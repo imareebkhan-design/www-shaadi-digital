@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const faqs = [
   { q: "Kya mujhe koi design ya technical knowledge chahiye?", a: '<strong>Bilkul nahi.</strong> Platform itni simple hai ki koi bhi — dadi ho ya teenager — bina kisi help ke 10 minute mein poora invite ready kar sakta hai. Template choose karo, naam aur details bharo, photos upload karo — bas itna. Koi coding nahi, koi design software nahi.' },
@@ -18,6 +19,46 @@ const FAQSection = () => {
 
   return (
     <section id="faq" className="section-padding bg-background relative overflow-hidden">
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How do I send a digital wedding invitation on WhatsApp in India?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "With Shaadi.Digital, you get a unique WhatsApp-ready link after choosing your template. Share it directly to any family or friend group — guests open it instantly with no app download needed."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How much does a digital wedding invitation cost in India?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Shaadi.Digital plans start at ₹999 one-time with no per-guest fees. Preview is completely free — you only pay when you love it."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I track RSVPs from a digital wedding invitation?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Shaadi.Digital includes a live RSVP dashboard where you can see who is attending, who declined, and who hasn't responded — in real time."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Which is the best digital wedding invitation platform in India?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Shaadi.Digital is India's most loved digital wedding invitation platform, trusted by 50,000+ couples with a 4.9/5 rating. It supports every Indian tradition including Hindu, Muslim, Sikh, and South Indian weddings."
+              }
+            }
+          ]
+        })}</script>
+      </Helmet>
       <div className="absolute inset-0 pointer-events-none" style={{
         background: "radial-gradient(ellipse 60% 40% at 50% 100%, rgba(201,148,26,0.06) 0%, transparent 70%)",
       }} />
