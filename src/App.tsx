@@ -16,6 +16,7 @@ import LiveInvite from "./pages/LiveInvite";
 import RsvpPage from "./pages/RsvpPage";
 import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
+import BrandBadge from "@/components/BrandBadge";
 
 const queryClient = new QueryClient();
 
