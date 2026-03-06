@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "@/assets/shaadi-digital-logo.svg";
 
 const navLinks = [
   { label: "Templates", href: "#templates" },
@@ -30,8 +29,8 @@ const Navbar = () => {
         shadow ? "shadow-[0_4px_32px_rgba(0,0,0,0.08)]" : ""
       }`}
     >
-      <Link to="/">
-        <img src={logo} alt="Shaadi.Digital" className="h-10 w-auto" />
+      <Link to="/" className="font-display text-[22px] font-bold tracking-[0.5px] text-primary">
+        Shaadi<span className="text-secondary">.</span>Digital
       </Link>
 
       {/* Desktop links */}
