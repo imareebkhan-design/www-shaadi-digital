@@ -82,37 +82,100 @@ const productSchemas = [
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": "Shaadi.Digital — Shubh Plan",
-    "description": "Digital wedding invitation with RSVP tracking, up to 3 events, and WhatsApp sharing.",
+    "name": "Shaadi.Digital Shubh Plan",
+    "description": "Digital wedding invitation with 1 premium template, up to 100 RSVP responses, 3 event pages, WhatsApp-ready share link and Google Maps integration.",
     "image": "https://shaadi.digital/og-image.jpg",
+    "sku": "SD-SHUBH-999",
     "brand": { "@type": "Brand", "name": "Shaadi.Digital" },
-    "sku": "SHUBH-PLAN-999",
-    "mpn": "SD-001",
-    "offers": { "@type": "Offer", "url": "https://shaadi.digital/signup", "priceCurrency": "INR", "price": "999", "priceValidUntil": "2026-12-31", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/NewCondition", "seller": { "@type": "Organization", "name": "Shaadi.Digital" } },
+    "offers": {
+      "@type": "Offer",
+      "url": "https://shaadi.digital/signup",
+      "priceCurrency": "INR",
+      "price": "999",
+      "priceValidUntil": "2026-12-31",
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition",
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "IN",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "INR" },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "DAY" },
+          "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "DAY" }
+        }
+      }
+    },
     "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "50000" }
   },
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": "Shaadi.Digital — Shaadi Plan",
-    "description": "Digital wedding invitation with unlimited RSVPs, unlimited events, background music, photo gallery and WhatsApp broadcast export.",
+    "name": "Shaadi.Digital Shaadi Plan",
+    "description": "Digital wedding invitation with unlimited RSVPs, unlimited event pages, background music, photo gallery, WhatsApp broadcast export and auto guest reminders.",
     "image": "https://shaadi.digital/og-image.jpg",
+    "sku": "SD-SHAADI-1999",
     "brand": { "@type": "Brand", "name": "Shaadi.Digital" },
-    "sku": "SHAADI-PLAN-1999",
-    "mpn": "SD-002",
-    "offers": { "@type": "Offer", "url": "https://shaadi.digital/signup", "priceCurrency": "INR", "price": "1999", "priceValidUntil": "2026-12-31", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/NewCondition", "seller": { "@type": "Organization", "name": "Shaadi.Digital" } },
+    "offers": {
+      "@type": "Offer",
+      "url": "https://shaadi.digital/signup",
+      "priceCurrency": "INR",
+      "price": "1999",
+      "priceValidUntil": "2026-12-31",
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition",
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "IN",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "INR" },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "DAY" },
+          "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "DAY" }
+        }
+      }
+    },
     "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "50000" }
   },
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": "Shaadi.Digital — Shaahi Plan",
-    "description": "Premium digital wedding invitation with everything in Shaadi plus video intro, custom domain, dresscode section, and priority support.",
+    "name": "Shaadi.Digital Shaahi Plan",
+    "description": "Premium digital wedding invitation with custom design by our team, cinematic video intro, digital gift registry, live photo wall, NRI timezone detection and dedicated relationship manager.",
     "image": "https://shaadi.digital/og-image.jpg",
+    "sku": "SD-SHAAHI-3499",
     "brand": { "@type": "Brand", "name": "Shaadi.Digital" },
-    "sku": "SHAAHI-PLAN-3499",
-    "mpn": "SD-003",
-    "offers": { "@type": "Offer", "url": "https://shaadi.digital/signup", "priceCurrency": "INR", "price": "3499", "priceValidUntil": "2026-12-31", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/NewCondition", "seller": { "@type": "Organization", "name": "Shaadi.Digital" } },
+    "offers": {
+      "@type": "Offer",
+      "url": "https://shaadi.digital/signup",
+      "priceCurrency": "INR",
+      "price": "3499",
+      "priceValidUntil": "2026-12-31",
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition",
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "IN",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "INR" },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "DAY" },
+          "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "DAY" }
+        }
+      }
+    },
     "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "50000" }
   }
 ];
