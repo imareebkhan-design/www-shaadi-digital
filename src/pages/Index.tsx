@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
@@ -40,6 +41,19 @@ const Index = () => {
           "url": "https://shaadi.digital"
         }}
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Shaadi.Digital",
+          "url": "https://shaadi.digital",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://shaadi.digital/templates?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        })}</script>
+      </Helmet>
       <Navbar />
       <HeroSection />
       <PhoneDemoSection />
