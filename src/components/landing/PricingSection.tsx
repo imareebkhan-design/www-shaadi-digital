@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Check = () => (
   <div className="w-4 h-4 rounded-full bg-secondary/[0.12] border border-secondary/25 flex items-center justify-center shrink-0 mt-[1px]">
@@ -77,8 +78,43 @@ const plans = [
   },
 ];
 
+const productSchemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Shaadi.Digital — Shubh Plan",
+    "description": "Digital wedding invitation with RSVP tracking, up to 3 events, and WhatsApp sharing.",
+    "brand": { "@type": "Brand", "name": "Shaadi.Digital" },
+    "offers": { "@type": "Offer", "url": "https://shaadi.digital/signup", "priceCurrency": "INR", "price": "999", "availability": "https://schema.org/InStock", "priceValidUntil": "2026-12-31" },
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "50000" }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Shaadi.Digital — Shaadi Plan",
+    "description": "Digital wedding invitation with unlimited RSVPs, unlimited events, background music, photo gallery, and WhatsApp broadcast export.",
+    "brand": { "@type": "Brand", "name": "Shaadi.Digital" },
+    "offers": { "@type": "Offer", "url": "https://shaadi.digital/signup", "priceCurrency": "INR", "price": "1999", "availability": "https://schema.org/InStock", "priceValidUntil": "2026-12-31" },
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "50000" }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Shaadi.Digital — Shaahi Plan",
+    "description": "Premium digital wedding invitation with everything in Shaadi plus video intro, custom domain, dresscode section, and priority support.",
+    "brand": { "@type": "Brand", "name": "Shaadi.Digital" },
+    "offers": { "@type": "Offer", "url": "https://shaadi.digital/signup", "priceCurrency": "INR", "price": "3499", "availability": "https://schema.org/InStock", "priceValidUntil": "2026-12-31" },
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "50000" }
+  }
+];
+
 const PricingSection = () => (
   <section id="pricing" className="section-padding bg-background relative overflow-hidden">
+    <Helmet>
+      {productSchemas.map((schema, i) => (
+        <script key={i} type="application/ld+json">{JSON.stringify(schema)}</script>
+      ))}
+    </Helmet>
     <div className="absolute inset-0 pointer-events-none" style={{
       background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,148,26,0.07) 0%, transparent 60%)",
     }} />
