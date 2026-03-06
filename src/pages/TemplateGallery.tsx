@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import SEOHead from "@/components/SEOHead";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
@@ -114,6 +115,11 @@ const TemplateGallery = () => {
 
   return (
     <div className="min-h-screen" style={{ background: "#F2EDE4" }}>
+      <SEOHead
+        title="Wedding Invitation Templates — Shaadi.Digital"
+        description="Browse stunning digital wedding invitation templates for Hindu, Muslim, Sikh & South Indian weddings. Choose your style, customise, and share."
+        canonical="https://shaadi.digital/templates"
+      />
       <Navbar />
       <FloatingHearts />
 

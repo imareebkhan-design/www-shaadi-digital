@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Navigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { TEMPLATE_REGISTRY, DEMO_CONFIG } from "@/templates";
+import SEOHead from "@/components/SEOHead";
 import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -24,6 +25,11 @@ const TemplatePreview = () => {
 
   return (
     <div className="min-h-screen" style={{ background: "#0f0f0f" }}>
+      <SEOHead
+        title={`${template.name} Template — Shaadi.Digital`}
+        description={`Preview the ${template.name} wedding invitation template. Perfect for Indian weddings.`}
+        canonical={`https://shaadi.digital/templates/preview/${templateId}`}
+      />
       {/* Fixed top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-8 py-3 border-b border-white/10" style={{ background: "rgba(15,15,15,0.95)", backdropFilter: "blur(12px)" }}>
         <button onClick={() => navigate("/templates")} className="flex items-center gap-2 text-white/60 hover:text-white text-sm font-body transition-colors">

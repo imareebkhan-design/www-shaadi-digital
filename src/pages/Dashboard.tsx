@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import SEOHead from "@/components/SEOHead";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -170,6 +171,11 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Dashboard — Shaadi.Digital"
+        description="Manage your wedding invitation, track RSVPs, and share your invite link from your Shaadi.Digital dashboard."
+        noIndex
+      />
       {/* Header */}
       <header className="border-b border-border bg-card px-6 md:px-16 py-4 flex items-center justify-between">
         <Link to="/" className="font-display text-xl font-bold text-primary">

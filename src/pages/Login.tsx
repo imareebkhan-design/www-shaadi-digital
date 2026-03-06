@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEOHead from "@/components/SEOHead";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
@@ -47,6 +48,12 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
+      <SEOHead
+        title="Log In — Shaadi.Digital"
+        description="Log in to your Shaadi.Digital account to manage your wedding invitation, track RSVPs, and more."
+        canonical="https://shaadi.digital/login"
+        noIndex
+      />
       <div className="absolute inset-0 mandala-bg opacity-30" />
 
       <div className="w-full max-w-md relative z-10">

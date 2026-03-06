@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import SEOHead from "@/components/SEOHead";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -308,6 +309,11 @@ const InvitationBuilder = () => {
 
   return (
     <div className="min-h-screen bg-background" onBlur={handleBlur}>
+      <SEOHead
+        title="Build Your Invitation — Shaadi.Digital"
+        description="Customise your digital wedding invitation with couple names, events, photos, and more."
+        noIndex
+      />
       {/* Save status indicator */}
       {saveStatus !== "idle" && (
         <div className="fixed top-3 right-3 z-50 flex items-center gap-1.5 bg-card border border-border px-3 py-1.5 shadow-sm font-body text-xs text-muted-foreground">
