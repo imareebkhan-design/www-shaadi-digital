@@ -17,7 +17,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Shaadi.Digital — Premium Digital Wedding Invitations for India"
+        title="Digital Wedding Invitations India | Shaadi.Digital"
         description="Create stunning digital wedding invitations for Indian weddings — Hindu, Muslim, Sikh & South Indian. Share via WhatsApp. RSVP tracking, music & more."
         canonical="https://shaadi.digital/"
       />

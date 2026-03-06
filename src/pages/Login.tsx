@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
       <SEOHead
-        title="Log In — Shaadi.Digital"
+        title="Sign In to Your Wedding Invitation | Shaadi.Digital"
         description="Log in to your Shaadi.Digital account to manage your wedding invitation, track RSVPs, and more."
         canonical="https://shaadi.digital/login"
         noIndex
