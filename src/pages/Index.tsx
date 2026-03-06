@@ -20,6 +20,25 @@ const Index = () => {
         title="Digital Wedding Invitations India | Shaadi.Digital"
         description="India's most loved digital wedding invitations. 200+ templates for every tradition — Punjabi, South Indian, Muslim & more. WhatsApp delivery, live RSVP tracking. Starting ₹999."
         canonical="https://shaadi.digital/"
+        schemaJson={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Shaadi.Digital",
+          "description": "India's most loved digital wedding invitation platform with 200+ templates, WhatsApp delivery, and live RSVP tracking.",
+          "applicationCategory": "Wedding Planning",
+          "operatingSystem": "Web, iOS, Android",
+          "offers": {
+            "@type": "Offer",
+            "price": "999",
+            "priceCurrency": "INR"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "50000"
+          },
+          "url": "https://shaadi.digital"
+        }}
       />
       <Navbar />
       <HeroSection />
