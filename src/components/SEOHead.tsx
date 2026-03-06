@@ -34,7 +34,7 @@ const SEOHead = ({
       <meta name="description" content={description} />
       <meta name="robots" content={robots} />
       {canonical && <link rel="canonical" href={canonical} />}
-      <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
