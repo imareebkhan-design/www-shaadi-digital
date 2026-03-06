@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="0 0 520 90" width="520" height="90" role="img" aria-label="Shaadi.Digital">
+
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;display=block');
+      .s { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 68px; font-weight: 700; letter-spacing: 1px; }
+    </style>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#E8B84B"/>
+      <stop offset="55%"  stop-color="#C9941A"/>
+      <stop offset="100%" stop-color="#A8790F"/>
+    </linearGradient>
+    <filter id="f">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#4A0E1A" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Single text element — no gap between words -->
+  <text class="s" x="16" y="70" filter="url(#f)">
+    <tspan fill="#7B1C2E">Shaadi</tspan><tspan fill="url(#g)">.Digital</tspan>
+  </text>
+
+</svg>
