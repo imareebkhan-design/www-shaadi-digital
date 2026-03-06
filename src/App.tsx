@@ -15,6 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import LiveInvite from "./pages/LiveInvite";
 import RsvpPage from "./pages/RsvpPage";
 import Pricing from "./pages/Pricing";
+import BlogIndex from "./pages/BlogIndex";
 import NotFound from "./pages/NotFound";
 import BrandBadge from "@/components/BrandBadge";
 
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="/invite/:slug" element={<LiveInvite />} />
               <Route path="/rsvp/:slug" element={<RsvpPage />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/blog" element={<BlogIndex />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
