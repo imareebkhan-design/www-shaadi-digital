@@ -11,7 +11,7 @@ interface SEOHeadProps {
 }
 
 const DEFAULTS = {
-  title: "Shaadi.Digital — Premium Digital Wedding Invitations for India",
+  title: "Digital Wedding Invitations India | Shaadi.Digital",
   description: "Create stunning digital wedding invitations for Indian weddings — Hindu, Muslim, Sikh & South Indian. Share via WhatsApp. RSVP tracking, music & more.",
   ogImage: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/90420783-7e49-4f72-8261-fee2b34d3027/id-preview-4ef72066--79578699-4188-4ad4-ba7e-62c60b946282.lovable.app-1772789937634.png",
   ogSiteName: "Shaadi.Digital",
