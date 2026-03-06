@@ -9,12 +9,18 @@ import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import RsvpForm from "@/components/invite/RsvpForm";
 import type { Tables } from "@/integrations/supabase/types";
 
-type Invitation = Tables<"invitations">;
+type PublicInvitation = Pick<Tables<"invitations">, 
+  "id" | "bride_name" | "groom_name" | "bride_family" | "groom_family" | 
+  "personal_message" | "our_story" | "wedding_date" | "photo_url" | 
+  "gallery_photos" | "language" | "upi_id" | "gift_registry_url" | 
+  "dresscode_enabled" | "dresscode_text" | "dresscode_colors" | 
+  "music_url" | "template_id" | "slug" | "status"
+>;
 type Event = Tables<"events">;
 
 const LiveInvite = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [invitation, setInvitation] = useState<Invitation | null>(null);
+  const [invitation, setInvitation] = useState<PublicInvitation | null>(null);
   const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -25,7 +31,7 @@ const LiveInvite = () => {
     const fetch = async () => {
       const { data: inv } = await supabase
         .from("invitations")
-        .select("*")
+        .select("id, bride_name, groom_name, bride_family, groom_family, personal_message, our_story, wedding_date, photo_url, gallery_photos, language, upi_id, gift_registry_url, dresscode_enabled, dresscode_text, dresscode_colors, music_url, template_id, slug, status")
         .eq("slug", slug)
         .eq("status", "published")
         .maybeSingle();
@@ -45,17 +51,17 @@ const LiveInvite = () => {
         bride_family: inv.bride_family || "",
         groom_family: inv.groom_family || "",
         personal_message: inv.personal_message || undefined,
-        our_story: (inv as any).our_story || undefined,
+        our_story: inv.our_story || undefined,
         wedding_date: inv.wedding_date || "",
         photo_url: inv.photo_url || undefined,
-        gallery_photos: (inv as any).gallery_photos || [],
+        gallery_photos: (inv.gallery_photos as string[]) || [],
         language: inv.language || "english",
         upi_id: inv.upi_id || undefined,
         gift_registry_url: inv.gift_registry_url || undefined,
-        dresscode_enabled: (inv as any).dresscode_enabled || false,
-        dresscode_text: (inv as any).dresscode_text || undefined,
-        dresscode_colors: (inv as any).dresscode_colors || [],
-        music_url: (inv as any).music_url || undefined,
+        dresscode_enabled: inv.dresscode_enabled || false,
+        dresscode_text: inv.dresscode_text || undefined,
+        dresscode_colors: (inv.dresscode_colors as string[]) || [],
+        music_url: inv.music_url || undefined,
         events: (events || []).map((e: Event) => ({
           event_type: e.event_type,
           event_name: e.event_name,
