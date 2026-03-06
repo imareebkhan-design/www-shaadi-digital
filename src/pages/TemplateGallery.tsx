@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/landing/Navbar";
@@ -120,6 +121,16 @@ const TemplateGallery = () => {
         description="Browse 200+ digital wedding invitation templates for every Indian tradition — Hindu, Muslim, Sikh, South Indian & more. Customize free, pay only when you love it."
         canonical="https://shaadi.digital/templates"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://shaadi.digital" },
+            { "@type": "ListItem", "position": 2, "name": "Templates", "item": "https://shaadi.digital/templates" }
+          ]
+        })}</script>
+      </Helmet>
       <Navbar />
       <FloatingHearts />
 

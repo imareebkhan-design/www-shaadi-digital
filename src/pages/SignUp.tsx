@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -70,6 +71,16 @@ const SignUp = () => {
         canonical="https://shaadi.digital/signup"
         noIndex
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://shaadi.digital" },
+            { "@type": "ListItem", "position": 2, "name": "Sign Up", "item": "https://shaadi.digital/signup" }
+          ]
+        })}</script>
+      </Helmet>
       <div className="absolute inset-0 mandala-bg opacity-30" />
 
       <div className="w-full max-w-md relative z-10">
