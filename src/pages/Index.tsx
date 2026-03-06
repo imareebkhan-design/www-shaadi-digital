@@ -1,3 +1,4 @@
+import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import PhoneDemoSection from "@/components/landing/PhoneDemoSection";
@@ -15,6 +16,13 @@ import WhatsAppButton from "@/components/landing/WhatsAppButton";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Shaadi.Digital — Premium Digital Wedding Invitations for India"
+        description="Create stunning digital wedding invitations for Indian weddings — Hindu, Muslim, Sikh & South Indian. Share via WhatsApp. RSVP tracking, music & more."
+        canonical="https://shaadi.digital/"
+        ogTitle="Shaadi.Digital — Premium Digital Wedding Invitations for India"
+        ogDescription="Create stunning digital wedding invitations for Indian weddings. Beautiful templates, WhatsApp sharing, RSVP tracking & more."
+      />
       <Navbar />
       <HeroSection />
       <PhoneDemoSection />
