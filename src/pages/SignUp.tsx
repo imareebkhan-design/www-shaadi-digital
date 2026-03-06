@@ -65,7 +65,7 @@ const SignUp = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
       <SEOHead
-        title="Sign Up — Shaadi.Digital"
+        title="Create Free Wedding Invitation | Shaadi.Digital"
         description="Create your Shaadi.Digital account and start building your dream digital wedding invitation in minutes."
         canonical="https://shaadi.digital/signup"
         noIndex
