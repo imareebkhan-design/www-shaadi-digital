@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import logo from "@/assets/shaadi-digital-logo.svg";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -32,8 +33,8 @@ const Footer = () => {
       <div className="px-6 md:px-16 py-[60px_60px_48px]">
         <div className="max-w-[1100px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[2.2fr_1fr_1fr_1fr] gap-12">
           <div>
-            <Link to="/" className="font-display text-[22px] font-bold text-white block mb-3.5">
-              Shaadi<span className="text-secondary">.</span>Digital
+            <Link to="/" className="block mb-3.5">
+              <img src={logo} alt="Shaadi.Digital" className="h-8 w-auto brightness-0 invert" />
             </Link>
             <p className="text-[13px] text-white/30 leading-[1.85] font-light max-w-[280px] mb-6">
               India's most loved digital wedding invitation platform — beautiful, personal, and crafted for every Indian tradition, from Punjabi Shaadi to South Indian Kalyanam.
