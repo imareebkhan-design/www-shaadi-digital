@@ -39,12 +39,21 @@ const Navbar = () => {
       <ul className="hidden md:flex gap-8 list-none">
         {navLinks.map((l) => (
           <li key={l.href}>
-            <button
-              onClick={() => scrollTo(l.href)}
-              className="text-[13px] font-medium tracking-[0.8px] uppercase text-foreground hover:text-secondary transition-colors"
-            >
-              {l.label}
-            </button>
+            {"isRoute" in l && l.isRoute ? (
+              <Link
+                to={l.href}
+                className="text-[13px] font-medium tracking-[0.8px] uppercase text-foreground hover:text-secondary transition-colors"
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <button
+                onClick={() => scrollTo(l.href)}
+                className="text-[13px] font-medium tracking-[0.8px] uppercase text-foreground hover:text-secondary transition-colors"
+              >
+                {l.label}
+              </button>
+            )}
           </li>
         ))}
       </ul>

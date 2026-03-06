@@ -40,6 +40,7 @@ const App = () => (
               <Route path="/invite/:slug" element={<LiveInvite />} />
               <Route path="/rsvp/:slug" element={<RsvpPage />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/blog" element={<BlogIndex />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
