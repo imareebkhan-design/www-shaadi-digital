@@ -12,6 +12,7 @@ interface TemplateData {
   bg: string;
   badge?: { label: string; type: "limited" | "new" };
   slides: TemplateSlide[];
+  altText: string;
 }
 
 const templates: TemplateData[] = [
@@ -20,6 +21,7 @@ const templates: TemplateData[] = [
     tags: ["North Indian", "Traditional"],
     bg: "linear-gradient(160deg,#3A0512 0%,#6B1428 50%,#3A0512 100%)",
     badge: { label: "👑 Limited Ed.", type: "limited" },
+    altText: "Royal Maroon digital wedding invitation template - North Indian traditional style",
     slides: [
       {
         type: "names",
@@ -68,6 +70,7 @@ const templates: TemplateData[] = [
     tags: ["South Indian", "Elegant"],
     bg: "linear-gradient(160deg,#0D2818 0%,#1A5C30 60%,#0D2818 100%)",
     badge: { label: "✦ New", type: "new" },
+    altText: "Emerald South digital wedding invitation - South Indian elegant design",
     slides: [
       {
         type: "names",
@@ -96,6 +99,7 @@ const templates: TemplateData[] = [
     name: "Midnight Blue",
     tags: ["Modern", "Minimalist"],
     bg: "linear-gradient(160deg,#0a0d1a,#0e1a3a,#1c2d6b)",
+    altText: "Midnight Blue modern minimalist digital wedding invitation",
     slides: [
       {
         type: "names",
@@ -117,6 +121,7 @@ const templates: TemplateData[] = [
     name: "Golden Sehra",
     tags: ["Punjabi", "Sikh"],
     bg: "linear-gradient(160deg,#2A1800,#6B4000,#2A1800)",
+    altText: "Golden Sehra Punjabi Sikh digital wedding invitation template",
     slides: [
       {
         type: "names",
@@ -145,6 +150,7 @@ const templates: TemplateData[] = [
     name: "Pearl Nikah",
     tags: ["Muslim", "Elegant"],
     bg: "linear-gradient(160deg,#1a0a16 0%,#3a0e2e 50%,#5C1040 100%)",
+    altText: "Pearl Nikah Muslim digital wedding invitation - elegant design",
     slides: [
       {
         type: "names",
@@ -168,6 +174,7 @@ const templates: TemplateData[] = [
     name: "Teal Luxury",
     tags: ["Marathi", "Royal"],
     bg: "linear-gradient(160deg,#0a1a16 0%,#0e3a2e 50%,#1c6b52 100%)",
+    altText: "Teal Luxury Marathi royal digital wedding invitation template",
     slides: [
       {
         type: "names",
@@ -214,10 +221,11 @@ const TemplateCard = ({ t }: { t: TemplateData }) => {
   return (
     <Link
       to="/templates"
+      aria-label={t.altText}
       className="rounded-2xl overflow-hidden bg-card border border-secondary/15 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_24px_60px_rgba(92,26,26,0.16)] hover:border-secondary block group flex flex-col"
     >
       {/* Preview area — 9:16 aspect ratio */}
-      <div className="relative overflow-hidden shrink-0" style={{ aspectRatio: "9/16", background: t.bg }}>
+      <div className="relative overflow-hidden shrink-0" role="img" aria-label={t.altText} style={{ aspectRatio: "9/16", background: t.bg }}>
         {/* Mandala overlay */}
         <div className="absolute inset-0 pointer-events-none" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='100' cy='100' r='90' fill='none' stroke='rgba(201,148,26,0.12)' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='70' fill='none' stroke='rgba(201,148,26,0.09)' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='50' fill='none' stroke='rgba(201,148,26,0.07)' stroke-width='1'/%3E%3Cline x1='100' y1='10' x2='100' y2='190' stroke='rgba(201,148,26,0.05)' stroke-width='0.5'/%3E%3Cline x1='10' y1='100' x2='190' y2='100' stroke='rgba(201,148,26,0.05)' stroke-width='0.5'/%3E%3C/svg%3E")`,
