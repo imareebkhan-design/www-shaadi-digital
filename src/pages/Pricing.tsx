@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
@@ -86,6 +87,11 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Pricing — Shaadi.Digital | Plans Starting at ₹999"
+        description="Simple, transparent pricing for your digital wedding invitation. No hidden charges, no per-guest fees. Plans from ₹999."
+        canonical="https://shaadi.digital/pricing"
+      />
       <Navbar />
 
       {/* Pricing Cards */}

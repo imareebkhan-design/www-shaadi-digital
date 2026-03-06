@@ -20,8 +20,6 @@ const Index = () => {
         title="Shaadi.Digital — Premium Digital Wedding Invitations for India"
         description="Create stunning digital wedding invitations for Indian weddings — Hindu, Muslim, Sikh & South Indian. Share via WhatsApp. RSVP tracking, music & more."
         canonical="https://shaadi.digital/"
-        ogTitle="Shaadi.Digital — Premium Digital Wedding Invitations for India"
-        ogDescription="Create stunning digital wedding invitations for Indian weddings. Beautiful templates, WhatsApp sharing, RSVP tracking & more."
       />
       <Navbar />
       <HeroSection />

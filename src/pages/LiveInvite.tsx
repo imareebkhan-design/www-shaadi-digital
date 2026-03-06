@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { TEMPLATE_REGISTRY } from "@/templates";
 import type { InvitationData } from "@/templates/types";
@@ -130,6 +131,12 @@ const LiveInvite = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title={`${brideName} & ${groomName}'s Wedding Invitation — Shaadi.Digital`}
+        description={`You're invited to ${brideName} & ${groomName}'s wedding celebration. View details and RSVP.`}
+        canonical={`https://shaadi.digital/invite/${slug}`}
+        ogImage={config.couple.photoUrl || undefined}
+      />
       <WeddingTemplate config={config} templateId={templateId} />
 
       <div id="rsvp-form">

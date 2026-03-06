@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import RsvpForm from "@/components/invite/RsvpForm";
@@ -49,6 +50,11 @@ const RsvpPage = () => {
 
   return (
     <div className="min-h-screen bg-background py-12 px-4">
+      <SEOHead
+        title={`RSVP — ${brideName} & ${groomName}'s Wedding`}
+        description={`RSVP for ${brideName} & ${groomName}'s wedding celebration.`}
+        noIndex
+      />
       <div className="max-w-md mx-auto text-center mb-8">
         <p className="font-display text-2xl font-bold" style={{ color: "hsl(var(--maroon-dark))" }}>
           {brideName} & {groomName}
