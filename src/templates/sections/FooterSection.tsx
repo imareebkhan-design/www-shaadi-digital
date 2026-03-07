@@ -11,7 +11,7 @@ interface Props {
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const FooterSection = ({ brideName, groomName, weddingDate, events }: Props) => {
+const FooterSection = ({ brideName, groomName, weddingDate, events, personalMessage }: Props) => {
   const inviteUrl = typeof window !== "undefined" ? window.location.href : "";
   const enabledEvents = events.filter((e) => e.is_enabled);
 
