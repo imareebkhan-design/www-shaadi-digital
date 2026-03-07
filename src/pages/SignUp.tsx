@@ -74,7 +74,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8 relative overflow-hidden">
       <SEOHead
         title="Create Free Wedding Invitation | Shaadi.Digital"
         description="Sign up free and design your digital wedding invitation in 10 minutes. 200+ templates, WhatsApp delivery & live RSVP tracking. Trusted by 50,000+ couples."
