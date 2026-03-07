@@ -225,7 +225,7 @@ const PricingSection = () => {
               {p.name}
             </div>
 
-            <div className={`font-display text-[52px] font-bold leading-none tracking-[-2px] ${p.featured ? "text-white" : ""}`} style={!p.featured ? { color: "hsl(var(--maroon-dark))" } : undefined}>
+            <div className={`font-display text-[36px] md:text-[52px] font-bold leading-none tracking-[-2px] ${p.featured ? "text-white" : ""}`} style={!p.featured ? { color: "hsl(var(--maroon-dark))" } : undefined}>
               <span className="font-display text-xl align-super font-normal tracking-normal">₹</span>{p.price}
             </div>
 
