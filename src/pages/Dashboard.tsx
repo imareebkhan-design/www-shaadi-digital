@@ -185,6 +185,7 @@ const Dashboard = () => {
           Shaadi<span className="text-secondary">.</span>Digital
         </Link>
         <div className="flex items-center gap-4">
+          <PlanBadge />
           <span className="font-body text-sm text-muted-foreground hidden md:block">
             {user?.email}
           </span>
