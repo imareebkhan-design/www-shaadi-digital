@@ -46,7 +46,7 @@ const plans = [
     ],
   },
   {
-    id: "elite",
+    id: "shaahi" as PlanId,
     name: "Elite",
     price: "3,499",
     cta: "Get Started",
