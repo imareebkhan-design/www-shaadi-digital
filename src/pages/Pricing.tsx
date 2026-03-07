@@ -84,7 +84,7 @@ const faqs = [
 
 const Pricing = () => {
   const { user } = useAuth();
-  const ctaLink = user ? "/dashboard" : "/templates";
+  const { openCheckout } = useRazorpay();
 
   return (
     <div className="min-h-screen bg-background">
