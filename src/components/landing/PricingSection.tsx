@@ -59,6 +59,7 @@ const plans = [
     note: "Preview free · No card needed",
   },
   {
+    planId: "shaahi" as PlanId,
     name: "Shaahi",
     nameHindi: "शाही",
     price: "3,499",
