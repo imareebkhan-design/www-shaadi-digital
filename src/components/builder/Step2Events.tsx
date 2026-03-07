@@ -1,7 +1,8 @@
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Calendar, Clock, MapPin, Link as LinkIcon } from "lucide-react";
-import { BuilderFormData, EventData } from "@/types/builder";
+import { Calendar, Clock, MapPin, Link as LinkIcon, Tag, FileText } from "lucide-react";
+import { BuilderFormData, EventData, DEFAULT_TAGLINES } from "@/types/builder";
 
 interface Props {
   data: BuilderFormData;
@@ -34,7 +35,6 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                 <Switch
                   checked={event.is_enabled}
                   onCheckedChange={(checked) => {
-                    // Don't allow disabling ceremony
                     if (event.event_type === "ceremony" && !checked) return;
                     updateEvent(index, { is_enabled: checked });
                   }}
@@ -51,6 +51,28 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
             {/* Expanded fields */}
             {event.is_enabled && (
               <div className="px-4 pb-4 space-y-4 border-t border-border pt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="font-body text-xs text-muted-foreground flex items-center gap-1.5 mb-1">
+                      <Tag className="w-3 h-3" /> Tagline
+                    </label>
+                    <Input
+                      placeholder={DEFAULT_TAGLINES[event.event_type] || "e.g. A beautiful celebration"}
+                      value={event.tagline || ""}
+                      onChange={(e) => updateEvent(index, { tagline: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-body text-xs text-muted-foreground flex items-center gap-1.5 mb-1">
+                      <FileText className="w-3 h-3" /> Short Description
+                    </label>
+                    <Input
+                      placeholder="e.g. An intimate afternoon of art and celebration"
+                      value={event.description || ""}
+                      onChange={(e) => updateEvent(index, { description: e.target.value })}
+                    />
+                  </div>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="font-body text-xs text-muted-foreground flex items-center gap-1.5 mb-1">
