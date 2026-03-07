@@ -16,6 +16,8 @@ import {
   LogOut, Copy, ExternalLink, Edit, Share2, Sparkles,
   Users, Download, Plus, ArrowUpRight
 } from "lucide-react";
+import PlanBadge from "@/components/PlanBadge";
+import { usePlan } from "@/contexts/PlanContext";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Invitation = Tables<"invitations">;
