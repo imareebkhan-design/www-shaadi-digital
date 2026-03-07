@@ -321,6 +321,13 @@ openPreview("lides={1}>
       </main>
 
       <Footer />
+
+      {previewTemplateId && (
+        <TemplatePreviewModal
+          templateId={previewTemplateId}
+          onClose={() => setPreviewTemplateId(null)}
+        />
+      )}
     </div>
   );
 };
