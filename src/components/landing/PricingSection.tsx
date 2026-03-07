@@ -274,6 +274,7 @@ const PricingSection = () => {
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default PricingSection;
