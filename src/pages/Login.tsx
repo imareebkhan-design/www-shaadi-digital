@@ -125,7 +125,7 @@ const Login = () => {
             <Button
               onClick={handleLogin}
               disabled={loading}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-11 font-body"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-none min-h-[52px] h-auto font-body"
             >
               {loading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : null}
               Log In
