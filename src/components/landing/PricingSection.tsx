@@ -205,11 +205,11 @@ const PricingSection = () => {
         <p className="text-muted-foreground mt-3 text-[15px] font-light">No hidden charges. No per-guest fees. Preview free — pay only when you love it.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_1.08fr_1fr] gap-0 items-stretch rounded-[20px] overflow-hidden shadow-[0_24px_80px_rgba(92,26,26,0.1)]">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_1.08fr_1fr] gap-0 items-stretch rounded-none md:rounded-[20px] overflow-hidden shadow-[0_24px_80px_rgba(92,26,26,0.1)]">
         {plans.map((p) => (
           <div
             key={p.name}
-            className={`p-[44px_36px_40px] relative flex flex-col ${
+            className={`p-6 md:p-[44px_36px_40px] relative flex flex-col ${
               p.featured
                 ? "bg-[hsl(var(--maroon-dark))] z-[2]"
                 : "bg-card border-r border-secondary/10 last:border-r-0 hover:bg-[#fdfaf5] transition-colors"
