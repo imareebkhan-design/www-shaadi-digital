@@ -58,7 +58,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8 relative overflow-hidden">
       <SEOHead
         title="Sign In to Your Wedding Invitation | Shaadi.Digital"
         description="Sign in to manage your digital wedding invitation, track RSVPs, update event details, and send reminders to guests — all from your Shaadi.Digital dashboard."
