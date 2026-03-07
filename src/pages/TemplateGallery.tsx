@@ -183,7 +183,7 @@ const TemplateGallery = () => {
         {/* ROW 1 — 5 columns */}
         <div className="grid grid-cols-5 gap-3 max-[900px]:grid-cols-3 max-[560px]:grid-cols-2">
           {/* 1 — Royal Maroon */}
-          <Card num={1} badge={<Badge variant="limited">👑 Limited Ed.</Badge>} name="Royal Maroon" tags={["North Indian", "Traditional"]} onClick={() => navigate("/templates/preview/royal-maroon")}>
+          <Card num={1} badge={<Badge variant="limited">👑 Limited Ed.</Badge>} name="Royal Maroon" tags={["North Indian", "Traditional"]} onClick={() => openPreview("royal-maroon")}>
             <SlideCard totalSlides={3} autoPlay>
               {/* Slide 1: Names + mandala */}
               <div className="card-slide" style={{ background: "linear-gradient(160deg,#3A0512 0%,#6B1428 50%,#3A0512 100%)" }}>
