@@ -43,7 +43,7 @@ export function useRazorpay() {
     processingRef.current = true;
 
     const plan = PLAN_CONFIG[planId];
-    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
+    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_SOSdB20AeYe8nR";
 
     if (!keyId) {
       toast.error("Payment gateway is not configured. Please contact support.");
