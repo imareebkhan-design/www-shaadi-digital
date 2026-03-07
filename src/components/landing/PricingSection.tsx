@@ -10,6 +10,7 @@ const Check = () => (
 
 const plans = [
   {
+    planId: "shubh" as PlanId,
     name: "Shubh",
     nameHindi: "शुभ",
     price: "999",
