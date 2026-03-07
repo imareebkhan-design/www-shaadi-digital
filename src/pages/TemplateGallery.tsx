@@ -183,7 +183,7 @@ const TemplateGallery = () => {
         {/* ROW 1 — 5 columns */}
         <div className="grid grid-cols-5 gap-3 max-[900px]:grid-cols-3 max-[560px]:grid-cols-2">
           {/* 1 — Royal Maroon */}
-          <Card num={1} badge={<Badge variant="limited">👑 Limited Ed.</Badge>} name="Royal Maroon" tags={["North Indian", "Traditional"]} onClick={() => openPreview("ideCard totalSlides={3} autoPlay>
+          <Card num={1} badge={<Badge variant="limited">👑 Limited Ed.</Badge>} name="Royal Maroon" tags={["North Indian", "Traditional"]} onClick={() => openPreview("des={3} autoPlay>
               {/* Slide 1: Names + mandala */}
               <div className="card-slide" style={{ background: "linear-gradient(160deg,#3A0512 0%,#6B1428 50%,#3A0512 100%)" }}>
                 <div className="absolute inset-0" style={{
@@ -224,8 +224,7 @@ const TemplateGallery = () => {
 
           {/* 2 — The Theatre */}
           <Card num={2} badge={<Badge variant="new">✦ New</Badge>} name="The Theatre" desc="Elegant design inspired by the drama of the stage" onClick={() => navigate("/templopenPreview("
-  openPreview("des={1}>
-              <div className="card-slide overflow-hidden" style={{ background: "#1A0A00" }}>
+  openPreview("desopenPreview("sName="card-slide overflow-hidden" style={{ background: "#1A0A00" }}>
                 <div className="absolute top-0 bottom-0 left-0 w-[45%]" style={{ background: "linear-gradient(180deg,#4A1A00,#2A0800)", borderRadius: "0 0 60% 0", boxShadow: "inset -8px 0 20px rgba(0,0,0,.5)" }} />
                 <div className="absolute top-0 bottom-0 right-0 w-[45%]" style={{ background: "linear-gradient(180deg,#4A1A00,#2A0800)", borderRadius: "0 0 0 60%", boxShadow: "inset 8px 0 20px rgba(0,0,0,.5)" }} />
                 <div className="relative z-[2] flex flex-col items-center gap-1">
@@ -239,8 +238,7 @@ const TemplateGallery = () => {
           </Card>
 
           {/* 3 — Emerald South */}
-          <Card num={3} badge={<Badge variant="location">📍 South Indian ceremony styles</Badge>} name="Emerald South" tags={["South Indian", "Elegant"]} onClick={() => navigate("/templates/preview/emeopenPreview("lideCard totalSlides={2} autoPlay>
-              <div className="card-slide" style={{ background: "linear-gradient(160deg,#0D2818 0%,#1A5C30 60%,#0D2818 100%)" }}>
+          <Card num={3} badge={<Badge variant="location">📍 South Indian ceremony styles</Badge>} name="Emerald South" tags={["South Indian", "Elegant"]} onClick={() => navigate("/templates/preview/emeopenPreview("lideCard totalSlideopenPreview(" <div className="card-slide" style={{ background: "linear-gradient(160deg,#0D2818 0%,#1A5C30 60%,#0D2818 100%)" }}>
                 {/* Arch */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-[55%] border border-b-0 rounded-t-[100px]" style={{ borderColor: "rgba(201,148,26,.2)" }} />
                 <div className="relative z-[1] flex flex-col items-center">
@@ -261,7 +259,7 @@ const TemplateGallery = () => {
 
           {/* 4 — Golden Sehra */}
           <Card num={4} name="Golden Sehra" desc="The joy of Anand Karaj, wrapped in saffron and gold" onClick={() => navigate("/templates/preview/golden-punjabi")}>
-            <SlideCard totalSlides={1}>
+openPreview("lides={1}>
               <div className="card-slide" style={{ background: "linear-gradient(160deg,#2A1800,#6B4000,#2A1800)" }}>
                 <div className="relative z-[1] text-[9px] tracking-[1px] mb-2.5" style={{ color: "rgba(255,220,100,.4)" }}>ੴ ਸਤਿ ਨਾਮੁ</div>
                 <div className="relative z-[1] text-[34px] opacity-30">☬</div>
