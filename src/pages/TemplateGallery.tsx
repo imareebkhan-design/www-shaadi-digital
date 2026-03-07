@@ -114,6 +114,9 @@ const TemplateGallery = () => {
   const navigate = useNavigate();
   const countdown = useCountdown("2025-11-15T21:00:00+05:30");
   const pad = (n: number) => String(n).padStart(2, "0");
+  const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
+
+  const openPreview = (id: string) => setPreviewTemplateId(id);
 
   return (
     <div className="min-h-screen" style={{ background: "#F2EDE4" }}>
