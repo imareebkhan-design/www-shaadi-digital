@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 const MandalaLarge = () => (
-  <svg className="absolute pointer-events-none w-[700px] h-[700px] -top-[200px] -right-[180px] opacity-[0.055]" style={{ animation: "spin 80s linear infinite" }} viewBox="0 0 500 500" fill="none">
+  <svg className="absolute pointer-events-none w-[700px] h-[700px] -top-[200px] -right-[180px] opacity-[0.055] hidden md:block" style={{ animation: "spin 80s linear infinite" }} viewBox="0 0 500 500" fill="none">
     <circle cx="250" cy="250" r="240" stroke="hsl(var(--secondary))" strokeWidth="1" />
     <circle cx="250" cy="250" r="200" stroke="hsl(var(--secondary))" strokeWidth="0.5" />
     <circle cx="250" cy="250" r="160" stroke="hsl(var(--secondary))" strokeWidth="1" />
@@ -22,7 +22,7 @@ const MandalaLarge = () => (
 );
 
 const MandalaSmall = () => (
-  <svg className="absolute pointer-events-none w-[480px] h-[480px] -bottom-[130px] -left-[120px] opacity-[0.04]" style={{ animation: "spin 100s linear infinite reverse" }} viewBox="0 0 400 400" fill="none">
+  <svg className="absolute pointer-events-none w-[480px] h-[480px] -bottom-[130px] -left-[120px] opacity-[0.04] hidden md:block" style={{ animation: "spin 100s linear infinite reverse" }} viewBox="0 0 400 400" fill="none">
     <circle cx="200" cy="200" r="190" stroke="hsl(var(--primary))" strokeWidth="0.8" />
     <circle cx="200" cy="200" r="155" stroke="hsl(var(--primary))" strokeWidth="0.4" />
     <circle cx="200" cy="200" r="120" stroke="hsl(var(--primary))" strokeWidth="0.8" />
@@ -37,7 +37,7 @@ const MandalaSmall = () => (
 );
 
 const MandalaCenter = () => (
-  <svg className="absolute pointer-events-none w-[900px] h-[900px] top-1/2 left-1/2 opacity-[0.025]" style={{ animation: "spin3 120s linear infinite" }} viewBox="0 0 600 600" fill="none">
+  <svg className="absolute pointer-events-none w-[900px] h-[900px] top-1/2 left-1/2 opacity-[0.025] hidden md:block" style={{ animation: "spin3 120s linear infinite" }} viewBox="0 0 600 600" fill="none">
     <circle cx="300" cy="300" r="290" stroke="#C9941A" strokeWidth="0.5" />
     <circle cx="300" cy="300" r="240" stroke="#C9941A" strokeWidth="0.3" />
     <circle cx="300" cy="300" r="190" stroke="#C9941A" strokeWidth="0.5" />
@@ -98,7 +98,6 @@ const HeroSection = () => {
   }, []);
 
   useEffect(() => {
-    let i = 0;
     const typeChar = (text: string, setter: React.Dispatch<React.SetStateAction<string>>, onDone: () => void) => {
       let ci = 0;
       const tick = () => {
@@ -143,7 +142,7 @@ const HeroSection = () => {
   }, [addTimer, clearTimers]);
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-5 pt-[120px] pb-20" style={{ background: "#F5EFE4" }}>
+    <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-5 pt-[100px] md:pt-[120px] pb-12 md:pb-20" style={{ background: "#F5EFE4" }}>
       {/* Layered background */}
       <div className="absolute inset-0" style={{
         background: `radial-gradient(ellipse 90% 70% at 50% -10%, rgba(201,148,26,0.13) 0%, transparent 65%),
@@ -162,33 +161,35 @@ const HeroSection = () => {
       <MandalaSmall />
       <MandalaCenter />
 
-      {/* Particles */}
-      {particles.map((p, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: p.w, height: p.w,
-            top: p.top, left: p.left, right: (p as any).right,
-            background: `radial-gradient(circle, rgba(201,148,26,0.5) 0%, transparent 70%)`,
-            animation: `floatP ${p.dur} ease-in-out infinite`,
-            animationDelay: p.del,
-            opacity: p.op,
-          }}
-        />
-      ))}
+      {/* Particles - hidden on mobile for perf */}
+      <div className="hidden md:block">
+        {particles.map((p, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full pointer-events-none"
+            style={{
+              width: p.w, height: p.w,
+              top: p.top, left: p.left, right: (p as any).right,
+              background: `radial-gradient(circle, rgba(201,148,26,0.5) 0%, transparent 70%)`,
+              animation: `floatP ${p.dur} ease-in-out infinite`,
+              animationDelay: p.del,
+              opacity: p.op,
+            }}
+          />
+        ))}
+      </div>
 
       {/* Badge */}
-      <div className="relative z-[2] inline-flex items-center gap-2.5 bg-[rgba(201,148,26,0.08)] border border-secondary/30 backdrop-blur-sm px-5 py-[7px] rounded-full text-[10px] font-medium tracking-[2px] uppercase text-secondary mb-9 opacity-0 animate-[fadeUp_0.8s_cubic-bezier(0.22,1,0.36,1)_0.2s_forwards]">
+      <div className="relative z-[2] inline-flex items-center gap-2 md:gap-2.5 bg-[rgba(201,148,26,0.08)] border border-secondary/30 backdrop-blur-sm px-4 md:px-5 py-[7px] rounded-full text-[9px] md:text-[10px] font-medium tracking-[1.5px] md:tracking-[2px] uppercase text-secondary mb-6 md:mb-9 opacity-0 animate-[fadeUp_0.8s_cubic-bezier(0.22,1,0.36,1)_0.2s_forwards]">
         <span className="w-[5px] h-[5px] rounded-full bg-secondary animate-pulse" />
         India's Most Beautiful Digital Invitations
         <span className="w-[5px] h-[5px] rounded-full bg-secondary animate-pulse" />
       </div>
 
       {/* Typewriter Headline */}
-      <div className="relative z-[2] flex flex-col items-center justify-center text-center min-h-[220px]">
-        <div className="text-center" style={{ opacity: 1 }}>
-          <h1 className="font-display font-bold leading-[1.22]" style={{ fontSize: "clamp(40px, 6.5vw, 82px)", color: "hsl(var(--maroon-dark))" }}>
+      <div className="relative z-[2] flex flex-col items-center justify-center text-center min-h-[160px] md:min-h-[220px]">
+        <div className="text-center">
+          <h1 className="font-display font-bold leading-[1.22]" style={{ fontSize: "clamp(32px, 8vw, 82px)", color: "hsl(var(--maroon-dark))" }}>
             <span>{line1Text}</span>
             {cursor1Active && (
               <span className="inline-block w-[2.5px] bg-secondary rounded-sm ml-[3px] align-middle relative -top-[0.06em] animate-[twBlink_1.05s_step-start_infinite]" style={{ height: "0.8em", boxShadow: "0 0 6px rgba(201,148,26,0.55)" }} />
@@ -210,52 +211,52 @@ const HeroSection = () => {
       </div>
 
       {/* Gold divider line */}
-      <div className={`h-px mx-auto my-6 bg-gradient-to-r from-transparent via-secondary to-transparent ${lineAnimate ? "animate-[drawLine_1.1s_cubic-bezier(0.4,0,0.2,1)_forwards]" : "w-0 opacity-0"}`} />
+      <div className={`h-px mx-auto my-4 md:my-6 bg-gradient-to-r from-transparent via-secondary to-transparent ${lineAnimate ? "animate-[drawLine_1.1s_cubic-bezier(0.4,0,0.2,1)_forwards]" : "w-0 opacity-0"}`} />
 
       {/* Subtext */}
-      <p className={`relative z-[2] font-serif italic font-light text-muted-foreground max-w-[560px] leading-[1.6] transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${subtextVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`} style={{ fontSize: "clamp(17px, 2.2vw, 24px)" }}>
+      <p className={`relative z-[2] font-serif italic font-light text-muted-foreground max-w-[560px] leading-[1.6] px-2 transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${subtextVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`} style={{ fontSize: "clamp(15px, 2.2vw, 24px)" }}>
         Where tradition meets the digital world — elegantly
       </p>
 
       {/* Description */}
-      <p className={`relative z-[2] text-sm text-muted-foreground max-w-[460px] leading-[1.9] mt-3.5 font-light transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${descVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
+      <p className={`relative z-[2] text-[14px] md:text-sm text-muted-foreground max-w-[460px] leading-[1.9] mt-3.5 px-2 font-light transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${descVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
         Stunning digital wedding invitations with live RSVP tracking, WhatsApp delivery, and real-time guest management — crafted for every Indian wedding tradition. <Link to="/signup" className="text-primary font-medium hover:underline">Create yours free</Link>.
       </p>
 
       {/* Actions */}
-      <div className={`relative z-[2] flex flex-wrap gap-3.5 justify-center mt-9 transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${actionsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
+      <div className={`relative z-[2] flex flex-col md:flex-row gap-3.5 w-full md:w-auto items-center justify-center mt-8 md:mt-9 px-4 md:px-0 transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${actionsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
         <Link
           to="/templates"
-          className="relative overflow-hidden bg-primary text-primary-foreground px-10 py-4 text-[11px] font-semibold tracking-[2px] uppercase rounded-full hover:bg-[hsl(var(--maroon-dark))] hover:-translate-y-[3px] transition-all duration-300 shadow-[0_8px_32px_rgba(123,28,46,0.28)]"
+          className="relative overflow-hidden w-full md:w-auto bg-primary text-primary-foreground px-10 py-4 min-h-[52px] flex items-center justify-center text-[11px] font-semibold tracking-[2px] uppercase rounded-full hover:bg-[hsl(var(--maroon-dark))] hover:-translate-y-[3px] transition-all duration-300 shadow-[0_8px_32px_rgba(123,28,46,0.28)]"
         >
           <span className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
           Browse Templates — Free
         </Link>
         <button
           onClick={() => document.querySelector("#how")?.scrollIntoView({ behavior: "smooth" })}
-          className="bg-transparent text-primary px-9 py-[15px] text-[11px] font-medium tracking-[2px] uppercase rounded-full border border-primary/35 hover:bg-primary hover:text-primary-foreground hover:border-primary hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+          className="w-full md:w-auto bg-transparent text-primary px-9 py-[15px] min-h-[52px] flex items-center justify-center text-[11px] font-medium tracking-[2px] uppercase rounded-full border border-primary/35 hover:bg-primary hover:text-primary-foreground hover:border-primary hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
         >
           See How It Works
         </button>
       </div>
 
       {/* Stats */}
-      <div className={`relative z-[2] flex gap-0 mt-14 bg-white/55 backdrop-blur-xl border border-secondary/[0.18] rounded-2xl overflow-hidden transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${statsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
+      <div className={`relative z-[2] grid grid-cols-2 md:flex mt-10 md:mt-14 bg-white/55 backdrop-blur-xl border border-secondary/[0.18] rounded-2xl overflow-hidden transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${statsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
         {[
           { num: "50,000+", label: "Happy Couples" },
           { num: "200+", label: "Templates" },
           { num: "4.9 ★", label: "Average Rating" },
           { num: "₹0", label: "Paper Waste" },
         ].map((s, i) => (
-          <div key={s.label} className={`text-center px-6 md:px-10 py-5 relative ${i > 0 ? "before:absolute before:left-0 before:top-[20%] before:bottom-[20%] before:w-px before:bg-secondary/20" : ""}`}>
-            <div className="font-display text-[28px] font-bold text-primary tracking-[-0.5px]">{s.num}</div>
-            <div className="text-[10px] uppercase tracking-[1.5px] text-muted-foreground mt-[3px]">{s.label}</div>
+          <div key={s.label} className={`text-center px-4 md:px-10 py-4 md:py-5 relative ${i > 0 ? "md:before:absolute md:before:left-0 md:before:top-[20%] md:before:bottom-[20%] md:before:w-px md:before:bg-secondary/20" : ""} ${i >= 2 ? "border-t md:border-t-0 border-secondary/10" : ""} ${i % 2 === 1 ? "border-l md:border-l-0 border-secondary/10" : ""}`}>
+            <div className="font-display text-[22px] md:text-[28px] font-bold text-primary tracking-[-0.5px]">{s.num}</div>
+            <div className="text-[9px] md:text-[10px] uppercase tracking-[1.5px] text-muted-foreground mt-[3px]">{s.label}</div>
           </div>
         ))}
       </div>
 
-      {/* Scroll hint */}
-      <div className={`absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[9px] tracking-[3px] uppercase z-[2] transition-opacity duration-1000 ${scrollVisible ? "opacity-100" : "opacity-0"}`} style={{ color: "rgba(92,26,26,0.3)" }}>
+      {/* Scroll hint - hidden on mobile */}
+      <div className={`absolute bottom-9 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 text-[9px] tracking-[3px] uppercase z-[2] transition-opacity duration-1000 ${scrollVisible ? "opacity-100" : "opacity-0"}`} style={{ color: "rgba(92,26,26,0.3)" }}>
         <span>Scroll</span>
         <div className="w-5 h-8 border border-secondary/35 rounded-[10px] flex items-start justify-center pt-[5px]">
           <div className="w-1 h-1 rounded-full bg-secondary/60 animate-[scrollDot_2s_ease_infinite]" />

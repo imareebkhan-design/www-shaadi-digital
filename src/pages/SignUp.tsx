@@ -74,7 +74,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8 relative overflow-hidden">
       <SEOHead
         title="Create Free Wedding Invitation | Shaadi.Digital"
         description="Sign up free and design your digital wedding invitation in 10 minutes. 200+ templates, WhatsApp delivery & live RSVP tracking. Trusted by 50,000+ couples."
@@ -119,7 +119,7 @@ const SignUp = () => {
                 placeholder="Enter your full name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="font-body"
+                className="font-body min-h-[52px] text-[16px] md:text-sm"
               />
             </div>
             <div>
@@ -131,7 +131,7 @@ const SignUp = () => {
                 placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="font-body"
+                className="font-body min-h-[52px] text-[16px] md:text-sm"
               />
             </div>
             <div>
@@ -143,7 +143,7 @@ const SignUp = () => {
                 placeholder="At least 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="font-body"
+                className="font-body min-h-[52px] text-[16px] md:text-sm"
               />
             </div>
 
@@ -152,7 +152,7 @@ const SignUp = () => {
             <Button
               onClick={handleSignUp}
               disabled={loading}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-11 font-body"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-none min-h-[52px] h-auto font-body"
             >
               {loading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : null}
               Create Account

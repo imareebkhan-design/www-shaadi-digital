@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
 const CTABanner = () => (
-  <section className="relative overflow-hidden text-center py-[120px] px-10" style={{ background: "hsl(var(--maroon-dark))" }}>
+  <section className="relative overflow-hidden text-center py-16 md:py-[120px] px-5 md:px-10" style={{ background: "hsl(var(--maroon-dark))" }}>
     {/* Mandala rings */}
-    <div className="absolute w-[700px] h-[700px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none" style={{
+    <div className="absolute w-[400px] md:w-[700px] h-[400px] md:h-[700px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none" style={{
       background: "radial-gradient(circle, rgba(201,148,26,0.06) 0%, transparent 70%)",
       border: "1px solid rgba(201,148,26,0.08)",
       boxShadow: "0 0 0 60px rgba(201,148,26,0.03), 0 0 0 120px rgba(201,148,26,0.02), 0 0 0 180px rgba(201,148,26,0.015)",
@@ -15,29 +15,29 @@ const CTABanner = () => (
 
     <div className="relative z-[1] max-w-[700px] mx-auto">
       <div className="section-label justify-center !text-[hsl(var(--gold-light))] before:!bg-[hsl(var(--gold-light))] after:!bg-[hsl(var(--gold-light))]">Begin Your Story</div>
-      <h2 className="font-display font-bold text-white leading-[1.15] my-4" style={{ fontSize: "clamp(32px, 5vw, 62px)" }}>
+      <h2 className="font-display font-bold text-white leading-[1.15] my-4" style={{ fontSize: "clamp(28px, 5vw, 62px)" }}>
         Woh invitation jo<br />sab yaad <em className="italic text-[hsl(var(--gold-light))]">rakhein</em>
       </h2>
-      <p className="text-[15px] text-white/50 max-w-[440px] mx-auto mb-10 leading-[1.85] font-light">
+      <p className="text-[14px] md:text-[15px] text-white/50 max-w-[440px] mx-auto mb-8 md:mb-10 leading-[1.85] font-light">
         50,000+ couples ne apni shaadi ko Shaadi.Digital ke saath aur bhi khaas banaya. Ab aapki baari hai — preview bilkul free hai.
       </p>
 
-      <div className="flex flex-col items-center gap-4">
-        <Link to="/templates" className="inline-flex items-center gap-2.5 bg-gradient-to-br from-secondary to-[#E8B84B] font-bold text-[11px] tracking-[2px] uppercase px-[52px] py-[18px] rounded-full shadow-[0_12px_40px_rgba(201,148,26,0.35)] hover:shadow-[0_20px_60px_rgba(201,148,26,0.5)] hover:-translate-y-0.5 transition-all duration-300" style={{ color: "hsl(var(--maroon-dark))" }}>
+      <div className="flex flex-col items-center gap-4 px-2 md:px-0">
+        <Link to="/templates" className="inline-flex items-center justify-center gap-2.5 w-full md:w-auto bg-gradient-to-br from-secondary to-[#E8B84B] font-bold text-[11px] tracking-[2px] uppercase px-10 md:px-[52px] py-[18px] min-h-[52px] rounded-full shadow-[0_12px_40px_rgba(201,148,26,0.35)] hover:shadow-[0_20px_60px_rgba(201,148,26,0.5)] hover:-translate-y-0.5 transition-all duration-300" style={{ color: "hsl(var(--maroon-dark))" }}>
           ❤️ Free Preview — No Card Needed
         </Link>
-        <div className="flex items-center gap-4">
-          <Link to="/templates" className="inline-flex items-center gap-2 text-white/50 text-xs hover:text-[hsl(var(--gold-light))] transition-colors">
+        <div className="flex items-center gap-4 flex-wrap justify-center">
+          <Link to="/templates" className="inline-flex items-center gap-2 text-white/50 text-xs hover:text-[hsl(var(--gold-light))] transition-colors py-2">
             🔲 Browse all templates
           </Link>
           <span className="text-white/15">·</span>
-          <Link to="/login" className="inline-flex items-center gap-2 text-white/50 text-xs hover:text-[hsl(var(--gold-light))] transition-colors">
+          <Link to="/login" className="inline-flex items-center gap-2 text-white/50 text-xs hover:text-[hsl(var(--gold-light))] transition-colors py-2">
             Already a member? Sign in
           </Link>
         </div>
       </div>
 
-      <div className="flex items-center justify-center gap-5 mt-12 flex-wrap">
+      <div className="flex items-center justify-center gap-3 md:gap-5 mt-10 md:mt-12 flex-wrap">
         {[
           { icon: "🛡️", text: "100% secure" },
           { icon: "⏱️", text: "Ready in 10 minutes" },
@@ -45,8 +45,8 @@ const CTABanner = () => (
           { icon: "♾️", text: "Updates free forever" },
         ].map((t, i) => (
           <div key={t.text} className="flex items-center gap-0">
-            {i > 0 && <div className="w-px h-3 bg-white/10 mr-5" />}
-            <div className="flex items-center gap-1.5 text-[11px] text-white/30 tracking-[0.3px]">
+            {i > 0 && <div className="w-px h-3 bg-white/10 mr-3 md:mr-5 hidden md:block" />}
+            <div className="flex items-center gap-1.5 text-[10px] md:text-[11px] text-white/30 tracking-[0.3px]">
               <span className="text-secondary/50 text-xs">{t.icon}</span> {t.text}
             </div>
           </div>

@@ -58,7 +58,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8 relative overflow-hidden">
       <SEOHead
         title="Sign In to Your Wedding Invitation | Shaadi.Digital"
         description="Sign in to manage your digital wedding invitation, track RSVPs, update event details, and send reminders to guests — all from your Shaadi.Digital dashboard."
@@ -104,7 +104,7 @@ const Login = () => {
                 placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="font-body"
+                className="font-body min-h-[52px] text-[16px] md:text-sm"
               />
             </div>
             <div>
@@ -116,7 +116,7 @@ const Login = () => {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="font-body"
+                className="font-body min-h-[52px] text-[16px] md:text-sm"
               />
             </div>
 
@@ -125,7 +125,7 @@ const Login = () => {
             <Button
               onClick={handleLogin}
               disabled={loading}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-11 font-body"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-none min-h-[52px] h-auto font-body"
             >
               {loading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : null}
               Log In

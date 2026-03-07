@@ -205,11 +205,11 @@ const PricingSection = () => {
         <p className="text-muted-foreground mt-3 text-[15px] font-light">No hidden charges. No per-guest fees. Preview free — pay only when you love it.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_1.08fr_1fr] gap-0 items-stretch rounded-[20px] overflow-hidden shadow-[0_24px_80px_rgba(92,26,26,0.1)]">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_1.08fr_1fr] gap-0 items-stretch rounded-none md:rounded-[20px] overflow-hidden shadow-[0_24px_80px_rgba(92,26,26,0.1)]">
         {plans.map((p) => (
           <div
             key={p.name}
-            className={`p-[44px_36px_40px] relative flex flex-col ${
+            className={`p-6 md:p-[44px_36px_40px] relative flex flex-col ${
               p.featured
                 ? "bg-[hsl(var(--maroon-dark))] z-[2]"
                 : "bg-card border-r border-secondary/10 last:border-r-0 hover:bg-[#fdfaf5] transition-colors"
@@ -225,7 +225,7 @@ const PricingSection = () => {
               {p.name}
             </div>
 
-            <div className={`font-display text-[52px] font-bold leading-none tracking-[-2px] ${p.featured ? "text-white" : ""}`} style={!p.featured ? { color: "hsl(var(--maroon-dark))" } : undefined}>
+            <div className={`font-display text-[36px] md:text-[52px] font-bold leading-none tracking-[-2px] ${p.featured ? "text-white" : ""}`} style={!p.featured ? { color: "hsl(var(--maroon-dark))" } : undefined}>
               <span className="font-display text-xl align-super font-normal tracking-normal">₹</span>{p.price}
             </div>
 
@@ -259,7 +259,7 @@ const PricingSection = () => {
 
             <button
               onClick={() => openCheckout(p.planId)}
-              className={`block w-full py-[15px] text-center rounded-full text-[11px] font-medium tracking-[2px] uppercase mt-7 transition-all duration-250 ${
+              className={`block w-full py-[15px] min-h-[52px] text-center rounded-full text-[11px] font-medium tracking-[2px] uppercase mt-7 transition-all duration-250 ${
                 p.btnStyle === "solid"
                   ? "bg-gradient-to-br from-secondary to-[#E8B84B] font-semibold shadow-[0_8px_24px_rgba(201,148,26,0.35)] hover:shadow-[0_12px_32px_rgba(201,148,26,0.5)] hover:-translate-y-px"
                   : `border-[1.5px] ${p.featured ? "border-white/15 text-white/70 hover:bg-white/10" : "border-primary/25 hover:bg-[hsl(var(--maroon-dark))] hover:text-white hover:border-[hsl(var(--maroon-dark))]"}`
