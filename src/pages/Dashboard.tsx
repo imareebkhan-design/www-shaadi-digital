@@ -209,6 +209,26 @@ const Dashboard = () => {
           <p className="font-body text-sm text-muted-foreground mt-1">{today}</p>
         </div>
 
+        {/* Upgrade Prompt for free users */}
+        {!hasPlan && (
+          <div className="bg-[hsl(var(--callout-bg))] border border-secondary/20 p-5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <p className="font-display text-sm font-bold" style={{ color: 'hsl(var(--maroon-dark))' }}>
+                Unlock all features with a plan
+              </p>
+              <p className="font-body text-xs text-muted-foreground mt-0.5">
+                Publish your invite, track RSVPs, add music & more.
+              </p>
+            </div>
+            <Link
+              to="/pricing"
+              className="bg-secondary text-primary-foreground px-6 py-2.5 text-[11px] font-semibold tracking-[1.5px] uppercase hover:brightness-110 transition-all shrink-0"
+            >
+              Choose a Plan
+            </Link>
+          </div>
+        )}
+
         {/* Invite Status or Empty State */}
         {!invitation ? (
           /* Empty State */
