@@ -104,7 +104,7 @@ const Login = () => {
                 placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="font-body"
+                className="font-body min-h-[52px] text-[16px] md:text-sm"
               />
             </div>
             <div>
