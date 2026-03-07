@@ -6,6 +6,7 @@ interface Props {
   groomName: string;
   weddingDate: string;
   events: { event_type: string; event_date: string; event_time: string; venue_name: string; is_enabled: boolean }[];
+  personalMessage?: string;
 }
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
