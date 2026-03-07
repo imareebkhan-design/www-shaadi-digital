@@ -72,13 +72,13 @@ const TestimonialsSection = () => (
       <div className="text-center mb-16">
         <div className="section-label justify-center !text-[hsl(var(--gold-light))] before:!bg-[hsl(var(--gold-light))] after:!bg-[hsl(var(--gold-light))]">Love Stories</div>
         <h2 className="section-title text-center !text-white">50,000+ couples ne<br /><em className="!text-secondary">humein choose kiya</em></h2>
-        <div className="flex items-center justify-center gap-5 mt-6 flex-wrap">
+        <div className="flex items-center justify-center gap-3 md:gap-5 mt-6 flex-wrap">
           <div className="flex gap-[3px]">{Array.from({ length: 5 }).map((_, i) => <span key={i} className="text-secondary text-base">★</span>)}</div>
-          <span className="text-[13px] text-white/45 font-light"><strong className="text-white/75 font-medium">4.9 / 5</strong> average rating</span>
-          <div className="w-[3px] h-[3px] rounded-full bg-secondary/40" />
-          <span className="text-[13px] text-white/45 font-light"><strong className="text-white/75 font-medium">50,000+</strong> weddings</span>
-          <div className="w-[3px] h-[3px] rounded-full bg-secondary/40" />
-          <span className="text-[13px] text-white/45 font-light"><strong className="text-white/75 font-medium">India's #1</strong> digital invite platform</span>
+          <span className="text-[12px] md:text-[13px] text-white/45 font-light"><strong className="text-white/75 font-medium">4.9 / 5</strong> average rating</span>
+          <div className="w-[3px] h-[3px] rounded-full bg-secondary/40 hidden md:block" />
+          <span className="text-[12px] md:text-[13px] text-white/45 font-light"><strong className="text-white/75 font-medium">50,000+</strong> weddings</span>
+          <div className="w-[3px] h-[3px] rounded-full bg-secondary/40 hidden md:block" />
+          <span className="text-[12px] md:text-[13px] text-white/45 font-light"><strong className="text-white/75 font-medium">India's #1</strong> digital invite platform</span>
         </div>
       </div>
 
