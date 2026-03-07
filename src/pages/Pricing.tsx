@@ -166,8 +166,8 @@ const Pricing = () => {
                   ))}
                 </ul>
 
-                <Link
-                  to={ctaLink}
+                <button
+                  onClick={() => openCheckout(p.id)}
                   className={`block w-full text-center py-3.5 text-xs font-medium tracking-[1.5px] uppercase transition-all ${
                     p.featured
                       ? "bg-secondary text-foreground hover:brightness-110 font-semibold"
@@ -175,7 +175,7 @@ const Pricing = () => {
                   }`}
                 >
                   {p.cta}
-                </Link>
+                </button>
               </div>
             ))}
           </div>
