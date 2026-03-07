@@ -183,8 +183,7 @@ const TemplateGallery = () => {
         {/* ROW 1 — 5 columns */}
         <div className="grid grid-cols-5 gap-3 max-[900px]:grid-cols-3 max-[560px]:grid-cols-2">
           {/* 1 — Royal Maroon */}
-          <Card num={1} badge={<Badge variant="limited">👑 Limited Ed.</Badge>} name="Royal Maroon" tags={["North Indian", "Traditional"]} onClick={() => openPreview(">
-              {/* Slide 1: Names + mandala */}
+          <Card num={1} badge={<Badge variant="limited">👑 Limited Ed.</Badge>} name="Royal Maroon" tags={["North Indian", "Traditional"]} onClick={() => openPreview("{/* Slide 1: Names + mandala */}
               <div className="card-slide" style={{ background: "linear-gradient(160deg,#3A0512 0%,#6B1428 50%,#3A0512 100%)" }}>
                 <div className="absolute inset-0" style={{
                   background: `url("data:image/svg+xml,%3Csvg width='180' height='180' viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='90' cy='90' r='85' fill='none' stroke='rgba(201,148,26,0.15)' stroke-width='1'/%3E%3Ccircle cx='90' cy='90' r='65' fill='none' stroke='rgba(201,148,26,0.1)' stroke-width='1'/%3E%3Ccircle cx='90' cy='90' r='45' fill='none' stroke='rgba(201,148,26,0.08)' stroke-width='1'/%3E%3Cline x1='90' y1='5' x2='90' y2='175' stroke='rgba(201,148,26,0.06)' stroke-width='0.5'/%3E%3Cline x1='5' y1='90' x2='175' y2='90' stroke='rgba(201,148,26,0.06)' stroke-width='0.5'/%3E%3C/svg%3E") center/60% no-repeat`,
@@ -224,7 +223,7 @@ const TemplateGallery = () => {
 
           {/* 2 — The Theatre */}
           <Card num={2} badge={<Badge variant="new">✦ New</Badge>} name="The Theatre" desc="Elegant design inspired by the drama of the stage" onClick={() => navigate("/templopenPreview("
-  openPreview("desopenPreview("sNaopenPreview("n" style={{ background: "#1A0A00" }}>
+  openPreview("desopenPreview("sNaopenPreview("n" openPreview("" }}>
                 <div className="absolute top-0 bottom-0 left-0 w-[45%]" style={{ background: "linear-gradient(180deg,#4A1A00,#2A0800)", borderRadius: "0 0 60% 0", boxShadow: "inset -8px 0 20px rgba(0,0,0,.5)" }} />
                 <div className="absolute top-0 bottom-0 right-0 w-[45%]" style={{ background: "linear-gradient(180deg,#4A1A00,#2A0800)", borderRadius: "0 0 0 60%", boxShadow: "inset 8px 0 20px rgba(0,0,0,.5)" }} />
                 <div className="relative z-[2] flex flex-col items-center gap-1">
@@ -238,7 +237,7 @@ const TemplateGallery = () => {
           </Card>
 
           {/* 3 — Emerald South */}
-          <Card num={3} badge={<Badge variant="location">📍 South Indian ceremony styles</Badge>} name="Emerald South" tags={["South Indian", "Elegant"]} onClick={() => navigate("/templates/preview/emeopenPreview("lideCard totalSlideopenPreview(" <div className="caopenPreview(": "linear-gradient(160deg,#0D2818 0%,#1A5C30 60%,#0D2818 100%)" }}>
+          <Card num={3} badge={<Badge variant="location">📍 South Indian ceremony styles</Badge>} name="Emerald South" tags={["South Indian", "Elegant"]} onClick={() => navigate("/templates/preview/emeopenPreview("lideCard totalSlideopenPreview(" <div className="caopenPreview(": "linear-gradient(openPreview(",#0D2818 100%)" }}>
                 {/* Arch */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-[55%] border border-b-0 rounded-t-[100px]" style={{ borderColor: "rgba(201,148,26,.2)" }} />
                 <div className="relative z-[1] flex flex-col items-center">
@@ -260,8 +259,7 @@ const TemplateGallery = () => {
           {/* 4 — Golden Sehra */}
           <Card num={4} name="Golden Sehra" desc="The joy of Anand Karaj, wrapped in saffron and gold" onClick={() => navigate("/templates/preview/golden-punjabi")}>
 openPreview("lides={1}>
-              <div classopenPreview("ckground: "linear-gradient(160deg,#2A1800,#6B4000,#2A1800)" }}>
-                <div className="relative z-[1] text-[9px] tracking-[1px] mb-2.5" style={{ color: "rgba(255,220,100,.4)" }}>ੴ ਸਤਿ ਨਾਮੁ</div>
+              <div classopenPreview("ckground: "linear-gradient(160deg,#openPreview("                <div className="relative z-[1] text-[9px] tracking-[1px] mb-2.5" style={{ color: "rgba(255,220,100,.4)" }}>ੴ ਸਤਿ ਨਾਮੁ</div>
                 <div className="relative z-[1] text-[34px] opacity-30">☬</div>
                 <div className="relative z-[1] font-serif text-[17px] text-center leading-[1.3]" style={{ color: "rgba(255,220,100,.9)" }}>
                   Simran<br />&amp;<br />Harjeet
@@ -272,7 +270,7 @@ openPreview("lides={1}>
 
           {/* 5 — Pearl Nikah */}
           <Card num={5} name="Pearl Nikah" tags={["Muslim", "Elegant"]} onClick={() => navigate("/templates/preview/pearl-nikah")}>
-            <SlideCopenPreview("      <div className="card-slide" style={{ background: "linear-gradient(160deg,#0D1A12,#1A3020,#0D1A12)" }}>
+            <SlideCopenPreview("      <div className="card-slide" style={{ backgrouopenPreview("0D1A12,#1A3020,#0D1A12)" }}>
                 <div className="absolute inset-0" style={{ background: "repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(201,148,26,.04) 8px,rgba(201,148,26,.04) 9px)" }} />
                 <div className="relative z-[1] text-[9px] tracking-[1px] mb-2" style={{ color: "rgba(201,148,26,.55)" }}>﷽</div>
                 <div className="relative z-[1] text-[30px] opacity-30">☪️</div>
@@ -288,8 +286,7 @@ openPreview("lides={1}>
         <div className="grid grid-cols-3 gap-3 mt-3 mx-auto max-[900px]:grid-cols-2 max-[900px]:max-w-full max-[560px]:grid-cols-1" style={{ maxWidth: "calc(60% + 8px)" }}>
           {/* 6 — Marigold Fest */}
           <Card num={6} name="Marigold Fest" desc="The vibrance of haldi and florals for your celebration" onClick={() => navigate("/templates/preview/saffron-fest")}>
-            <SlideCard totalSlides={1}>
-              <div className="card-slide" style={{ background: "linear-gradient(160deg,#3D1F00,#A0450A,#3D1F00)" }}>
+            <SlideCard totalSlidesopenPreview("sName="card-slide" style={{ background: "linear-gradient(160deg,#3D1F00,#A0450A,#3D1F00)" }}>
                 <div className="absolute inset-0 flex flex-col justify-between p-2.5 pointer-events-none">
                   <div className="flex justify-between"><span className="text-[22px] opacity-40">🌼</span><span className="text-[22px] opacity-40">🌸</span></div>
                   <div className="flex justify-between"><span className="text-[22px] opacity-40">🌺</span><span className="text-[22px] opacity-40">🌼</span></div>
