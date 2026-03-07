@@ -4,6 +4,7 @@ import SEOHead from "@/components/SEOHead";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
+import TemplatePreviewModal from "@/components/TemplatePreviewModal";
 
 /* ── FLOATING HEARTS ── */
 const HEART_CHARS = ["♡", "♥", "❥", "❣"];
