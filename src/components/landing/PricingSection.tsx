@@ -257,8 +257,8 @@ const PricingSection = () => {
               ))}
             </ul>
 
-            <Link
-              to="/signup"
+            <button
+              onClick={() => openCheckout(p.planId)}
               className={`block w-full py-[15px] text-center rounded-full text-[11px] font-medium tracking-[2px] uppercase mt-7 transition-all duration-250 ${
                 p.btnStyle === "solid"
                   ? "bg-gradient-to-br from-secondary to-[#E8B84B] font-semibold shadow-[0_8px_24px_rgba(201,148,26,0.35)] hover:shadow-[0_12px_32px_rgba(201,148,26,0.5)] hover:-translate-y-px"
@@ -267,7 +267,7 @@ const PricingSection = () => {
               style={p.btnStyle === "solid" ? { color: "hsl(var(--maroon-dark))" } : !p.featured ? { color: "hsl(var(--maroon-dark))" } : undefined}
             >
               {p.btn}
-            </Link>
+            </button>
             <p className={`text-[11px] text-center mt-2.5 font-light ${p.featured ? "text-white/30" : "text-muted-foreground"}`}>{p.note}</p>
           </div>
         ))}
