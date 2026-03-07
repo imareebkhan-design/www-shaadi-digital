@@ -286,14 +286,14 @@ const TemplateCard = ({ t }: { t: TemplateData }) => {
 const TemplateGallerySection = () => (
   <section id="templates" className="section-padding bg-background">
     <div className="max-w-[1200px] mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-5">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-5">
         <div>
           <div className="section-label">Designs</div>
           <h2 className="section-title">Har Wedding ke liye<br /><em>Perfect Template</em></h2>
         </div>
         <Link
           to="/templates"
-          className="border-[1.5px] border-primary text-primary px-9 py-3.5 text-[13px] font-medium tracking-[1.2px] uppercase rounded-full hover:bg-primary hover:text-primary-foreground transition-all shrink-0"
+          className="w-full md:w-auto text-center border-[1.5px] border-primary text-primary px-9 py-3.5 min-h-[52px] flex items-center justify-center text-[13px] font-medium tracking-[1.2px] uppercase rounded-full hover:bg-primary hover:text-primary-foreground transition-all shrink-0"
         >
           View All 200+ Templates
         </Link>

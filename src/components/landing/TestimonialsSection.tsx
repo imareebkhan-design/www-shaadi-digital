@@ -84,7 +84,7 @@ const TestimonialsSection = () => (
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
         {testimonials.map((t) => (
-          <div key={t.name} className={`rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 relative ${t.featured ? "bg-secondary/[0.08] border border-secondary/25 hover:border-secondary/50" : "bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.07] hover:border-secondary/30"}`}>
+          <div key={t.name} className={`rounded-2xl p-5 md:p-7 transition-all duration-300 hover:-translate-y-1 relative ${t.featured ? "bg-secondary/[0.08] border border-secondary/25 hover:border-secondary/50" : "bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.07] hover:border-secondary/30"}`}>
             <div className="inline-flex items-center gap-[5px] text-[10px] tracking-[0.8px] uppercase text-secondary/70 mb-3.5">
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
               Verified purchase
