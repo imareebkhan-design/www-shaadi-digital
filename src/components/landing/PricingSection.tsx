@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
 
 const Check = () => (
   <div className="w-4 h-4 rounded-full bg-secondary/[0.12] border border-secondary/25 flex items-center justify-center shrink-0 mt-[1px]">
@@ -9,6 +10,7 @@ const Check = () => (
 
 const plans = [
   {
+    planId: "shubh" as PlanId,
     name: "Shubh",
     nameHindi: "शुभ",
     price: "999",
@@ -31,6 +33,7 @@ const plans = [
     note: "Preview free · Pay when happy",
   },
   {
+    planId: "shaadi" as PlanId,
     name: "Shaadi",
     nameHindi: "शादी",
     price: "1,999",
@@ -56,6 +59,7 @@ const plans = [
     note: "Preview free · No card needed",
   },
   {
+    planId: "shaahi" as PlanId,
     name: "Shaahi",
     nameHindi: "शाही",
     price: "3,499",
@@ -180,7 +184,10 @@ const productSchemas = [
   }
 ];
 
-const PricingSection = () => (
+const PricingSection = () => {
+  const { openCheckout } = useRazorpay();
+
+  return (
   <section id="pricing" className="section-padding bg-background relative overflow-hidden">
     <Helmet>
       {productSchemas.map((schema, i) => (
@@ -250,8 +257,8 @@ const PricingSection = () => (
               ))}
             </ul>
 
-            <Link
-              to="/signup"
+            <button
+              onClick={() => openCheckout(p.planId)}
               className={`block w-full py-[15px] text-center rounded-full text-[11px] font-medium tracking-[2px] uppercase mt-7 transition-all duration-250 ${
                 p.btnStyle === "solid"
                   ? "bg-gradient-to-br from-secondary to-[#E8B84B] font-semibold shadow-[0_8px_24px_rgba(201,148,26,0.35)] hover:shadow-[0_12px_32px_rgba(201,148,26,0.5)] hover:-translate-y-px"
@@ -260,13 +267,14 @@ const PricingSection = () => (
               style={p.btnStyle === "solid" ? { color: "hsl(var(--maroon-dark))" } : !p.featured ? { color: "hsl(var(--maroon-dark))" } : undefined}
             >
               {p.btn}
-            </Link>
+            </button>
             <p className={`text-[11px] text-center mt-2.5 font-light ${p.featured ? "text-white/30" : "text-muted-foreground"}`}>{p.note}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default PricingSection;

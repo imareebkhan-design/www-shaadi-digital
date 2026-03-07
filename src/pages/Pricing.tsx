@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Check } from "lucide-react";
+import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
 import {
   Accordion,
   AccordionContent,
@@ -13,7 +14,7 @@ import {
 
 const plans = [
   {
-    id: "basic",
+    id: "shubh" as PlanId,
     name: "Basic",
     price: "999",
     cta: "Get Started",
@@ -28,7 +29,7 @@ const plans = [
     ],
   },
   {
-    id: "premium",
+    id: "shaadi" as PlanId,
     name: "Premium",
     price: "1,999",
     cta: "Get Started — Best Value",
@@ -45,7 +46,7 @@ const plans = [
     ],
   },
   {
-    id: "elite",
+    id: "shaahi" as PlanId,
     name: "Elite",
     price: "3,499",
     cta: "Get Started",
@@ -83,7 +84,7 @@ const faqs = [
 
 const Pricing = () => {
   const { user } = useAuth();
-  const ctaLink = user ? "/dashboard" : "/templates";
+  const { openCheckout } = useRazorpay();
 
   return (
     <div className="min-h-screen bg-background">
@@ -165,8 +166,8 @@ const Pricing = () => {
                   ))}
                 </ul>
 
-                <Link
-                  to={ctaLink}
+                <button
+                  onClick={() => openCheckout(p.id)}
                   className={`block w-full text-center py-3.5 text-xs font-medium tracking-[1.5px] uppercase transition-all ${
                     p.featured
                       ? "bg-secondary text-foreground hover:brightness-110 font-semibold"
@@ -174,7 +175,7 @@ const Pricing = () => {
                   }`}
                 >
                   {p.cta}
-                </Link>
+                </button>
               </div>
             ))}
           </div>
