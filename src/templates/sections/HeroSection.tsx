@@ -6,21 +6,37 @@ interface Props {
   brideFamily: string;
   groomFamily: string;
   formattedDate: string | null;
+  weddingCity?: string;
   photoUrl?: string;
   gradient: string;
   motif: string;
+  heroMediaType?: "photo" | "video";
+  heroMediaUrl?: string;
+  isPreview?: boolean;
 }
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const HeroSection = ({ brideName, groomName, formattedDate, photoUrl, gradient }: Props) => {
+const HeroSection = ({ brideName, groomName, formattedDate, weddingCity, photoUrl, gradient, heroMediaType, heroMediaUrl, isPreview }: Props) => {
+  const displayCity = weddingCity || (isPreview ? "Your City" : "");
+  const useVideo = heroMediaType === "video" && heroMediaUrl;
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-burgundy">
-      {/* BG layer: photo or gradient */}
-      {photoUrl ? (
+      {/* BG layer: video, photo, or gradient */}
+      {useVideo ? (
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src={heroMediaUrl}
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      ) : photoUrl || (heroMediaType !== "video" && heroMediaUrl) ? (
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${photoUrl})` }}
+          style={{ backgroundImage: `url(${heroMediaUrl || photoUrl})` }}
         />
       ) : (
         <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
@@ -82,6 +98,11 @@ const HeroSection = ({ brideName, groomName, formattedDate, photoUrl, gradient }
           {formattedDate && (
             <p className="font-elegant text-gold-light/60 text-base md:text-xl tracking-[0.15em]">
               {formattedDate.split(" ").join(" · ")}
+            </p>
+          )}
+          {displayCity && (
+            <p className="font-elegant text-gold-light/40 text-sm md:text-base tracking-[0.2em] mt-2">
+              {displayCity}
             </p>
           )}
         </motion.div>

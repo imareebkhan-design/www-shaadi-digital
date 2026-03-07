@@ -41,12 +41,37 @@ const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
         </div>
       </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <label className="font-body text-sm font-medium text-foreground block mb-1.5">
+            Bride's Full Name <span className="text-muted-foreground">(optional)</span>
+          </label>
+          <Input
+            placeholder="e.g. Priya Sharma"
+            value={data.bride_full_name || ""}
+            onChange={(e) => onChange({ bride_full_name: e.target.value })}
+          />
+          <p className="text-xs text-muted-foreground mt-1">Shown in the "Two Souls" section</p>
+        </div>
+        <div>
+          <label className="font-body text-sm font-medium text-foreground block mb-1.5">
+            Groom's Full Name <span className="text-muted-foreground">(optional)</span>
+          </label>
+          <Input
+            placeholder="e.g. Arjun Mehta"
+            value={data.groom_full_name || ""}
+            onChange={(e) => onChange({ groom_full_name: e.target.value })}
+          />
+          <p className="text-xs text-muted-foreground mt-1">Shown in the "Two Souls" section</p>
+        </div>
+      </div>
+
       <div>
         <label className="font-body text-sm font-medium text-foreground block mb-1.5">
           Bride's Family <span className="text-destructive">*</span>
         </label>
         <Input
-          placeholder="e.g. daughter of Ramesh & Sunita Sharma"
+          placeholder="e.g. Daughter of Mr. Vikram & Mrs. Anjali Sharma"
           value={data.bride_family}
           onChange={(e) => onChange({ bride_family: e.target.value })}
         />
@@ -58,11 +83,44 @@ const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
           Groom's Family <span className="text-destructive">*</span>
         </label>
         <Input
-          placeholder="e.g. son of Vijay & Meena Kapoor"
+          placeholder="e.g. Son of Mr. Rajesh & Mrs. Sunita Mehta"
           value={data.groom_family}
           onChange={(e) => onChange({ groom_family: e.target.value })}
         />
         {errors.groom_family && <p className="text-xs text-destructive mt-1">{errors.groom_family}</p>}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <label className="font-body text-sm font-medium text-foreground block mb-1">
+            Bride's Bio <span className="text-muted-foreground">(optional)</span>
+          </label>
+          <Textarea
+            placeholder="e.g. An artist at heart, a dreamer by nature…"
+            value={data.bride_bio || ""}
+            onChange={(e) => {
+              if (e.target.value.length <= 200) onChange({ bride_bio: e.target.value });
+            }}
+            rows={3}
+            className="resize-none"
+          />
+          <p className="text-xs text-muted-foreground mt-1 text-right">{(data.bride_bio || "").length}/200</p>
+        </div>
+        <div>
+          <label className="font-body text-sm font-medium text-foreground block mb-1">
+            Groom's Bio <span className="text-muted-foreground">(optional)</span>
+          </label>
+          <Textarea
+            placeholder="e.g. A dreamer with a golden heart…"
+            value={data.groom_bio || ""}
+            onChange={(e) => {
+              if (e.target.value.length <= 200) onChange({ groom_bio: e.target.value });
+            }}
+            rows={3}
+            className="resize-none"
+          />
+          <p className="text-xs text-muted-foreground mt-1 text-right">{(data.groom_bio || "").length}/200</p>
+        </div>
       </div>
 
       <div>

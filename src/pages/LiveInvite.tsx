@@ -7,37 +7,29 @@ import type { InvitationData } from "@/templates/types";
 import { invitationDataToConfig } from "@/templates/types";
 import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import RsvpForm from "@/components/invite/RsvpForm";
-import type { Tables } from "@/integrations/supabase/types";
-
-type PublicInvitation = Pick<Tables<"invitations">, 
-  "id" | "bride_name" | "groom_name" | "bride_family" | "groom_family" | 
-  "personal_message" | "our_story" | "wedding_date" | "photo_url" | 
-  "gallery_photos" | "language" | "upi_id" | "gift_registry_url" | 
-  "dresscode_enabled" | "dresscode_text" | "dresscode_colors" | 
-  "music_url" | "template_id" | "slug" | "status"
->;
-type Event = Tables<"events">;
 
 const LiveInvite = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [invitation, setInvitation] = useState<PublicInvitation | null>(null);
   const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
+  const [invitationId, setInvitationId] = useState<string | null>(null);
+  const [templateId, setTemplateId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     if (!slug) { setNotFound(true); setLoading(false); return; }
 
-    const fetch = async () => {
+    const fetchData = async () => {
       const { data: inv } = await supabase
         .from("invitations")
-        .select("id, bride_name, groom_name, bride_family, groom_family, personal_message, our_story, wedding_date, photo_url, gallery_photos, language, upi_id, gift_registry_url, dresscode_enabled, dresscode_text, dresscode_colors, music_url, template_id, slug, status")
+        .select("*")
         .eq("slug", slug)
         .eq("status", "published")
         .maybeSingle();
 
       if (!inv) { setNotFound(true); setLoading(false); return; }
-      setInvitation(inv);
+      setInvitationId(inv.id);
+      setTemplateId(inv.template_id);
 
       const { data: events } = await supabase
         .from("events")
@@ -50,9 +42,14 @@ const LiveInvite = () => {
         groom_name: inv.groom_name || "Groom",
         bride_family: inv.bride_family || "",
         groom_family: inv.groom_family || "",
+        bride_full_name: (inv as any).bride_full_name || undefined,
+        groom_full_name: (inv as any).groom_full_name || undefined,
+        bride_bio: (inv as any).bride_bio || undefined,
+        groom_bio: (inv as any).groom_bio || undefined,
         personal_message: inv.personal_message || undefined,
         our_story: inv.our_story || undefined,
         wedding_date: inv.wedding_date || "",
+        wedding_city: (inv as any).wedding_city || undefined,
         photo_url: inv.photo_url || undefined,
         gallery_photos: (inv.gallery_photos as string[]) || [],
         language: inv.language || "english",
@@ -62,7 +59,12 @@ const LiveInvite = () => {
         dresscode_text: inv.dresscode_text || undefined,
         dresscode_colors: (inv.dresscode_colors as string[]) || [],
         music_url: inv.music_url || undefined,
-        events: (events || []).map((e: Event) => ({
+        venue_description: (inv as any).venue_description || undefined,
+        venue_photo: (inv as any).venue_photo || undefined,
+        rsvp_deadline: (inv as any).rsvp_deadline || undefined,
+        hero_media_type: (inv as any).hero_media_type || undefined,
+        hero_media_url: (inv as any).hero_media_url || undefined,
+        events: (events || []).map((e: any) => ({
           event_type: e.event_type,
           event_name: e.event_name,
           event_date: e.event_date || "",
@@ -71,6 +73,9 @@ const LiveInvite = () => {
           venue_address: e.venue_address || "",
           maps_url: e.maps_url || undefined,
           is_enabled: e.is_enabled,
+          tagline: e.tagline || undefined,
+          description: e.description || undefined,
+          event_photo: e.event_photo || undefined,
         })),
       };
 
@@ -78,10 +83,9 @@ const LiveInvite = () => {
       setLoading(false);
     };
 
-    fetch();
+    fetchData();
   }, [slug]);
 
-  // Loading state
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center" style={{ background: "#0f0f0f" }}>
@@ -94,8 +98,7 @@ const LiveInvite = () => {
     );
   }
 
-  // Not found
-  if (notFound || !invitation || !invitationData) {
+  if (notFound || !invitationData || !templateId) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-8 text-center">
         <div className="text-5xl mb-6">💔</div>
@@ -112,10 +115,7 @@ const LiveInvite = () => {
     );
   }
 
-  // Look up template
-  const templateId = invitation.template_id;
   const templateEntry = TEMPLATE_REGISTRY[templateId];
-
   if (!templateEntry) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-8 text-center">
@@ -146,7 +146,7 @@ const LiveInvite = () => {
       <WeddingTemplate config={config} templateId={templateId} />
 
       <div id="rsvp-form">
-        <RsvpForm invitationId={invitation.id} brideName={brideName} groomName={groomName} />
+        <RsvpForm invitationId={invitationId!} brideName={brideName} groomName={groomName} />
       </div>
     </div>
   );

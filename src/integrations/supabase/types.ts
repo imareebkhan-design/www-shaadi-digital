@@ -17,40 +17,49 @@ export type Database = {
       events: {
         Row: {
           created_at: string
+          description: string | null
           event_date: string | null
           event_name: string
+          event_photo: string | null
           event_time: string | null
           event_type: Database["public"]["Enums"]["event_type"]
           id: string
           invitation_id: string
           is_enabled: boolean
           maps_url: string | null
+          tagline: string | null
           venue_address: string | null
           venue_name: string | null
         }
         Insert: {
           created_at?: string
+          description?: string | null
           event_date?: string | null
           event_name: string
+          event_photo?: string | null
           event_time?: string | null
           event_type: Database["public"]["Enums"]["event_type"]
           id?: string
           invitation_id: string
           is_enabled?: boolean
           maps_url?: string | null
+          tagline?: string | null
           venue_address?: string | null
           venue_name?: string | null
         }
         Update: {
           created_at?: string
+          description?: string | null
           event_date?: string | null
           event_name?: string
+          event_photo?: string | null
           event_time?: string | null
           event_type?: Database["public"]["Enums"]["event_type"]
           id?: string
           invitation_id?: string
           is_enabled?: boolean
           maps_url?: string | null
+          tagline?: string | null
           venue_address?: string | null
           venue_name?: string | null
         }
@@ -66,7 +75,9 @@ export type Database = {
       }
       invitations: {
         Row: {
+          bride_bio: string | null
           bride_family: string | null
+          bride_full_name: string | null
           bride_name: string | null
           created_at: string
           dresscode_colors: Json | null
@@ -74,8 +85,12 @@ export type Database = {
           dresscode_text: string | null
           gallery_photos: Json | null
           gift_registry_url: string | null
+          groom_bio: string | null
           groom_family: string | null
+          groom_full_name: string | null
           groom_name: string | null
+          hero_media_type: string | null
+          hero_media_url: string | null
           id: string
           language: Database["public"]["Enums"]["invitation_language"]
           music_url: string | null
@@ -83,16 +98,22 @@ export type Database = {
           personal_message: string | null
           photo_url: string | null
           plan: Database["public"]["Enums"]["invitation_plan"] | null
+          rsvp_deadline: string | null
           slug: string | null
           status: Database["public"]["Enums"]["invitation_status"]
           template_id: string
           updated_at: string
           upi_id: string | null
           user_id: string
+          venue_description: string | null
+          venue_photo: string | null
+          wedding_city: string | null
           wedding_date: string | null
         }
         Insert: {
+          bride_bio?: string | null
           bride_family?: string | null
+          bride_full_name?: string | null
           bride_name?: string | null
           created_at?: string
           dresscode_colors?: Json | null
@@ -100,8 +121,12 @@ export type Database = {
           dresscode_text?: string | null
           gallery_photos?: Json | null
           gift_registry_url?: string | null
+          groom_bio?: string | null
           groom_family?: string | null
+          groom_full_name?: string | null
           groom_name?: string | null
+          hero_media_type?: string | null
+          hero_media_url?: string | null
           id?: string
           language?: Database["public"]["Enums"]["invitation_language"]
           music_url?: string | null
@@ -109,16 +134,22 @@ export type Database = {
           personal_message?: string | null
           photo_url?: string | null
           plan?: Database["public"]["Enums"]["invitation_plan"] | null
+          rsvp_deadline?: string | null
           slug?: string | null
           status?: Database["public"]["Enums"]["invitation_status"]
           template_id: string
           updated_at?: string
           upi_id?: string | null
           user_id: string
+          venue_description?: string | null
+          venue_photo?: string | null
+          wedding_city?: string | null
           wedding_date?: string | null
         }
         Update: {
+          bride_bio?: string | null
           bride_family?: string | null
+          bride_full_name?: string | null
           bride_name?: string | null
           created_at?: string
           dresscode_colors?: Json | null
@@ -126,8 +157,12 @@ export type Database = {
           dresscode_text?: string | null
           gallery_photos?: Json | null
           gift_registry_url?: string | null
+          groom_bio?: string | null
           groom_family?: string | null
+          groom_full_name?: string | null
           groom_name?: string | null
+          hero_media_type?: string | null
+          hero_media_url?: string | null
           id?: string
           language?: Database["public"]["Enums"]["invitation_language"]
           music_url?: string | null
@@ -135,12 +170,16 @@ export type Database = {
           personal_message?: string | null
           photo_url?: string | null
           plan?: Database["public"]["Enums"]["invitation_plan"] | null
+          rsvp_deadline?: string | null
           slug?: string | null
           status?: Database["public"]["Enums"]["invitation_status"]
           template_id?: string
           updated_at?: string
           upi_id?: string | null
           user_id?: string
+          venue_description?: string | null
+          venue_photo?: string | null
+          wedding_city?: string | null
           wedding_date?: string | null
         }
         Relationships: []

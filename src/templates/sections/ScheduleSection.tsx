@@ -53,17 +53,23 @@ const ScheduleSection = ({ events }: Props) => {
               transition={{ duration: 1.4, ease }}
               className={`flex flex-col ${i % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"} gap-10 md:gap-16 items-center`}
             >
-              {/* Event number badge */}
+              {/* Event image or emoji */}
               <div className="w-full md:w-1/2 relative">
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-primary-foreground/5 backdrop-blur-sm border border-gold/10 flex items-center justify-center">
-                  <span className="text-6xl md:text-8xl">
-                    {event.event_type === "mehndi" ? "🌿" :
-                     event.event_type === "haldi" ? "💛" :
-                     event.event_type === "sangeet" ? "🎶" :
-                     event.event_type === "baraat" ? "🐴" :
-                     event.event_type === "ceremony" ? "🪔" :
-                     event.event_type === "reception" ? "🎉" : "🎊"}
-                  </span>
+                <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-primary-foreground/5 backdrop-blur-sm border border-gold/10">
+                  {event.event_photo ? (
+                    <img src={event.event_photo} alt={event.event_name} className="w-full h-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-6xl md:text-8xl">
+                        {event.event_type === "mehndi" ? "🌿" :
+                         event.event_type === "haldi" ? "💛" :
+                         event.event_type === "sangeet" ? "🎶" :
+                         event.event_type === "baraat" ? "🐴" :
+                         event.event_type === "ceremony" ? "🪔" :
+                         event.event_type === "reception" ? "🎉" : "🎊"}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 {/* Floating event number */}
                 <div className="absolute -top-4 -left-4 md:-left-6 w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-gold flex items-center justify-center shadow-gold">
@@ -78,9 +84,19 @@ const ScheduleSection = ({ events }: Props) => {
                 <span className="font-body text-[10px] tracking-[0.4em] uppercase text-gold/50 block mb-3">
                   {event.event_type.charAt(0).toUpperCase() + event.event_type.slice(1)}
                 </span>
-                <h3 className="font-display text-gold text-3xl md:text-5xl lg:text-6xl mb-5">
+                <h3 className="font-display text-gold text-3xl md:text-5xl lg:text-6xl mb-2">
                   {event.event_name}
                 </h3>
+                {event.tagline && (
+                  <p className="font-elegant text-gold-light/50 text-base md:text-lg italic mb-4">
+                    {event.tagline}
+                  </p>
+                )}
+                {event.description && (
+                  <p className="font-body text-primary-foreground/50 text-sm leading-relaxed mb-5">
+                    {event.description}
+                  </p>
+                )}
 
                 <div className="space-y-4 p-6 rounded-xl bg-primary-foreground/5 backdrop-blur-sm border border-gold/10">
                   {event.event_date && (

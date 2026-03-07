@@ -4,17 +4,21 @@ import type { InvitationEvent } from "../types";
 
 interface Props {
   events: InvitationEvent[];
+  venueDescription?: string;
+  venuePhoto?: string;
+  isPreview?: boolean;
 }
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const VenueMapSection = ({ events }: Props) => {
+const VenueMapSection = ({ events, venueDescription, venuePhoto, isPreview }: Props) => {
   const mainEvent = events.find((e) => e.is_enabled && e.event_type === "ceremony") || events.find((e) => e.is_enabled);
   if (!mainEvent || (!mainEvent.venue_name && !mainEvent.venue_address)) return null;
 
   const query = [mainEvent.venue_name, mainEvent.venue_address].filter(Boolean).join(", ");
   const mapsUrl = mainEvent.maps_url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
   const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+  const displayDescription = venueDescription || (isPreview ? "A beautiful place for your celebration" : "");
 
   return (
     <section className="py-24 md:py-36 bg-background relative overflow-hidden">
@@ -30,6 +34,19 @@ const VenueMapSection = ({ events }: Props) => {
           <h2 className="invite-section-title">The Venue</h2>
         </motion.div>
 
+        {/* Venue photo */}
+        {venuePhoto && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, ease }}
+            className="rounded-2xl overflow-hidden shadow-elegant mb-8 aspect-[21/9]"
+          >
+            <img src={venuePhoto} alt="Venue" className="w-full h-full object-cover" loading="lazy" />
+          </motion.div>
+        )}
+
         {/* Venue card */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -41,6 +58,11 @@ const VenueMapSection = ({ events }: Props) => {
           <h3 className="font-display text-foreground text-3xl md:text-5xl mb-3">
             {mainEvent.venue_name}
           </h3>
+          {displayDescription && (
+            <p className="font-elegant text-muted-foreground text-base md:text-lg leading-relaxed mb-4 max-w-2xl mx-auto italic">
+              {displayDescription}
+            </p>
+          )}
           {mainEvent.venue_address && (
             <p className="font-elegant text-muted-foreground text-base md:text-lg leading-relaxed mb-6">
               {mainEvent.venue_address}

@@ -6,11 +6,12 @@ interface Props {
   groomName: string;
   weddingDate: string;
   events: { event_type: string; event_date: string; event_time: string; venue_name: string; is_enabled: boolean }[];
+  personalMessage?: string;
 }
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const FooterSection = ({ brideName, groomName, weddingDate, events }: Props) => {
+const FooterSection = ({ brideName, groomName, weddingDate, events, personalMessage }: Props) => {
   const inviteUrl = typeof window !== "undefined" ? window.location.href : "";
   const enabledEvents = events.filter((e) => e.is_enabled);
 
@@ -112,7 +113,7 @@ const FooterSection = ({ brideName, groomName, weddingDate, events }: Props) => 
           <div className="mt-10 flex items-center justify-center gap-8">
             <div className="h-px w-16 bg-gold/20" />
             <p className="font-elegant text-primary-foreground/30 text-sm italic">
-              Two hearts, one love story
+              {personalMessage || "Two hearts, one love story"}
             </p>
             <div className="h-px w-16 bg-gold/20" />
           </div>
