@@ -38,12 +38,22 @@ const Login = () => {
       return;
     }
 
-    const templateId = sessionStorage.getItem("selectedTemplateId");
-    if (templateId) {
-      sessionStorage.removeItem("selectedTemplateId");
-      navigate(`/builder/${templateId}`);
+    // Check redirect targets
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get("redirect");
+    const postLogin = sessionStorage.getItem("postLoginRedirect");
+
+    if (redirect === "pricing" || postLogin === "/pricing") {
+      sessionStorage.removeItem("postLoginRedirect");
+      navigate("/pricing");
     } else {
-      navigate("/dashboard");
+      const templateId = sessionStorage.getItem("selectedTemplateId");
+      if (templateId) {
+        sessionStorage.removeItem("selectedTemplateId");
+        navigate(`/builder/${templateId}`);
+      } else {
+        navigate("/dashboard");
+      }
     }
   };
 

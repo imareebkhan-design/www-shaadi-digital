@@ -16,6 +16,8 @@ import {
   LogOut, Copy, ExternalLink, Edit, Share2, Sparkles,
   Users, Download, Plus, ArrowUpRight
 } from "lucide-react";
+import PlanBadge from "@/components/PlanBadge";
+import { usePlan } from "@/contexts/PlanContext";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Invitation = Tables<"invitations">;
@@ -23,6 +25,7 @@ type Rsvp = Tables<"rsvps">;
 
 const Dashboard = () => {
   const { user, signOut, loading: authLoading } = useAuth();
+  const { hasPlan } = usePlan();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -182,6 +185,7 @@ const Dashboard = () => {
           Shaadi<span className="text-secondary">.</span>Digital
         </Link>
         <div className="flex items-center gap-4">
+          <PlanBadge />
           <span className="font-body text-sm text-muted-foreground hidden md:block">
             {user?.email}
           </span>
@@ -204,6 +208,26 @@ const Dashboard = () => {
           </h2>
           <p className="font-body text-sm text-muted-foreground mt-1">{today}</p>
         </div>
+
+        {/* Upgrade Prompt for free users */}
+        {!hasPlan && (
+          <div className="bg-[hsl(var(--callout-bg))] border border-secondary/20 p-5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <p className="font-display text-sm font-bold" style={{ color: 'hsl(var(--maroon-dark))' }}>
+                Unlock all features with a plan
+              </p>
+              <p className="font-body text-xs text-muted-foreground mt-0.5">
+                Publish your invite, track RSVPs, add music & more.
+              </p>
+            </div>
+            <Link
+              to="/pricing"
+              className="bg-secondary text-primary-foreground px-6 py-2.5 text-[11px] font-semibold tracking-[1.5px] uppercase hover:brightness-110 transition-all shrink-0"
+            >
+              Choose a Plan
+            </Link>
+          </div>
+        )}
 
         {/* Invite Status or Empty State */}
         {!invitation ? (

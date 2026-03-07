@@ -150,7 +150,7 @@ export type Database = {
           amount: number
           created_at: string
           id: string
-          invitation_id: string
+          invitation_id: string | null
           plan: Database["public"]["Enums"]["invitation_plan"]
           razorpay_order_id: string
           razorpay_payment_id: string | null
@@ -161,7 +161,7 @@ export type Database = {
           amount: number
           created_at?: string
           id?: string
-          invitation_id: string
+          invitation_id?: string | null
           plan: Database["public"]["Enums"]["invitation_plan"]
           razorpay_order_id: string
           razorpay_payment_id?: string | null
@@ -172,7 +172,7 @@ export type Database = {
           amount?: number
           created_at?: string
           id?: string
-          invitation_id?: string
+          invitation_id?: string | null
           plan?: Database["public"]["Enums"]["invitation_plan"]
           razorpay_order_id?: string
           razorpay_payment_id?: string | null
@@ -226,6 +226,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_plans: {
+        Row: {
+          activated_at: string
+          created_at: string
+          id: string
+          is_active: boolean
+          payment_id: string | null
+          plan_amount: number
+          plan_name: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          payment_id?: string | null
+          plan_amount: number
+          plan_name: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          payment_id?: string | null
+          plan_amount?: number
+          plan_name?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       users: {
         Row: {
