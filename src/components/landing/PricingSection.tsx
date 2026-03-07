@@ -184,7 +184,10 @@ const productSchemas = [
   }
 ];
 
-const PricingSection = () => (
+const PricingSection = () => {
+  const { openCheckout } = useRazorpay();
+
+  return (
   <section id="pricing" className="section-padding bg-background relative overflow-hidden">
     <Helmet>
       {productSchemas.map((schema, i) => (
