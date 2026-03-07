@@ -14,7 +14,7 @@ import {
 
 const plans = [
   {
-    id: "basic",
+    id: "shubh" as PlanId,
     name: "Basic",
     price: "999",
     cta: "Get Started",
