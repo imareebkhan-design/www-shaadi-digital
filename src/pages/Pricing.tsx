@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Check } from "lucide-react";
+import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
 import {
   Accordion,
   AccordionContent,
