@@ -33,6 +33,7 @@ const plans = [
     note: "Preview free · Pay when happy",
   },
   {
+    planId: "shaadi" as PlanId,
     name: "Shaadi",
     nameHindi: "शादी",
     price: "1,999",
