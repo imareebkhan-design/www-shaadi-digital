@@ -113,7 +113,7 @@ const FooterSection = ({ brideName, groomName, weddingDate, events, personalMess
           <div className="mt-10 flex items-center justify-center gap-8">
             <div className="h-px w-16 bg-gold/20" />
             <p className="font-elegant text-primary-foreground/30 text-sm italic">
-              Two hearts, one love story
+              {personalMessage || "Two hearts, one love story"}
             </p>
             <div className="h-px w-16 bg-gold/20" />
           </div>
