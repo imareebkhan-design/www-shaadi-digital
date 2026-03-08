@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Check, Crown, Star, Sparkles } from "lucide-react";
+import { Check, Crown, Star, Sparkles, Shield } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface Props {
   onSelectPlan: (plan: "basic" | "premium" | "elite") => void;
@@ -13,6 +14,7 @@ const plans = [
     name: "Basic",
     price: "₹999",
     icon: Star,
+    tagline: "Perfect to get started",
     features: ["1 Wedding Template", "Up to 100 RSVPs", "WhatsApp Sharing", "30-Day Active Link"],
     popular: false,
   },
@@ -21,6 +23,7 @@ const plans = [
     name: "Premium",
     price: "₹1,999",
     icon: Crown,
+    tagline: "Most popular choice",
     features: ["All Templates", "Unlimited RSVPs", "WhatsApp + SMS Sharing", "90-Day Active Link", "Couple Photo Upload", "RSVP Dashboard", "Priority Support"],
     popular: true,
   },
@@ -29,6 +32,7 @@ const plans = [
     name: "Elite",
     price: "₹3,499",
     icon: Sparkles,
+    tagline: "The ultimate experience",
     features: ["Everything in Premium", "Custom Domain", "365-Day Active Link", "Video Invitation Add-on", "Dedicated Account Manager", "Premium Assisted Setup"],
     popular: false,
   },
@@ -39,55 +43,98 @@ const Step5Publish = ({ onSelectPlan, loading }: Props) => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <h2 className="font-display text-2xl text-primary mb-1">Publish Your Invitation</h2>
-        <p className="font-body text-sm text-muted-foreground">Choose a plan to go live</p>
+      {/* Header */}
+      <div className="text-center pb-2">
+        <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-secondary/20 mb-3">
+          <Sparkles className="w-4.5 h-4.5 text-secondary" />
+        </div>
+        <h2 className="font-display text-2xl md:text-3xl text-primary mb-1">Publish Your Invitation</h2>
+        <p className="font-body text-sm text-muted-foreground">Choose a plan and go live in seconds</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {plans.map((plan) => (
-          <button
+      <div className="space-y-3">
+        {plans.map((plan, i) => (
+          <motion.button
             key={plan.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.08 }}
             onClick={() => setSelected(plan.id)}
-            className={`relative border p-5 text-left transition-all ${
+            className={`relative w-full border p-5 text-left transition-all ${
               selected === plan.id
-                ? "border-primary bg-primary/5 shadow-md"
-                : "border-border bg-card hover:border-secondary"
+                ? plan.popular
+                  ? "border-secondary bg-secondary/5 shadow-gold"
+                  : "border-primary bg-primary/5 shadow-md"
+                : "border-border bg-card hover:border-border hover:shadow-sm"
             }`}
           >
             {plan.popular && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary text-accent-foreground font-body text-xs px-3 py-0.5">
+              <span className="absolute -top-3 right-4 bg-secondary text-secondary-foreground font-body text-[10px] font-semibold px-3 py-0.5 tracking-wide uppercase">
                 Most Popular
               </span>
             )}
-            <plan.icon className={`w-6 h-6 mb-3 ${selected === plan.id ? "text-primary" : "text-secondary"}`} />
-            <h3 className="font-display text-lg font-semibold text-foreground">{plan.name}</h3>
-            <p className="font-display text-2xl font-bold text-primary mt-1">{plan.price}</p>
-            <ul className="mt-4 space-y-2">
+
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center ${
+                  selected === plan.id
+                    ? plan.popular ? "bg-secondary/20" : "bg-primary/10"
+                    : "bg-muted"
+                }`}>
+                  <plan.icon className={`w-4 h-4 ${
+                    selected === plan.id
+                      ? plan.popular ? "text-secondary" : "text-primary"
+                      : "text-muted-foreground"
+                  }`} />
+                </div>
+                <div>
+                  <h3 className="font-display text-lg font-semibold text-foreground">{plan.name}</h3>
+                  <p className="font-body text-xs text-muted-foreground">{plan.tagline}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="font-display text-2xl font-bold text-primary">{plan.price}</p>
+                <p className="font-body text-[10px] text-muted-foreground">one-time</p>
+              </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-1.5">
               {plan.features.map((f) => (
-                <li key={f} className="flex items-start gap-2 font-body text-xs text-muted-foreground">
-                  <Check className="w-3.5 h-3.5 text-secondary mt-0.5 shrink-0" />
+                <span key={f} className="flex items-start gap-1.5 font-body text-xs text-muted-foreground">
+                  <Check className="w-3 h-3 text-secondary mt-0.5 shrink-0" />
                   {f}
-                </li>
+                </span>
               ))}
-            </ul>
-          </button>
+            </div>
+
+            {/* Selected indicator */}
+            {selected === plan.id && (
+              <div className="absolute top-5 right-5">
+                <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                  <Check className="w-3 h-3 text-primary-foreground" />
+                </div>
+              </div>
+            )}
+          </motion.button>
         ))}
       </div>
 
-      <div className="text-center">
+      <div className="text-center pt-2">
         <Button
           onClick={() => onSelectPlan(selected)}
           disabled={loading}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-12 px-10 font-body text-base"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-12 px-10 font-body text-base gap-2 shadow-md"
         >
           {loading ? (
             <div className="animate-spin w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full" />
           ) : (
-            `Pay ${plans.find((p) => p.id === selected)?.price} & Publish`
+            <>Pay {plans.find((p) => p.id === selected)?.price} & Go Live 🎉</>
           )}
         </Button>
-        <p className="font-body text-xs text-muted-foreground mt-3">Secure payment via Razorpay • UPI, Cards, Net Banking</p>
+        <div className="flex items-center justify-center gap-1.5 mt-3">
+          <Shield className="w-3 h-3 text-muted-foreground" />
+          <p className="font-body text-[11px] text-muted-foreground">Secure payment via Razorpay • UPI, Cards, Net Banking</p>
+        </div>
       </div>
     </div>
   );
