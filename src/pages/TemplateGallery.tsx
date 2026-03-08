@@ -80,7 +80,7 @@ const Chip = ({ label, active, onClick, dot }: { label: string; active: boolean;
   </button>
 );
 
-/* ── Template Card ── */
+/* ── Template Card (portrait 9:16 layout) ── */
 const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: number; onPreview: (id: string) => void }) => {
   const [notifyEmail, setNotifyEmail] = useState("");
   const [showNotify, setShowNotify] = useState(false);
@@ -92,70 +92,77 @@ const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: numbe
     setNotifyEmail("");
   };
 
+  const badgeLabel = t.isFeatured ? "🏅 Limited Ed." : t.isNew && !t.isComingSoon ? "✦ New" : t.isPremium ? "👑 Premium" : null;
+  const badgeColor = t.isFeatured
+    ? "bg-primary/85 text-primary-foreground"
+    : t.isNew && !t.isComingSoon
+    ? "bg-green-700/90 text-green-100"
+    : "bg-secondary/90 text-secondary-foreground";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
-      className={`flex flex-col rounded-2xl overflow-hidden bg-card border border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(123,28,46,0.2)] group ${
+      className={`flex flex-col rounded-2xl overflow-hidden bg-card border border-secondary/15 transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.02] hover:shadow-[0_24px_60px_rgba(92,26,26,0.16)] hover:border-secondary group ${
         t.isComingSoon ? "opacity-[0.85]" : ""
       }`}
     >
-      {/* Preview area */}
+      {/* Preview area — portrait */}
       <div
-        className="relative w-full overflow-hidden cursor-pointer"
-        style={{ aspectRatio: "16/9", background: t.previewGradient }}
+        className="relative w-full overflow-hidden cursor-pointer shrink-0 flex items-center justify-center"
+        role="img"
+        aria-label={`${t.name} template preview`}
+        style={{ aspectRatio: "9/16", background: t.previewGradient }}
         onClick={() => !t.isComingSoon && onPreview(t.id)}
       >
-        {/* Mandala pattern */}
-        <div className="absolute inset-0 pointer-events-none opacity-30" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='60' cy='60' r='55' fill='none' stroke='rgba(201,148,26,0.2)' stroke-width='0.5'/%3E%3Ccircle cx='60' cy='60' r='35' fill='none' stroke='rgba(201,148,26,0.15)' stroke-width='0.5'/%3E%3C/svg%3E")`,
-          backgroundSize: "80%",
+        {/* Mandala overlay */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='100' cy='100' r='90' fill='none' stroke='rgba(201,148,26,0.12)' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='70' fill='none' stroke='rgba(201,148,26,0.09)' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='50' fill='none' stroke='rgba(201,148,26,0.07)' stroke-width='1'/%3E%3C/svg%3E")`,
+          backgroundSize: "55%",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }} />
 
-        {/* Sample names on preview */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-[1]">
-          <div className={`font-display text-base font-semibold leading-tight text-center ${t.id === "chapel-white" ? "text-foreground" : "text-white"}`}>
-            {t.sampleData.brideName} <span className="font-serif italic text-secondary">&</span> {t.sampleData.groomName}
+        {/* Names */}
+        <div className="relative z-[1] flex flex-col items-center text-center p-5">
+          <div className={`font-display text-lg font-semibold leading-tight ${t.id === "chapel-white" ? "text-foreground" : "text-white"}`}>
+            {t.sampleData.brideName}
+            <br />
+            <span className="font-serif italic text-secondary text-xl">&</span>
+            <br />
+            {t.sampleData.groomName}
           </div>
-          <div className={`text-[10px] tracking-widest mt-1 ${t.id === "chapel-white" ? "text-muted-foreground" : "text-white/40"}`}>
-            {t.sampleData.date}
+          <div className="w-8 h-px bg-secondary/40 my-2" />
+          <div className={`text-[10px] tracking-widest ${t.id === "chapel-white" ? "text-muted-foreground" : "text-white/35"}`}>
+            {t.sampleData.date} · {t.sampleData.city}
           </div>
         </div>
 
-        {/* Badges */}
-        <div className="absolute top-2 left-2 z-[3] flex gap-1.5">
-          {t.isFeatured && (
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-primary/90 text-primary-foreground backdrop-blur-sm">
-              ⭐ Featured
-            </span>
-          )}
-          {t.isNew && !t.isComingSoon && (
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-700/90 text-green-100 backdrop-blur-sm">
-              ✦ New
-            </span>
-          )}
-          {t.isPremium && (
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-secondary/90 text-secondary-foreground backdrop-blur-sm">
-              👑 Premium
-            </span>
-          )}
+        {/* Badge */}
+        {badgeLabel && (
+          <div className={`absolute top-2.5 left-2.5 z-[4] px-2.5 py-1 rounded-full text-[10px] font-medium backdrop-blur-lg ${badgeColor}`}>
+            {badgeLabel}
+          </div>
+        )}
+
+        {/* Frosted number circle */}
+        <div className="absolute top-2.5 right-2.5 z-[4] w-7 h-7 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-[11px] font-semibold text-white/70 border border-white/20">
+          {index + 1}
         </div>
 
         {/* Coming Soon overlay */}
         {t.isComingSoon && (
-          <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center bg-black/40">
-            <span className="font-display text-lg font-semibold text-secondary animate-pulse">Coming Soon</span>
+          <div className="absolute inset-0 z-[2] flex items-center justify-center bg-black/40">
+            <span className="font-display text-sm font-semibold text-secondary animate-pulse">Coming Soon</span>
           </div>
         )}
       </div>
 
-      {/* Info */}
-      <div className="p-4 flex flex-col gap-2 flex-1">
-        <h3 className="font-display text-lg font-semibold text-foreground leading-tight">{t.name}</h3>
-        <div className="flex items-center gap-1.5 flex-wrap">
+      {/* Info below */}
+      <div className="p-[14px_16px_16px]" style={{ borderTop: "1px solid rgba(0,0,0,0.04)" }}>
+        <h3 className="font-display text-base font-semibold text-foreground leading-tight">{t.name}</h3>
+        <div className="flex items-center gap-1.5 flex-wrap mt-1.5">
           {t.region.slice(0, 1).map((r) => (
             <span key={r} className="text-[10px] tracking-[0.8px] uppercase px-2 py-0.5 rounded-full bg-[hsl(var(--gold-pale))] text-secondary font-medium">
               {r}
@@ -167,9 +174,9 @@ const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: numbe
             </span>
           ))}
         </div>
-        <p className="text-xs text-muted-foreground font-body line-clamp-2">{t.tagline}</p>
+        <p className="text-[11px] text-muted-foreground font-body line-clamp-2 mt-1.5">{t.tagline}</p>
 
-        <div className="mt-auto pt-2">
+        <div className="mt-3">
           {t.isComingSoon ? (
             <>
               {!showNotify ? (
@@ -198,9 +205,9 @@ const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: numbe
           ) : (
             <button
               onClick={() => onPreview(t.id)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
             >
-              ✦ Preview Free →
+              ✦ View demo
             </button>
           )}
         </div>
