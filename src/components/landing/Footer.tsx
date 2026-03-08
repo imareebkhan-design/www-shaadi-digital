@@ -106,7 +106,7 @@ const Footer = () => {
 
         {/* Trust badges */}
         <div className="max-w-[1100px] mx-auto flex gap-4 md:gap-6 flex-wrap justify-center md:justify-start py-6 mt-6 border-t border-white/5">
-          {["🛡️ 256-bit SSL Encrypted", "💳 UPI · Razorpay · Cards", "✅ GDPR & IT Act Compliant", "👥 50,000+ couples served", "⭐ 4.9 / 5 average rating"].map((b) => (
+          {["🛡️ 256-bit SSL Encrypted", "💳 UPI · Razorpay · Cards", "✅ GDPR & IT Act Compliant", "👥 50,000+ couples served", "⭐ 4.9 / 5 average rating · Based on couple feedback"].map((b) => (
             <div key={b} className="flex items-center gap-[7px] text-[11px] text-white/20">{b}</div>
           ))}
         </div>
