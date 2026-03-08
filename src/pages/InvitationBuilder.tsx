@@ -10,6 +10,7 @@ import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import StepIndicator from "@/components/builder/StepIndicator";
 import Step1CoupleNames from "@/components/builder/Step1CoupleNames";
 import Step2Events from "@/components/builder/Step2Events";
+import BuilderHelpCard from "@/components/builder/BuilderHelpCard";
 import Step3PhotoLanguage from "@/components/builder/Step3PhotoLanguage";
 import Step4Preview from "@/components/builder/Step4Preview";
 import Step5Publish from "@/components/builder/Step5Publish";
@@ -369,7 +370,7 @@ const InvitationBuilder = () => {
 
       <div className="flex h-screen">
         {/* ─── LEFT: Form panel (40%) ─── */}
-        <div className={`${isMobile ? "w-full" : "w-2/5"} h-screen overflow-y-auto border-r border-border`}>
+        <div className={`${isMobile ? "w-full" : "w-2/5"} h-screen overflow-y-auto border-r border-border relative`}>
           <StepIndicator currentStep={step} totalSteps={5} />
 
           <div className="p-6 md:p-8 max-w-xl mx-auto">
@@ -386,6 +387,7 @@ const InvitationBuilder = () => {
               </div>
             )}
           </div>
+          {!isMobile && <BuilderHelpCard />}
         </div>
 
         {/* ─── RIGHT: iPhone 16 Pro Max frame preview (60%) — desktop only ─── */}
