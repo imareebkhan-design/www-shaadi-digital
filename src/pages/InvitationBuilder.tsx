@@ -374,7 +374,18 @@ const InvitationBuilder = () => {
           onGoBack={() => setStep(3)}
         />
       );
-      case 5: return <Step5Publish onSelectPlan={handlePublish} loading={publishLoading} brideName={formData.bride_name} groomName={formData.groom_name} weddingDate={formData.wedding_date} />;
+      case 5: return publishedSlug ? (
+        <PublishSuccess
+          brideName={formData.bride_name}
+          groomName={formData.groom_name}
+          slug={publishedSlug}
+          weddingDate={formData.wedding_date}
+          weddingCity={formData.wedding_city}
+          language={formData.language}
+        />
+      ) : (
+        <Step5Publish onSelectPlan={handlePublish} loading={publishLoading} brideName={formData.bride_name} groomName={formData.groom_name} weddingDate={formData.wedding_date} />
+      );
       default: return null;
     }
   };
