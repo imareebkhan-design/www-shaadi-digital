@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Heart, Share2, Calendar as CalendarIcon } from "lucide-react";
+import { getWhatsAppMessage } from "@/lib/share-messages";
 
 interface Props {
   brideName: string;
@@ -7,16 +8,31 @@ interface Props {
   weddingDate: string;
   events: { event_type: string; event_date: string; event_time: string; venue_name: string; is_enabled: boolean }[];
   personalMessage?: string;
+  weddingCity?: string;
+  language?: string;
 }
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const FooterSection = ({ brideName, groomName, weddingDate, events, personalMessage }: Props) => {
+const FooterSection = ({ brideName, groomName, weddingDate, events, personalMessage, weddingCity, language }: Props) => {
   const inviteUrl = typeof window !== "undefined" ? window.location.href : "";
   const enabledEvents = events.filter((e) => e.is_enabled);
 
+  const formattedDate = weddingDate
+    ? new Date(weddingDate).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
+    : undefined;
+
   const shareWhatsApp = () => {
-    const text = `You're invited! 🎊 ${brideName} & ${groomName}'s Wedding ✨\n\n${inviteUrl}`;
+    const ceremonyEvent = enabledEvents.find((e) => e.event_type === "ceremony") || enabledEvents[0];
+    const text = getWhatsAppMessage({
+      brideName,
+      groomName,
+      formattedDate,
+      venueName: ceremonyEvent?.venue_name,
+      city: weddingCity,
+      inviteUrl,
+      language,
+    });
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
   };
 
