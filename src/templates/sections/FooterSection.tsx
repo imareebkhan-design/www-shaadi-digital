@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Heart, Share2, Calendar as CalendarIcon } from "lucide-react";
-import { getWhatsAppMessage } from "@/lib/share-messages";
+import { getWhatsAppMessage, getWhatsAppShareUrl } from "@/lib/share-messages";
 
 interface Props {
   brideName: string;

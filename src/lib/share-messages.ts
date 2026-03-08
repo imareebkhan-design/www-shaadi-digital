@@ -2,6 +2,15 @@
  * Bilingual WhatsApp share message templates
  */
 
+/** Returns the correct WhatsApp share base URL — web.whatsapp.com on desktop, wa.me on mobile */
+export function getWhatsAppShareUrl(text: string): string {
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const encoded = encodeURIComponent(text);
+  return isMobile
+    ? `https://wa.me/?text=${encoded}`
+    : `https://web.whatsapp.com/send?text=${encoded}`;
+}
+
 interface ShareMessageParams {
   brideName: string;
   groomName: string;
