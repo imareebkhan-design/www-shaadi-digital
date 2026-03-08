@@ -1,18 +1,24 @@
-import { Check } from "lucide-react";
+import { Check, LayoutGrid } from "lucide-react";
 import { motion } from "framer-motion";
+import { TEMPLATE_REGISTRY } from "@/templates";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface StepIndicatorProps {
   currentStep: number;
   totalSteps: number;
+  templateId?: string;
+  onChangeTemplate?: () => void;
 }
 
 const stepLabels = ["Names", "Events", "Photos", "Preview", "Publish"];
-const stepIcons = ["💍", "📅", "📸", "👁", "🚀"];
 
-const StepIndicator = ({ currentStep, totalSteps }: StepIndicatorProps) => {
+const StepIndicator = ({ currentStep, totalSteps, templateId, onChangeTemplate }: StepIndicatorProps) => {
+  const isMobile = useIsMobile();
+  const templateEntry = templateId ? TEMPLATE_REGISTRY[templateId] : null;
+
   return (
     <div className="w-full bg-card border-b border-border px-6 py-5">
-      <div className="max-w-xl mx-auto">
+      <div className="max-w-xl mx-auto relative">
         {/* Step circles with connecting lines */}
         <div className="flex items-center justify-between relative">
           {/* Connecting line behind circles */}
@@ -65,6 +71,52 @@ const StepIndicator = ({ currentStep, totalSteps }: StepIndicatorProps) => {
             );
           })}
         </div>
+
+        {/* Change Template button — positioned below steps */}
+        {onChangeTemplate && (
+          <div className="flex items-center justify-center mt-4 pt-3 border-t border-border/50">
+            {isMobile ? (
+              <button
+                onClick={onChangeTemplate}
+                className="w-9 h-9 rounded-full flex items-center justify-center border border-border hover:border-primary transition-colors"
+                title="Change Template"
+              >
+                <LayoutGrid className="w-4 h-4 text-primary" />
+              </button>
+            ) : (
+              <div className="flex items-center gap-2.5">
+                {/* Thumbnail */}
+                {templateEntry && (
+                  <div
+                    className="w-6 h-6 rounded shrink-0"
+                    style={{ background: templateEntry.thumbnail_gradient }}
+                  />
+                )}
+                <span className="text-xs font-body" style={{ color: "#8a6a5a" }}>
+                  {templateEntry?.name || templateId}
+                </span>
+                <button
+                  onClick={onChangeTemplate}
+                  className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-[13px] font-body font-medium transition-all duration-200"
+                  style={{
+                    border: "1px solid #d4c5b8",
+                    color: "#7B1C2E",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "#7B1C2E";
+                    e.currentTarget.style.backgroundColor = "rgba(123,28,46,0.03)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "#d4c5b8";
+                    e.currentTarget.style.backgroundColor = "transparent";
+                  }}
+                >
+                  ⟳ Change Template
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/landing/Navbar";
@@ -10,6 +10,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 /* ── Filter State ── */
 interface FilterState {
@@ -81,23 +86,48 @@ const Chip = ({ label, active, onClick, dot }: { label: string; active: boolean;
 );
 
 /* ── Template Card (portrait 9:16 layout) ── */
-const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: number; onPreview: (id: string) => void }) => {
-  const [notifyEmail, setNotifyEmail] = useState("");
-  const [showNotify, setShowNotify] = useState(false);
-
-  const handleNotify = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success(`✓ We'll notify you when ${t.name} launches!`);
-    setShowNotify(false);
-    setNotifyEmail("");
-  };
-
+const TemplateCard = ({
+  t,
+  index,
+  onPreview,
+  draftTemplateId,
+  onSwitchTemplate,
+}: {
+  t: TemplateConfig;
+  index: number;
+  onPreview: (id: string) => void;
+  draftTemplateId: string | null;
+  onSwitchTemplate?: (templateId: string) => void;
+}) => {
   const badgeLabel = t.isFeatured ? "🏅 Limited Ed." : t.isNew && !t.isComingSoon ? "✦ New" : t.isPremium ? "👑 Premium" : null;
   const badgeColor = t.isFeatured
     ? "bg-primary/85 text-primary-foreground"
     : t.isNew && !t.isComingSoon
     ? "bg-green-700/90 text-green-100"
     : "bg-secondary/90 text-secondary-foreground";
+
+  const hasDraft = !!draftTemplateId;
+  const isCurrentDraft = draftTemplateId === t.id;
+
+  const ctaLabel = t.isComingSoon
+    ? null
+    : hasDraft
+    ? isCurrentDraft
+      ? "✦ Continue editing"
+      : "⟳ Switch to this"
+    : "✦ View demo";
+
+  const handleCtaClick = () => {
+    if (t.isComingSoon) return;
+    if (hasDraft && !isCurrentDraft && onSwitchTemplate) {
+      onSwitchTemplate(t.id);
+    } else if (isCurrentDraft) {
+      // Navigate to builder with current template
+      window.location.assign(`/builder/${t.id}`);
+    } else {
+      onPreview(t.id);
+    }
+  };
 
   return (
     <motion.div
@@ -192,10 +222,10 @@ const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: numbe
             </button>
           ) : (
             <button
-              onClick={() => onPreview(t.id)}
+              onClick={handleCtaClick}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
             >
-              ✦ View demo
+              {ctaLabel}
             </button>
           )}
         </div>
@@ -294,7 +324,48 @@ const TemplateGallery = () => {
   const [filters, setFilters] = useState<FilterState>(emptyFilters);
   const [showFilters, setShowFilters] = useState(false);
   const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
+  const [switchConfirm, setSwitchConfirm] = useState<{ templateId: string; name: string } | null>(null);
   const isMobile = useIsMobile();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  // Fetch existing draft for logged-in user
+  const [draftTemplateId, setDraftTemplateId] = useState<string | null>(null);
+  const [draftInvitationId, setDraftInvitationId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) { setDraftTemplateId(null); return; }
+    const fetchDraft = async () => {
+      const { data } = await supabase
+        .from("invitations")
+        .select("id, template_id")
+        .eq("user_id", user.id)
+        .eq("status", "draft")
+        .limit(1)
+        .maybeSingle();
+      if (data) {
+        setDraftTemplateId(data.template_id);
+        setDraftInvitationId(data.id);
+      }
+    };
+    fetchDraft();
+  }, [user]);
+
+  const handleSwitchTemplate = useCallback((templateId: string) => {
+    const t = templates.find((t) => t.id === templateId);
+    setSwitchConfirm({ templateId, name: t?.name || templateId });
+  }, []);
+
+  const confirmSwitch = useCallback(async () => {
+    if (!switchConfirm || !draftInvitationId) return;
+    await supabase
+      .from("invitations")
+      .update({ template_id: switchConfirm.templateId } as any)
+      .eq("id", draftInvitationId);
+    setSwitchConfirm(null);
+    toast.success("✓ Template switched! Redirecting to builder...");
+    navigate(`/builder/${switchConfirm.templateId}`);
+  }, [switchConfirm, draftInvitationId, navigate]);
 
   const activeFilterCount = filters.religion.length + filters.region.length + filters.style.length + filters.color.length + filters.badge.length;
 
@@ -430,7 +501,7 @@ const TemplateGallery = () => {
         {filtered.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
             {filtered.map((t, i) => (
-              <TemplateCard key={t.id} t={t} index={i} onPreview={openPreview} />
+              <TemplateCard key={t.id} t={t} index={i} onPreview={openPreview} draftTemplateId={draftTemplateId} onSwitchTemplate={handleSwitchTemplate} />
             ))}
           </div>
         ) : (
@@ -457,6 +528,28 @@ const TemplateGallery = () => {
           onClose={() => setPreviewTemplateId(null)}
         />
       )}
+
+      {/* Switch confirmation dialog */}
+      <Dialog open={!!switchConfirm} onOpenChange={(open) => !open && setSwitchConfirm(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-lg">
+              Switch to {switchConfirm?.name}?
+            </DialogTitle>
+            <DialogDescription className="font-body text-sm text-muted-foreground">
+              Your invitation details (names, events, photos) will carry over. Only the design will change.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex gap-3 sm:justify-end">
+            <Button variant="outline" onClick={() => setSwitchConfirm(null)} className="rounded-none font-body">
+              Cancel
+            </Button>
+            <Button onClick={confirmSwitch} className="bg-primary text-primary-foreground rounded-none font-body">
+              Switch Template →
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

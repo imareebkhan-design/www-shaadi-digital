@@ -14,11 +14,13 @@ import BuilderHelpCard from "@/components/builder/BuilderHelpCard";
 import Step3PhotoLanguage from "@/components/builder/Step3PhotoLanguage";
 import Step4Preview from "@/components/builder/Step4Preview";
 import Step5Publish from "@/components/builder/Step5Publish";
+import TemplateSwitcherModal from "@/components/builder/TemplateSwitcherModal";
 import { Button } from "@/components/ui/button";
 import { Eye, ArrowLeft, ArrowRight, X, Check } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { defaultEvents, DEFAULT_TAGLINES } from "@/types/builder";
+import { AnimatePresence } from "framer-motion";
 
 const getCeremonyLabel = (community: string): string => {
   switch (community) {
@@ -60,18 +62,20 @@ const defaultFormData = (ceremonyLabel: string): InvitationData => ({
 });
 
 const InvitationBuilder = () => {
-  const { templateId } = useParams<{ templateId: string }>();
+  const { templateId: urlTemplateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const isMobile = useIsMobile();
 
-  const template = templateId ? TEMPLATE_REGISTRY[templateId] : null;
+  const [activeTemplateId, setActiveTemplateId] = useState(urlTemplateId || "");
+  const template = activeTemplateId ? TEMPLATE_REGISTRY[activeTemplateId] : null;
   const TemplateComponent = template?.component;
 
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [invitationId, setInvitationId] = useState<string | null>(null);
   const [showMobilePreview, setShowMobilePreview] = useState(false);
+  const [showTemplateSwitcher, setShowTemplateSwitcher] = useState(false);
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const autoSaveTimer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -81,13 +85,49 @@ const InvitationBuilder = () => {
     defaultFormData(getCeremonyLabel(template?.community || ""))
   );
 
+  // Keep activeTemplateId in sync with URL changes
+  useEffect(() => {
+    if (urlTemplateId && urlTemplateId !== activeTemplateId) {
+      setActiveTemplateId(urlTemplateId);
+    }
+  }, [urlTemplateId]);
+
+  // Template switch handler
+  const handleTemplateSwitch = useCallback(async (newTemplateId: string) => {
+    if (newTemplateId === activeTemplateId) return;
+    
+    // Update DB
+    if (invitationId) {
+      await supabase
+        .from("invitations")
+        .update({ template_id: newTemplateId } as any)
+        .eq("id", invitationId);
+    }
+
+    setActiveTemplateId(newTemplateId);
+    setShowTemplateSwitcher(false);
+
+    // Navigate to new URL without losing state
+    navigate(`/builder/${newTemplateId}`, { replace: true });
+
+    toast("✓ Template switched! Your details are all here.", {
+      duration: 3000,
+      position: "top-center",
+      style: {
+        background: "#1C1410",
+        color: "#ffffff",
+        border: "none",
+      },
+    });
+  }, [activeTemplateId, invitationId, navigate]);
+
   // Redirect if not authenticated
   useEffect(() => {
     if (!authLoading && !user) {
-      sessionStorage.setItem("selectedTemplateId", templateId || "");
+      sessionStorage.setItem("selectedTemplateId", activeTemplateId || "");
       navigate("/login");
     }
-  }, [authLoading, user, navigate, templateId]);
+  }, [authLoading, user, navigate, activeTemplateId]);
 
   // Redirect if invalid template
   useEffect(() => {
@@ -96,14 +136,14 @@ const InvitationBuilder = () => {
 
   // Create or load invitation
   useEffect(() => {
-    if (!user || !templateId) return;
+    if (!user || !activeTemplateId) return;
 
     const loadOrCreate = async () => {
       const { data: existing } = await supabase
         .from("invitations")
         .select("*")
         .eq("user_id", user.id)
-        .eq("template_id", templateId)
+        .eq("template_id", activeTemplateId)
         .eq("status", "draft")
         .maybeSingle();
 
@@ -166,7 +206,7 @@ const InvitationBuilder = () => {
       } else {
         const { data: newInv } = await supabase
           .from("invitations")
-          .insert({ user_id: user.id, template_id: templateId })
+          .insert({ user_id: user.id, template_id: activeTemplateId })
           .select()
           .single();
 
@@ -186,7 +226,7 @@ const InvitationBuilder = () => {
     };
 
     loadOrCreate();
-  }, [user, templateId]);
+  }, [user, activeTemplateId]);
 
   // Save to Supabase
   const saveToSupabase = useCallback(async () => {
@@ -327,7 +367,7 @@ const InvitationBuilder = () => {
       case 4: return (
         <Step4Preview
           data={formData}
-          templateId={templateId!}
+          templateId={activeTemplateId!}
           onProceed={() => setStep(5)}
           onGoBack={() => setStep(3)}
         />
@@ -372,7 +412,7 @@ const InvitationBuilder = () => {
       <div className="flex h-screen">
         {/* ─── LEFT: Form panel (40%) ─── */}
         <div className={`${isMobile ? "w-full" : "w-2/5"} h-screen overflow-y-auto border-r border-border relative`}>
-          <StepIndicator currentStep={step} totalSteps={5} />
+          <StepIndicator currentStep={step} totalSteps={5} templateId={activeTemplateId} onChangeTemplate={() => setShowTemplateSwitcher(true)} />
 
           <div className="p-6 md:p-8 max-w-xl mx-auto pb-32">
             {renderStep()}
@@ -434,7 +474,7 @@ const InvitationBuilder = () => {
                     transformOrigin: "top left",
                   }}
                 >
-                  <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
+                  <WeddingTemplate config={invitationDataToConfig(formData)} templateId={activeTemplateId!} />
                 </div>
               </div>
               {/* Home indicator */}
@@ -477,7 +517,7 @@ const InvitationBuilder = () => {
               </button>
             </div>
             <div className="overflow-y-auto" style={{ height: "calc(85vh - 60px)" }}>
-              <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
+              <WeddingTemplate config={invitationDataToConfig(formData)} templateId={activeTemplateId!} />
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-4 bg-background border-t border-border">
               <Button onClick={() => setShowMobilePreview(false)} className="w-full bg-primary text-primary-foreground rounded-none h-12 font-body">
@@ -487,6 +527,18 @@ const InvitationBuilder = () => {
           </div>
         </div>
       )}
+
+      {/* Template Switcher Modal */}
+      <AnimatePresence>
+        {showTemplateSwitcher && (
+          <TemplateSwitcherModal
+            currentTemplateId={activeTemplateId}
+            formData={formData}
+            onSwitch={handleTemplateSwitch}
+            onClose={() => setShowTemplateSwitcher(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
