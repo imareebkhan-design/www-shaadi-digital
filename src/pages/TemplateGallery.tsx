@@ -227,8 +227,8 @@ const FilterPanelContent = ({
     <div className="space-y-6">
       {/* Religion */}
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body">Religion</h4>
-        <div className="flex flex-wrap gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body hidden md:block">Religion</h4>
+        <div className="flex flex-wrap gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
           {FILTER_OPTIONS.religion.map((r) => (
             <Chip key={r} label={r} active={filters.religion.includes(r)} onClick={() => setFilters((f) => ({ ...f, religion: toggleFilter(f.religion, r) }))} />
           ))}
@@ -237,8 +237,8 @@ const FilterPanelContent = ({
 
       {/* Region */}
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body">Region</h4>
-        <div className="flex flex-wrap gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body hidden md:block">Region</h4>
+        <div className="flex flex-wrap gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
           {FILTER_OPTIONS.region.map((r) => (
             <Chip key={r} label={r} active={filters.region.includes(r)} onClick={() => setFilters((f) => ({ ...f, region: toggleFilter(f.region, r) }))} />
           ))}
@@ -247,8 +247,8 @@ const FilterPanelContent = ({
 
       {/* Style */}
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body">Style</h4>
-        <div className="flex flex-wrap gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body hidden md:block">Style</h4>
+        <div className="flex flex-wrap gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
           {FILTER_OPTIONS.style.map((s) => (
             <Chip key={s} label={s} active={filters.style.includes(s)} onClick={() => setFilters((f) => ({ ...f, style: toggleFilter(f.style, s) }))} />
           ))}
@@ -257,8 +257,8 @@ const FilterPanelContent = ({
 
       {/* Color */}
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body">Color</h4>
-        <div className="flex flex-wrap gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body hidden md:block">Color</h4>
+        <div className="flex flex-wrap gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
           {FILTER_OPTIONS.colorFamily.map((c) => (
             <Chip key={c.label} label={c.label} dot={c.dot} active={filters.color.includes(c.label)} onClick={() => setFilters((f) => ({ ...f, color: toggleFilter(f.color, c.label) }))} />
           ))}
@@ -267,8 +267,8 @@ const FilterPanelContent = ({
 
       {/* Badges */}
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body">Badges</h4>
-        <div className="flex flex-wrap gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body hidden md:block">Badges</h4>
+        <div className="flex flex-wrap gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
           {FILTER_OPTIONS.badge.map((b) => (
             <Chip key={b} label={`${b === "Featured" ? "⭐" : b === "New" ? "✦" : "👑"} ${b}`} active={filters.badge.includes(b)} onClick={() => setFilters((f) => ({ ...f, badge: toggleFilter(f.badge, b) }))} />
           ))}
