@@ -153,8 +153,12 @@ const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: numbe
 
         {/* Coming Soon overlay */}
         {t.isComingSoon && (
-          <div className="absolute inset-0 z-[2] flex items-center justify-center bg-black/40">
-            <span className="font-display text-sm font-semibold text-secondary animate-pulse">Coming Soon</span>
+          <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center bg-black/30">
+            <div className="w-8 h-8 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center mb-3 border border-white/20">
+              <Bell className="w-3.5 h-3.5 text-white/70" />
+            </div>
+            <span className="font-display text-base font-semibold text-secondary">Coming Soon</span>
+            <span className="text-[10px] text-white/50 font-body mt-1">Naye designs aa rahe hain...</span>
           </div>
         )}
       </div>
