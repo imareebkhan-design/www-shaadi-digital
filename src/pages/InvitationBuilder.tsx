@@ -10,6 +10,7 @@ import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import StepIndicator from "@/components/builder/StepIndicator";
 import Step1CoupleNames from "@/components/builder/Step1CoupleNames";
 import Step2Events from "@/components/builder/Step2Events";
+import BuilderHelpCard from "@/components/builder/BuilderHelpCard";
 import Step3PhotoLanguage from "@/components/builder/Step3PhotoLanguage";
 import Step4Preview from "@/components/builder/Step4Preview";
 import Step5Publish from "@/components/builder/Step5Publish";
