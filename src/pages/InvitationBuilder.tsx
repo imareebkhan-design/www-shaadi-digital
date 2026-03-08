@@ -349,8 +349,8 @@ const InvitationBuilder = () => {
       .eq("id", invitationId);
     setPublishLoading(false);
     if (error) { toast("Failed to publish. Please try again."); return; }
+    setPublishedSlug(slug);
     toast("🎉 Your invitation is live!");
-    navigate("/dashboard");
   };
 
   if (!template || !TemplateComponent || authLoading) {
