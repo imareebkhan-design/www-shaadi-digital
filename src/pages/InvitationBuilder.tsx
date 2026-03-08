@@ -410,15 +410,6 @@ const InvitationBuilder = () => {
                   background: "#1a1a1a",
                 }}
               />
-              {/* Home indicator */}
-              <div
-                className="absolute bottom-[12px] left-1/2 -translate-x-1/2 z-20 rounded-full"
-                style={{
-                  width: 80,
-                  height: 4,
-                  background: "rgba(0,0,0,0.3)",
-                }}
-              />
               {/* Scrollable template inside, scaled down */}
               <div
                 className="absolute overflow-hidden"
@@ -442,6 +433,15 @@ const InvitationBuilder = () => {
                   <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
                 </div>
               </div>
+              {/* Home indicator — on top of everything */}
+              <div
+                className="absolute bottom-[14px] left-1/2 -translate-x-1/2 z-30 rounded-full"
+                style={{
+                  width: 80,
+                  height: 4,
+                  background: "rgba(255,255,255,0.5)",
+                }}
+              />
             </div>
           </div>
         )}
