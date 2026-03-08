@@ -528,6 +528,28 @@ const TemplateGallery = () => {
           onClose={() => setPreviewTemplateId(null)}
         />
       )}
+
+      {/* Switch confirmation dialog */}
+      <Dialog open={!!switchConfirm} onOpenChange={(open) => !open && setSwitchConfirm(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-lg">
+              Switch to {switchConfirm?.name}?
+            </DialogTitle>
+            <DialogDescription className="font-body text-sm text-muted-foreground">
+              Your invitation details (names, events, photos) will carry over. Only the design will change.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex gap-3 sm:justify-end">
+            <Button variant="outline" onClick={() => setSwitchConfirm(null)} className="rounded-none font-body">
+              Cancel
+            </Button>
+            <Button onClick={confirmSwitch} className="bg-primary text-primary-foreground rounded-none font-body">
+              Switch Template →
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
