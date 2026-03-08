@@ -338,10 +338,12 @@ const TemplateGallery = () => {
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="font-display text-[clamp(28px,5vw,48px)] font-semibold leading-tight text-foreground">
-            Apna style chuniye...
+            Apna style chuniye,
+            <br />
+            <span className="italic font-serif">ise unique banayein</span>
           </h1>
-          <p className="mt-2 text-sm md:text-base text-muted-foreground font-body">
-            200+ designs for every Indian wedding tradition
+          <p className="mt-3 text-sm md:text-base text-muted-foreground font-body">
+            Har theme aapki love story sunane ke liye design kiya gaya hai
           </p>
         </div>
 
