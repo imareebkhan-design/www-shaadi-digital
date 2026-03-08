@@ -387,6 +387,7 @@ const InvitationBuilder = () => {
               </div>
             )}
           </div>
+          {!isMobile && <BuilderHelpCard />}
         </div>
 
         {/* ─── RIGHT: iPhone 16 Pro Max frame preview (60%) — desktop only ─── */}
