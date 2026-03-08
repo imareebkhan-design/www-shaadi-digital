@@ -22,10 +22,12 @@ const TemplateSwitcherModal = ({
   onClose,
 }: TemplateSwitcherModalProps) => {
   const isMobile = useIsMobile();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [mobilePreviewId, setMobilePreviewId] = useState<string | null>(null);
 
-  const previewTemplateId = hoveredId || currentTemplateId;
+  // Selected takes priority over hovered
+  const previewTemplateId = selectedId || hoveredId || currentTemplateId;
 
   // Only show templates that exist in the registry (renderable)
   const availableTemplates = useMemo(
