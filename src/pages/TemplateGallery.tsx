@@ -395,11 +395,20 @@ const TemplateGallery = () => {
           )}
         </div>
 
-        {/* Results count */}
-        <p className="text-xs text-muted-foreground font-body mb-4">
-          Showing {nonComingSoonCount} of {templates.filter((t) => !t.isComingSoon).length} templates
-          {filtered.filter((t) => t.isComingSoon).length > 0 && ` + ${filtered.filter((t) => t.isComingSoon).length} coming soon`}
-        </p>
+        <div className="flex items-center gap-3 mb-4">
+          <p className="text-xs text-muted-foreground font-body">
+            Showing {nonComingSoonCount} of {templates.filter((t) => !t.isComingSoon).length} templates
+            {filtered.filter((t) => t.isComingSoon).length > 0 && ` + ${filtered.filter((t) => t.isComingSoon).length} coming soon`}
+          </p>
+          {activeFilterCount > 0 && (
+            <button
+              onClick={() => setFilters(emptyFilters)}
+              className="text-xs text-primary underline hover:text-primary/80 transition-colors font-body"
+            >
+              × Clear all filters
+            </button>
+          )}
+        </div>
 
         {/* Desktop filter panel */}
         {!isMobile && (
