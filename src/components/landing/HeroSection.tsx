@@ -49,9 +49,31 @@ const particles = [
 
 const LINE1 = "The Invitation They'll";
 const LINE2 = "Remember Forever.";
-const BASE_SPEED = 85;
-const JITTER = 25;
-const SPACE_PAUSE = 140;
+const BASE_SPEED = 72;
+const JITTER = 18;
+const SPACE_PAUSE = 120;
+
+// Soft typewriter click using Web Audio API
+const createTypingSound = () => {
+  let audioCtx: AudioContext | null = null;
+  return () => {
+    try {
+      if (!audioCtx) audioCtx = new AudioContext();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      // Soft mechanical click
+      osc.frequency.setValueAtTime(1800 + Math.random() * 600, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.025);
+      osc.type = "sine";
+      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.045);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.05);
+    } catch {}
+  };
+};
 
 const HeroSection = () => {
   const [line1Text, setLine1Text] = useState("");
@@ -59,8 +81,9 @@ const HeroSection = () => {
   const [cursor1Active, setCursor1Active] = useState(false);
   const [cursor2Active, setCursor2Active] = useState(false);
   const [cursor2FadeOut, setCursor2FadeOut] = useState(false);
-  const [phase, setPhase] = useState(0); // 0=waiting, 1=typing line1, 2=typing line2, 3=done
+  const [phase, setPhase] = useState(0);
   const timerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const clickRef = useRef(createTypingSound());
 
   const clearTimers = useCallback(() => {
     timerRef.current.forEach(clearTimeout);
@@ -77,18 +100,18 @@ const HeroSection = () => {
       const tick = () => {
         ci++;
         setter(text.slice(0, ci));
+        if (text[ci - 1] !== " ") clickRef.current();
         if (ci >= text.length) {
-          addTimer(onDone, 400);
+          addTimer(onDone, 350);
           return;
         }
         const ch = text[ci] || "";
         const delay = BASE_SPEED + (Math.random() * JITTER * 2 - JITTER) + (ch === " " ? SPACE_PAUSE : 0);
-        addTimer(tick, Math.max(40, delay));
+        addTimer(tick, Math.max(45, delay));
       };
       addTimer(tick, 0);
     };
 
-    // Start sequence
     addTimer(() => {
       setPhase(1);
       setCursor1Active(true);
@@ -104,7 +127,7 @@ const HeroSection = () => {
               setCursor2FadeOut(true);
             }, 900);
           });
-        }, 200);
+        }, 180);
       });
     }, 700);
 
