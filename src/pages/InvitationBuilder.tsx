@@ -388,21 +388,60 @@ const InvitationBuilder = () => {
           </div>
         </div>
 
-        {/* ─── RIGHT: Phone frame preview (60%) — desktop only ─── */}
+        {/* ─── RIGHT: iPhone 16 Pro Max frame preview (60%) — desktop only ─── */}
         {!isMobile && (
           <div className="w-3/5 h-screen sticky top-0 flex items-center justify-center bg-muted/30">
-            <div
-              className="overflow-hidden"
-              style={{
-                width: 320,
-                height: 600,
-                borderRadius: 32,
-                border: "6px solid #333",
-                overflowY: "auto",
-                boxShadow: "0 25px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05)",
-              }}
-            >
-              <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
+            {/* iPhone 16 Pro Max: 430×932 logical, scaled to fit */}
+            <div className="relative" style={{ width: 280, height: 606 }}>
+              {/* Phone frame */}
+              <div
+                className="absolute inset-0 rounded-[40px] pointer-events-none z-10"
+                style={{
+                  border: "8px solid #1a1a1a",
+                  boxShadow: "0 25px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.08), inset 0 0 0 2px #333",
+                }}
+              />
+              {/* Dynamic Island notch */}
+              <div
+                className="absolute top-[10px] left-1/2 -translate-x-1/2 z-20 rounded-full"
+                style={{
+                  width: 72,
+                  height: 20,
+                  background: "#1a1a1a",
+                }}
+              />
+              {/* Home indicator */}
+              <div
+                className="absolute bottom-[12px] left-1/2 -translate-x-1/2 z-20 rounded-full"
+                style={{
+                  width: 80,
+                  height: 4,
+                  background: "rgba(0,0,0,0.3)",
+                }}
+              />
+              {/* Scrollable template inside, scaled down */}
+              <div
+                className="absolute overflow-hidden"
+                style={{
+                  top: 8,
+                  left: 8,
+                  right: 8,
+                  bottom: 8,
+                  borderRadius: 32,
+                }}
+              >
+                <div
+                  className="overflow-y-auto"
+                  style={{
+                    width: 430,
+                    height: 932,
+                    transform: "scale(0.614)",
+                    transformOrigin: "top left",
+                  }}
+                >
+                  <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
+                </div>
+              </div>
             </div>
           </div>
         )}
