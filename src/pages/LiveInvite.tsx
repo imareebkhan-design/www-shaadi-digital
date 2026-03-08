@@ -13,6 +13,7 @@ const LiveInvite = () => {
   const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
   const [invitationId, setInvitationId] = useState<string | null>(null);
   const [templateId, setTemplateId] = useState<string | null>(null);
+  const [rawInvitation, setRawInvitation] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -30,6 +31,7 @@ const LiveInvite = () => {
       if (!inv) { setNotFound(true); setLoading(false); return; }
       setInvitationId(inv.id);
       setTemplateId(inv.template_id);
+      setRawInvitation(inv);
 
       const { data: events } = await supabase
         .from("events")
@@ -135,13 +137,30 @@ const LiveInvite = () => {
   const brideName = config.couple.brideName;
   const groomName = config.couple.groomName;
 
+  // Dynamic OG data
+  const formattedDate = rawInvitation?.wedding_date
+    ? new Date(rawInvitation.wedding_date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
+    : "";
+  const city = rawInvitation?.wedding_city || "";
+  const ogTitle = `${brideName} & ${groomName} — You're Invited ✨`;
+  const ogDescription = formattedDate && city
+    ? `Join us for our wedding celebration on ${formattedDate} in ${city}. Tap to open your invitation.`
+    : `You're invited to ${brideName} & ${groomName}'s wedding celebration. View details and RSVP.`;
+
+  // OG image via edge function with cache-busting
+  const updatedAt = rawInvitation?.updated_at ? new Date(rawInvitation.updated_at).getTime() : "";
+  const ogImageUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-og-image?slug=${slug}${updatedAt ? `&v=${updatedAt}` : ""}`;
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title={`${brideName} & ${groomName}'s Wedding Invitation — Shaadi.Digital`}
-        description={`You're invited to ${brideName} & ${groomName}'s wedding celebration. View details and RSVP.`}
+        title={ogTitle}
+        description={ogDescription}
         canonical={`https://shaadi.digital/invite/${slug}`}
-        ogImage={config.couple.photoUrl || undefined}
+        ogImage={ogImageUrl}
+        ogImageWidth="1200"
+        ogImageHeight="630"
+        ogImageType="image/png"
       />
       <WeddingTemplate config={config} templateId={templateId} />
 
