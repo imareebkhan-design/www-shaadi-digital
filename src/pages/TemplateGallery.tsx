@@ -324,7 +324,48 @@ const TemplateGallery = () => {
   const [filters, setFilters] = useState<FilterState>(emptyFilters);
   const [showFilters, setShowFilters] = useState(false);
   const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
+  const [switchConfirm, setSwitchConfirm] = useState<{ templateId: string; name: string } | null>(null);
   const isMobile = useIsMobile();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  // Fetch existing draft for logged-in user
+  const [draftTemplateId, setDraftTemplateId] = useState<string | null>(null);
+  const [draftInvitationId, setDraftInvitationId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) { setDraftTemplateId(null); return; }
+    const fetchDraft = async () => {
+      const { data } = await supabase
+        .from("invitations")
+        .select("id, template_id")
+        .eq("user_id", user.id)
+        .eq("status", "draft")
+        .limit(1)
+        .maybeSingle();
+      if (data) {
+        setDraftTemplateId(data.template_id);
+        setDraftInvitationId(data.id);
+      }
+    };
+    fetchDraft();
+  }, [user]);
+
+  const handleSwitchTemplate = useCallback((templateId: string) => {
+    const t = templates.find((t) => t.id === templateId);
+    setSwitchConfirm({ templateId, name: t?.name || templateId });
+  }, []);
+
+  const confirmSwitch = useCallback(async () => {
+    if (!switchConfirm || !draftInvitationId) return;
+    await supabase
+      .from("invitations")
+      .update({ template_id: switchConfirm.templateId } as any)
+      .eq("id", draftInvitationId);
+    setSwitchConfirm(null);
+    toast.success("✓ Template switched! Redirecting to builder...");
+    navigate(`/builder/${switchConfirm.templateId}`);
+  }, [switchConfirm, draftInvitationId, navigate]);
 
   const activeFilterCount = filters.religion.length + filters.region.length + filters.style.length + filters.color.length + filters.badge.length;
 
