@@ -78,6 +78,7 @@ const InvitationBuilder = () => {
   const [showMobilePreview, setShowMobilePreview] = useState(false);
   const [showTemplateSwitcher, setShowTemplateSwitcher] = useState(false);
   const [publishLoading, setPublishLoading] = useState(false);
+  const [publishedSlug, setPublishedSlug] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const autoSaveTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const savedTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
