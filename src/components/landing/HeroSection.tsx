@@ -192,7 +192,12 @@ const HeroSection = () => {
             <span>
               <span>{line2Text.replace("Forever.", "")}</span>
               {line2Text.includes("Forever.") && (
-                <em className="italic font-serif text-secondary">Forever.</em>
+                <em
+                  className="inline-block italic font-serif text-secondary origin-bottom-left animate-[foreverReveal_0.8s_cubic-bezier(0.22,1,0.36,1)_forwards]"
+                  style={{ verticalAlign: "baseline" }}
+                >
+                  Forever.
+                </em>
               )}
             </span>
           )}
