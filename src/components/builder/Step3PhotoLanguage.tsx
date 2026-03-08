@@ -33,6 +33,7 @@ const languages = [
 const Step3PhotoLanguage = ({ data, onChange, errors }: Props) => {
   const { user } = useAuth();
   const fileRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLInputElement>(null);
   const venuePhotoRef = useRef<HTMLInputElement>(null);
   const galleryRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [uploading, setUploading] = useState("");
