@@ -40,7 +40,7 @@ const BuilderHelpCard = () => {
   };
 
   return (
-    <div className="absolute bottom-24 right-6 z-20 w-[260px]">
+    <div className="fixed bottom-6 z-20 w-[260px]" style={{ right: "calc(60% + 24px)", maxWidth: "calc(40% - 48px)" }}>
       <AnimatePresence>
         {expanded && (
           <motion.div
