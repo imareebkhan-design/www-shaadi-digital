@@ -1,8 +1,11 @@
+import { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Calendar, Clock, MapPin, Link as LinkIcon, Tag, FileText } from "lucide-react";
+import { Calendar, Clock, MapPin, Link as LinkIcon, Tag, FileText, Camera, Upload } from "lucide-react";
 import { BuilderFormData, EventData, DEFAULT_TAGLINES } from "@/types/builder";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "@/components/ui/sonner";
 
 interface Props {
   data: BuilderFormData;
@@ -10,11 +13,47 @@ interface Props {
   errors: Record<string, string>;
 }
 
+const DEFAULT_DESCRIPTIONS: Record<string, string> = {
+  mehndi: "An intimate afternoon of intricate henna artistry, music, and celebration with close family and friends.",
+  haldi: "A joyful morning ceremony filled with turmeric, blessings, and laughter shared with loved ones.",
+  sangeet: "An enchanting evening of music, dance performances, and joyous celebrations under the stars.",
+  baraat: "A grand and festive procession as the groom arrives with family and friends in high spirits.",
+  ceremony: "The sacred union of two souls, bound by love, blessings, and the warmth of family.",
+  reception: "An elegant evening of celebration, good food, and cherished moments with all who joined us on this journey.",
+};
+
 const Step2Events = ({ data, onChange, errors }: Props) => {
+  const { user } = useAuth();
+  const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const [uploading, setUploading] = useState<string | null>(null);
+
   const updateEvent = (index: number, updates: Partial<EventData>) => {
     const newEvents = [...data.events];
     newEvents[index] = { ...newEvents[index], ...updates };
     onChange({ events: newEvents });
+  };
+
+  const handleToggle = (index: number, checked: boolean, event: EventData) => {
+    if (event.event_type === "ceremony" && !checked) return;
+    const updates: Partial<EventData> = { is_enabled: checked };
+    if (checked && !event.description) {
+      updates.description = DEFAULT_DESCRIPTIONS[event.event_type] || "";
+    }
+    updateEvent(index, updates);
+  };
+
+  const handlePhotoUpload = async (index: number, file: File, eventType: string) => {
+    if (file.size > 5 * 1024 * 1024) { toast.error("File must be under 5MB"); return; }
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) { toast.error("Only JPG, PNG, WEBP"); return; }
+    setUploading(eventType);
+    const ext = file.name.split(".").pop();
+    const path = `${user?.id}/event-${eventType}-${Date.now()}.${ext}`;
+    const { error } = await supabase.storage.from("couple-photos").upload(path, file, { upsert: true });
+    if (error) { toast.error(error.message); setUploading(null); return; }
+    const { data: urlData } = supabase.storage.from("couple-photos").getPublicUrl(path);
+    updateEvent(index, { event_photo: urlData.publicUrl });
+    setUploading(null);
+    toast.success("Photo uploaded!");
   };
 
   return (
@@ -34,10 +73,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
               <div className="flex items-center gap-3">
                 <Switch
                   checked={event.is_enabled}
-                  onCheckedChange={(checked) => {
-                    if (event.event_type === "ceremony" && !checked) return;
-                    updateEvent(index, { is_enabled: checked });
-                  }}
+                  onCheckedChange={(checked) => handleToggle(index, checked, event)}
                 />
                 <span className="font-display text-base font-semibold text-foreground">
                   {event.event_name}
@@ -73,6 +109,58 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                     />
                   </div>
                 </div>
+
+                {/* Event Photo Selector */}
+                <div>
+                  <label className="font-body text-xs text-muted-foreground mb-2 block">Event Photo</label>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => updateEvent(index, { event_photo: "" })}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-body border transition-all ${
+                        !event.event_photo
+                          ? "border-primary bg-primary/5 text-primary"
+                          : "border-border text-muted-foreground hover:border-primary/50"
+                      }`}
+                    >
+                      <Camera className="w-3.5 h-3.5" /> 📷 Use our photo
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => fileRefs.current[event.event_type]?.click()}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-body border transition-all ${
+                        event.event_photo
+                          ? "border-primary bg-primary/5 text-primary"
+                          : "border-border text-muted-foreground hover:border-primary/50"
+                      }`}
+                    >
+                      <Upload className="w-3.5 h-3.5" /> ⬆️ Upload yours
+                    </button>
+                    <input
+                      ref={(el) => { fileRefs.current[event.event_type] = el; }}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="hidden"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) handlePhotoUpload(index, f, event.event_type);
+                      }}
+                    />
+                  </div>
+                  {uploading === event.event_type && (
+                    <p className="text-xs text-secondary mt-1 animate-pulse">Uploading…</p>
+                  )}
+                  {event.event_photo && (
+                    <div className="mt-2">
+                      <img
+                        src={event.event_photo}
+                        alt={`${event.event_name} photo`}
+                        className="w-20 h-14 object-cover border border-border"
+                      />
+                    </div>
+                  )}
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="font-body text-xs text-muted-foreground flex items-center gap-1.5 mb-1">
