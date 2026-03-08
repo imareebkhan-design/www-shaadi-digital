@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const MandalaLarge = () => (
@@ -36,25 +36,6 @@ const MandalaSmall = () => (
   </svg>
 );
 
-const MandalaCenter = () => (
-  <svg className="absolute pointer-events-none w-[900px] h-[900px] top-1/2 left-1/2 opacity-[0.025] hidden md:block" style={{ animation: "spin3 120s linear infinite" }} viewBox="0 0 600 600" fill="none">
-    <circle cx="300" cy="300" r="290" stroke="#C9941A" strokeWidth="0.5" />
-    <circle cx="300" cy="300" r="240" stroke="#C9941A" strokeWidth="0.3" />
-    <circle cx="300" cy="300" r="190" stroke="#C9941A" strokeWidth="0.5" />
-    <circle cx="300" cy="300" r="140" stroke="#C9941A" strokeWidth="0.3" />
-    <g stroke="#C9941A" strokeWidth="0.3" opacity="0.5">
-      <line x1="300" y1="10" x2="300" y2="590" />
-      <line x1="10" y1="300" x2="590" y2="300" />
-      <line x1="90" y1="90" x2="510" y2="510" />
-      <line x1="510" y1="90" x2="90" y2="510" />
-      <line x1="195" y1="10" x2="405" y2="590" />
-      <line x1="10" y1="195" x2="590" y2="405" />
-      <line x1="405" y1="10" x2="195" y2="590" />
-      <line x1="10" y1="405" x2="590" y2="195" />
-    </g>
-  </svg>
-);
-
 const particles = [
   { w: 6, top: "18%", left: "12%", dur: "14s", del: "0s", op: 0.35 },
   { w: 4, top: "35%", left: "22%", dur: "18s", del: "3s", op: 0.2 },
@@ -66,80 +47,13 @@ const particles = [
   { w: 5, top: "80%", right: "45%", dur: "17s", del: "6s", op: 0.22 },
 ];
 
-const LINE1 = "Aapki Shaadi";
-const LINE2 = "Aapka Andaaz";
-const BASE_SPEED = 95;
-const JITTER = 28;
-const SPACE_PAUSE = 160;
-
 const HeroSection = () => {
-  const [line1Text, setLine1Text] = useState("");
-  const [line2Text, setLine2Text] = useState("");
-  const [cursor1Active, setCursor1Active] = useState(false);
-  const [cursor2Active, setCursor2Active] = useState(false);
-  const [cursor2FadeOut, setCursor2FadeOut] = useState(false);
-  const [ornamentVisible, setOrnamentVisible] = useState(false);
-  const [emVisible, setEmVisible] = useState(false);
-  const [lineAnimate, setLineAnimate] = useState(false);
-  const [subtextVisible, setSubtextVisible] = useState(false);
-  const [descVisible, setDescVisible] = useState(false);
-  const [actionsVisible, setActionsVisible] = useState(false);
-  const [statsVisible, setStatsVisible] = useState(false);
-  const [scrollVisible, setScrollVisible] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-
-  const clearTimers = useCallback(() => {
-    timerRef.current.forEach(clearTimeout);
-    timerRef.current = [];
-  }, []);
-
-  const addTimer = useCallback((fn: () => void, ms: number) => {
-    timerRef.current.push(setTimeout(fn, ms));
-  }, []);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const typeChar = (text: string, setter: React.Dispatch<React.SetStateAction<string>>, onDone: () => void) => {
-      let ci = 0;
-      const tick = () => {
-        ci++;
-        setter(text.slice(0, ci));
-        if (ci >= text.length) {
-          addTimer(onDone, 520);
-          return;
-        }
-        const ch = text[ci] || "";
-        const delay = BASE_SPEED + (Math.random() * JITTER * 2 - JITTER) + (ch === " " ? SPACE_PAUSE : 0);
-        addTimer(tick, Math.max(40, delay));
-      };
-      addTimer(tick, 0);
-    };
-
-    addTimer(() => {
-      setCursor1Active(true);
-      typeChar(LINE1, setLine1Text, () => {
-        setOrnamentVisible(true);
-        setCursor1Active(false);
-        setEmVisible(true);
-        addTimer(() => {
-          setCursor2Active(true);
-          typeChar(LINE2, setLine2Text, () => {
-            addTimer(() => {
-              setCursor2Active(false);
-              setCursor2FadeOut(true);
-            }, 900);
-            addTimer(() => setLineAnimate(true), 300);
-            addTimer(() => setSubtextVisible(true), 500);
-            addTimer(() => setDescVisible(true), 850);
-            addTimer(() => setActionsVisible(true), 1150);
-            addTimer(() => setStatsVisible(true), 1450);
-            addTimer(() => setScrollVisible(true), 2500);
-          });
-        }, 120);
-      });
-    }, 700);
-
-    return clearTimers;
-  }, [addTimer, clearTimers]);
+    const t = setTimeout(() => setVisible(true), 300);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-5 pt-[100px] md:pt-[120px] pb-12 md:pb-20" style={{ background: "#F5EFE4" }}>
@@ -159,7 +73,6 @@ const HeroSection = () => {
 
       <MandalaLarge />
       <MandalaSmall />
-      <MandalaCenter />
 
       {/* Particles - hidden on mobile for perf */}
       <div className="hidden md:block">
@@ -179,84 +92,66 @@ const HeroSection = () => {
         ))}
       </div>
 
-      {/* Badge */}
-      <div className="relative z-[2] inline-flex items-center gap-2 md:gap-2.5 bg-[rgba(201,148,26,0.08)] border border-secondary/30 backdrop-blur-sm px-4 md:px-5 py-[7px] rounded-full text-[9px] md:text-[10px] font-medium tracking-[1.5px] md:tracking-[2px] uppercase text-secondary mb-6 md:mb-9 opacity-0 animate-[fadeUp_0.8s_cubic-bezier(0.22,1,0.36,1)_0.2s_forwards]">
+      {/* Eyebrow */}
+      <div className={`relative z-[2] inline-flex items-center gap-2 md:gap-2.5 bg-[rgba(201,148,26,0.08)] border border-secondary/30 backdrop-blur-sm px-4 md:px-5 py-[7px] rounded-full text-[9px] md:text-[10px] font-medium tracking-[1.5px] md:tracking-[2px] uppercase text-secondary mb-6 md:mb-9 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
         <span className="w-[5px] h-[5px] rounded-full bg-secondary animate-pulse" />
-        India's Most Beautiful Digital Invitations
+        India's Most Loved Digital Wedding Invitations
         <span className="w-[5px] h-[5px] rounded-full bg-secondary animate-pulse" />
       </div>
 
-      {/* Typewriter Headline */}
-      <div className="relative z-[2] flex flex-col items-center justify-center text-center min-h-[160px] md:min-h-[220px]">
-        <div className="text-center">
-          <h1 className="font-display font-bold leading-[1.22]" style={{ fontSize: "clamp(32px, 8vw, 82px)", color: "hsl(var(--maroon-dark))" }}>
-            <span>{line1Text}</span>
-            {cursor1Active && (
-              <span className="inline-block w-[2.5px] bg-secondary rounded-sm ml-[3px] align-middle relative -top-[0.06em] animate-[twBlink_1.05s_step-start_infinite]" style={{ height: "0.8em", boxShadow: "0 0 6px rgba(201,148,26,0.55)" }} />
-            )}
-            <span className={`block text-[0.28em] tracking-[6px] text-secondary font-body not-italic font-light my-1 transition-opacity duration-500 ${ornamentVisible ? "opacity-[0.65]" : "opacity-0"}`}>
-              — ✦ —
-            </span>
-            <em className={`block font-serif text-[1.18em] italic font-normal text-secondary transition-opacity duration-350 ${emVisible ? "opacity-100" : "opacity-0"}`} style={{ minHeight: "1.22em" }}>
-              <span>{line2Text}</span>
-              {cursor2Active && !cursor2FadeOut && (
-                <span className="inline-block w-[2.5px] bg-secondary rounded-sm ml-[3px] align-middle relative -top-[0.06em] animate-[twBlink_1.05s_step-start_infinite]" style={{ height: "0.8em", boxShadow: "0 0 6px rgba(201,148,26,0.55)" }} />
-              )}
-              {cursor2FadeOut && (
-                <span className="inline-block w-[2.5px] bg-secondary rounded-sm ml-[3px] align-middle relative -top-[0.06em] animate-[twFadeOut_0.8s_ease_forwards]" style={{ height: "0.8em", boxShadow: "0 0 6px rgba(201,148,26,0.55)" }} />
-              )}
-            </em>
-          </h1>
-        </div>
-      </div>
+      {/* Headline */}
+      <h1 className={`relative z-[2] font-display font-bold leading-[1.15] transition-all duration-700 delay-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ fontSize: "clamp(32px, 8vw, 78px)", color: "hsl(var(--maroon-dark))" }}>
+        The Invitation They'll<br />
+        Remember <em className="italic font-serif text-secondary">Forever.</em>
+      </h1>
 
-      {/* Gold divider line */}
-      <div className={`h-px mx-auto my-4 md:my-6 bg-gradient-to-r from-transparent via-secondary to-transparent ${lineAnimate ? "animate-[drawLine_1.1s_cubic-bezier(0.4,0,0.2,1)_forwards]" : "w-0 opacity-0"}`} />
+      {/* Gold divider */}
+      <div className={`h-px mx-auto my-5 md:my-7 bg-gradient-to-r from-transparent via-secondary to-transparent transition-all duration-700 delay-300 ${visible ? "w-24 md:w-32 opacity-100" : "w-0 opacity-0"}`} />
 
-      {/* Subtext */}
-      <p className={`relative z-[2] font-serif italic font-light text-muted-foreground max-w-[560px] leading-[1.6] px-2 transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${subtextVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`} style={{ fontSize: "clamp(15px, 2.2vw, 24px)" }}>
-        Where tradition meets the digital world — elegantly
+      {/* Subheadline */}
+      <p className={`relative z-[2] text-[15px] md:text-[17px] text-muted-foreground max-w-[540px] leading-[1.8] px-2 font-light transition-all duration-700 delay-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+        Stunning, personalised digital wedding invitations — delivered instantly on WhatsApp, built for every Indian ceremony, from Mehndi to Reception.
       </p>
 
-      {/* Description */}
-      <p className={`relative z-[2] text-[14px] md:text-sm text-muted-foreground max-w-[460px] leading-[1.9] mt-3.5 px-2 font-light transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${descVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
-        Stunning digital wedding invitations with live RSVP tracking, WhatsApp delivery, and real-time guest management — crafted for every Indian wedding tradition. <Link to="/signup" className="text-primary font-medium hover:underline">Create yours free</Link>.
-      </p>
-
-      {/* Actions */}
-      <div className={`relative z-[2] flex flex-col md:flex-row gap-3.5 w-full md:w-auto items-center justify-center mt-8 md:mt-9 px-4 md:px-0 transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${actionsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
+      {/* CTAs */}
+      <div className={`relative z-[2] flex flex-col md:flex-row gap-3.5 w-full md:w-auto items-center justify-center mt-8 md:mt-9 px-4 md:px-0 transition-all duration-700 delay-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
         <Link
-          to="/templates"
+          to="/signup"
           className="relative overflow-hidden w-full md:w-auto bg-primary text-primary-foreground px-10 py-4 min-h-[52px] flex items-center justify-center text-[11px] font-semibold tracking-[2px] uppercase rounded-full hover:bg-[hsl(var(--maroon-dark))] hover:-translate-y-[3px] transition-all duration-300 shadow-[0_8px_32px_rgba(123,28,46,0.28)]"
         >
           <span className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-          Browse Templates — Free
+          Start for Free — No Card Needed
         </Link>
-        <button
-          onClick={() => document.querySelector("#how")?.scrollIntoView({ behavior: "smooth" })}
-          className="w-full md:w-auto bg-transparent text-primary px-9 py-[15px] min-h-[52px] flex items-center justify-center text-[11px] font-medium tracking-[2px] uppercase rounded-full border border-primary/35 hover:bg-primary hover:text-primary-foreground hover:border-primary hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+        <Link
+          to="/templates"
+          className="w-full md:w-auto bg-transparent text-primary px-9 py-[15px] min-h-[52px] flex items-center justify-center text-[11px] font-medium tracking-[2px] uppercase rounded-full border border-primary/35 hover:bg-primary hover:text-primary-foreground hover:border-primary hover:-translate-y-0.5 transition-all duration-300"
         >
-          See How It Works
-        </button>
+          See How It Works →
+        </Link>
       </div>
 
-      {/* Stats */}
-      <div className={`relative z-[2] grid grid-cols-2 md:flex mt-10 md:mt-14 bg-white/55 backdrop-blur-xl border border-secondary/[0.18] rounded-2xl overflow-hidden transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${statsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[18px]"}`}>
+      {/* Micro trust copy */}
+      <p className={`relative z-[2] text-[11px] md:text-xs text-muted-foreground tracking-[0.5px] mt-5 transition-all duration-700 delay-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
+        ✓ 200+ templates &nbsp;·&nbsp; ✓ Live RSVP tracking &nbsp;·&nbsp; ✓ Edit anytime, free
+      </p>
+
+      {/* Trust badges */}
+      <div className={`relative z-[2] grid grid-cols-2 md:flex mt-8 md:mt-12 bg-white/55 backdrop-blur-xl border border-secondary/[0.18] rounded-2xl overflow-hidden transition-all duration-700 delay-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
         {[
-          { num: "50,000+", label: "Happy Couples" },
-          { num: "200+", label: "Templates" },
-          { num: "4.9 ★", label: "Average Rating" },
-          { num: "₹0", label: "Paper Waste" },
+          { icon: "🛡️", label: "100% Secure" },
+          { icon: "⏱️", label: "Ready in 10 Minutes" },
+          { icon: "💰", label: "Pay Only When You Love It" },
+          { icon: "♾️", label: "Updates Free Forever" },
         ].map((s, i) => (
-          <div key={s.label} className={`text-center px-4 md:px-10 py-4 md:py-5 relative ${i > 0 ? "md:before:absolute md:before:left-0 md:before:top-[20%] md:before:bottom-[20%] md:before:w-px md:before:bg-secondary/20" : ""} ${i >= 2 ? "border-t md:border-t-0 border-secondary/10" : ""} ${i % 2 === 1 ? "border-l md:border-l-0 border-secondary/10" : ""}`}>
-            <div className="font-display text-[22px] md:text-[28px] font-bold text-primary tracking-[-0.5px]">{s.num}</div>
-            <div className="text-[9px] md:text-[10px] uppercase tracking-[1.5px] text-muted-foreground mt-[3px]">{s.label}</div>
+          <div key={s.label} className={`text-center px-4 md:px-8 py-4 md:py-5 relative ${i > 0 ? "md:before:absolute md:before:left-0 md:before:top-[20%] md:before:bottom-[20%] md:before:w-px md:before:bg-secondary/20" : ""} ${i >= 2 ? "border-t md:border-t-0 border-secondary/10" : ""} ${i % 2 === 1 ? "border-l md:border-l-0 border-secondary/10" : ""}`}>
+            <span className="text-base md:text-lg">{s.icon}</span>
+            <div className="text-[9px] md:text-[10px] uppercase tracking-[1.5px] text-muted-foreground mt-1">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* Scroll hint - hidden on mobile */}
-      <div className={`absolute bottom-9 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 text-[9px] tracking-[3px] uppercase z-[2] transition-opacity duration-1000 ${scrollVisible ? "opacity-100" : "opacity-0"}`} style={{ color: "rgba(92,26,26,0.3)" }}>
+      <div className={`absolute bottom-9 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 text-[9px] tracking-[3px] uppercase z-[2] transition-opacity duration-1000 delay-[1200ms] ${visible ? "opacity-100" : "opacity-0"}`} style={{ color: "rgba(92,26,26,0.3)" }}>
         <span>Scroll</span>
         <div className="w-5 h-8 border border-secondary/35 rounded-[10px] flex items-start justify-center pt-[5px]">
           <div className="w-1 h-1 rounded-full bg-secondary/60 animate-[scrollDot_2s_ease_infinite]" />
