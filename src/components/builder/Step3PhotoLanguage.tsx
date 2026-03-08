@@ -65,6 +65,27 @@ const Step3PhotoLanguage = ({ data, onChange, errors }: Props) => {
     setUploading("");
   };
 
+  const handleVideoUpload = async (file: File) => {
+    setUploadError("");
+    if (file.size > 50 * 1024 * 1024) {
+      setUploadError("Video must be under 50MB");
+      return;
+    }
+    const videoTypes = ["video/mp4", "video/webm", "video/ogg", "video/quicktime", "video/x-msvideo", "video/x-matroska", "video/mpeg"];
+    if (!videoTypes.includes(file.type)) {
+      setUploadError("Unsupported video format. Use MP4, WebM, MOV, AVI, or MKV.");
+      return;
+    }
+    setUploading("video");
+    const ext = file.name.split(".").pop();
+    const path = `${user?.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error } = await supabase.storage.from("hero-videos").upload(path, file, { upsert: true });
+    if (error) { setUploadError(error.message); setUploading(""); return; }
+    const { data: urlData } = supabase.storage.from("hero-videos").getPublicUrl(path);
+    onChange({ hero_media_url: urlData.publicUrl });
+    setUploading("");
+  };
+
   const handleGalleryPhoto = async (file: File, index: number) => {
     setUploading(`gallery-${index}`);
     const url = await uploadFile(file, "couple-photos");
