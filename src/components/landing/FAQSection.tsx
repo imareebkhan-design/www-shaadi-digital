@@ -73,7 +73,7 @@ const FAQSection = () => {
           </p>
           <div className="mt-9 pt-7 border-t border-secondary/15">
             <div className="text-[10px] tracking-[2px] uppercase text-secondary font-medium mb-3">Still unsure?</div>
-            <a href="https://wa.me/919999999999" className="inline-flex items-center gap-2 text-[13px] hover:text-secondary transition-colors" style={{ color: "hsl(var(--maroon-dark))" }}>
+            <a href="https://wa.me/917838189916?text=Hi%2C%20I%27d%20like%20help%20with%20my%20Shaadi.Digital%20invitation" className="inline-flex items-center gap-2 text-[13px] hover:text-secondary transition-colors" style={{ color: "hsl(var(--maroon-dark))" }}>
               💬 Chat with us on WhatsApp
             </a>
           </div>
