@@ -331,7 +331,7 @@ const TemplateGallery = () => {
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="font-display text-[clamp(28px,5vw,48px)] font-semibold leading-tight text-foreground">
-            Choose Your Template
+            Apna style chuniye...
           </h1>
           <p className="mt-2 text-sm md:text-base text-muted-foreground font-body">
             200+ designs for every Indian wedding tradition
