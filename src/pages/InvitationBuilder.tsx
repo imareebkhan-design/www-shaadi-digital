@@ -412,7 +412,7 @@ const InvitationBuilder = () => {
       <div className="flex h-screen">
         {/* ─── LEFT: Form panel (40%) ─── */}
         <div className={`${isMobile ? "w-full" : "w-2/5"} h-screen overflow-y-auto border-r border-border relative`}>
-          <StepIndicator currentStep={step} totalSteps={5} />
+          <StepIndicator currentStep={step} totalSteps={5} templateId={activeTemplateId} onChangeTemplate={() => setShowTemplateSwitcher(true)} />
 
           <div className="p-6 md:p-8 max-w-xl mx-auto pb-32">
             {renderStep()}
