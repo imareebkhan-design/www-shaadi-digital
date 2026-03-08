@@ -81,6 +81,7 @@ const Dashboard = () => {
           .order("submitted_at", { ascending: false });
         setRsvps(rsvpData || []);
       }
+      if (inv?.slug) setCustomSlug(inv.slug);
       setLoading(false);
     };
     fetchData();
