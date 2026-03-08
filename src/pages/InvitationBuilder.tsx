@@ -14,11 +14,13 @@ import BuilderHelpCard from "@/components/builder/BuilderHelpCard";
 import Step3PhotoLanguage from "@/components/builder/Step3PhotoLanguage";
 import Step4Preview from "@/components/builder/Step4Preview";
 import Step5Publish from "@/components/builder/Step5Publish";
+import TemplateSwitcherModal from "@/components/builder/TemplateSwitcherModal";
 import { Button } from "@/components/ui/button";
 import { Eye, ArrowLeft, ArrowRight, X, Check } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { defaultEvents, DEFAULT_TAGLINES } from "@/types/builder";
+import { AnimatePresence } from "framer-motion";
 
 const getCeremonyLabel = (community: string): string => {
   switch (community) {
