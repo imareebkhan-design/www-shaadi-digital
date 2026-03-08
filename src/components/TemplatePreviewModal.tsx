@@ -9,7 +9,6 @@ interface TemplatePreviewModalProps {
 const DEMO_URL = "https://vivaah-visions-kit.lovable.app";
 
 const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps) => {
-  const navigate = useNavigate();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
