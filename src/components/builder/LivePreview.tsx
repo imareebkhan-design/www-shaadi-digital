@@ -1,10 +1,10 @@
 import { BuilderFormData } from "@/types/builder";
-import { TemplateData } from "@/data/templates";
+import { TemplateConfig } from "@/data/templates";
 import { format } from "date-fns";
 
 interface Props {
   data: BuilderFormData;
-  template: TemplateData;
+  template: TemplateConfig;
 }
 
 const LivePreview = ({ data, template }: Props) => {
