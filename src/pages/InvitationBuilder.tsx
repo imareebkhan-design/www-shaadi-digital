@@ -391,34 +391,108 @@ const InvitationBuilder = () => {
         {/* ─── RIGHT: iPhone 16 Pro Max frame preview (60%) — desktop only ─── */}
         {!isMobile && (
           <div className="w-3/5 h-screen sticky top-0 flex items-center justify-center bg-muted/30">
-            {/* iPhone 16 Pro Max: 430×932 logical, scaled to fit */}
-            <div className="relative" style={{ width: 280, height: 606 }}>
-              {/* Phone frame */}
+        {/* iPhone 16 Pro Max: 430×932 logical, scaled to fit */}
+            <div className="relative" style={{ width: 290, height: 620 }}>
+              {/* Outer titanium frame */}
               <div
-                className="absolute inset-0 rounded-[40px] pointer-events-none z-10"
+                className="absolute inset-0 rounded-[48px] pointer-events-none"
                 style={{
-                  border: "8px solid #1a1a1a",
-                  boxShadow: "0 25px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.08), inset 0 0 0 2px #333",
+                  background: "linear-gradient(145deg, #d4d0c8, #b8b4ac, #c8c4bc)",
+                  boxShadow: "0 30px 70px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.1)",
                 }}
               />
-              {/* Dynamic Island notch */}
+              {/* Inner black bezel */}
               <div
-                className="absolute top-[10px] left-1/2 -translate-x-1/2 z-20 rounded-full"
+                className="absolute rounded-[42px] pointer-events-none z-10"
                 style={{
-                  width: 72,
-                  height: 20,
+                  top: 6,
+                  left: 6,
+                  right: 6,
+                  bottom: 6,
                   background: "#1a1a1a",
+                  boxShadow: "inset 0 0 8px rgba(0,0,0,0.6)",
                 }}
               />
-              {/* Scrollable template inside, scaled down */}
+
+              {/* Side buttons — left (silent + volume) */}
               <div
-                className="absolute overflow-hidden"
+                className="absolute pointer-events-none"
                 style={{
-                  top: 8,
-                  left: 8,
-                  right: 8,
-                  bottom: 8,
-                  borderRadius: 32,
+                  left: -3,
+                  top: 100,
+                  width: 4,
+                  height: 18,
+                  borderRadius: "3px 0 0 3px",
+                  background: "linear-gradient(180deg, #c8c4bc, #a8a49c)",
+                }}
+              />
+              <div
+                className="absolute pointer-events-none"
+                style={{
+                  left: -3,
+                  top: 140,
+                  width: 4,
+                  height: 36,
+                  borderRadius: "3px 0 0 3px",
+                  background: "linear-gradient(180deg, #c8c4bc, #a8a49c)",
+                }}
+              />
+              <div
+                className="absolute pointer-events-none"
+                style={{
+                  left: -3,
+                  top: 186,
+                  width: 4,
+                  height: 36,
+                  borderRadius: "3px 0 0 3px",
+                  background: "linear-gradient(180deg, #c8c4bc, #a8a49c)",
+                }}
+              />
+              {/* Side button — right (power) */}
+              <div
+                className="absolute pointer-events-none"
+                style={{
+                  right: -3,
+                  top: 155,
+                  width: 4,
+                  height: 50,
+                  borderRadius: "0 3px 3px 0",
+                  background: "linear-gradient(180deg, #c8c4bc, #a8a49c)",
+                }}
+              />
+
+              {/* Dynamic Island */}
+              <div
+                className="absolute left-1/2 -translate-x-1/2 z-20 rounded-full flex items-center justify-center"
+                style={{
+                  top: 18,
+                  width: 80,
+                  height: 22,
+                  background: "#000",
+                }}
+              >
+                {/* Camera dot */}
+                <div
+                  className="rounded-full"
+                  style={{
+                    width: 8,
+                    height: 8,
+                    background: "radial-gradient(circle at 40% 40%, #2a2a3a, #111)",
+                    marginLeft: 20,
+                    boxShadow: "0 0 2px rgba(50,50,80,0.6)",
+                  }}
+                />
+              </div>
+
+              {/* Screen content area */}
+              <div
+                className="absolute overflow-hidden z-[5]"
+                style={{
+                  top: 12,
+                  left: 12,
+                  right: 12,
+                  bottom: 12,
+                  borderRadius: 36,
                 }}
               >
                 <div
@@ -426,20 +500,21 @@ const InvitationBuilder = () => {
                   style={{
                     width: 430,
                     height: 932,
-                    transform: "scale(0.614)",
+                    transform: "scale(0.619)",
                     transformOrigin: "top left",
                   }}
                 >
                   <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
                 </div>
               </div>
-              {/* Home indicator — on top of everything */}
+
+              {/* Home indicator */}
               <div
-                className="absolute bottom-[14px] left-1/2 -translate-x-1/2 z-30 rounded-full"
+                className="absolute bottom-[18px] left-1/2 -translate-x-1/2 z-30 rounded-full"
                 style={{
-                  width: 80,
+                  width: 84,
                   height: 4,
-                  background: "rgba(255,255,255,0.5)",
+                  background: "rgba(255,255,255,0.45)",
                 }}
               />
             </div>
