@@ -40,11 +40,12 @@ const Footer = () => {
               India's most loved digital wedding invitation platform — beautiful, personal, and crafted for every Indian tradition, from Punjabi Shaadi to South Indian Kalyanam.
             </p>
             <div className="flex gap-2.5 justify-center md:justify-start">
-              {["Instagram", "YouTube", "Pinterest", "WhatsApp"].map((s) => (
-                <a key={s} href="#" className="w-[44px] h-[44px] md:w-[34px] md:h-[34px] rounded-lg border border-white/[0.08] flex items-center justify-center text-white/30 hover:border-secondary/40 hover:text-secondary hover:bg-secondary/[0.08] transition-all text-xs" title={s}>
-                  {s === "Instagram" ? "📷" : s === "YouTube" ? "▶" : s === "Pinterest" ? "📌" : "💬"}
-                </a>
-              ))}
+              <a href="https://instagram.com/shaadi.digital" target="_blank" rel="noopener noreferrer" className="w-[44px] h-[44px] md:w-[34px] md:h-[34px] rounded-lg border border-white/[0.08] flex items-center justify-center text-white/30 hover:border-secondary/40 hover:text-secondary hover:bg-secondary/[0.08] transition-all text-xs" title="Instagram">
+                📷
+              </a>
+              <a href="https://wa.me/917838189916" target="_blank" rel="noopener noreferrer" className="w-[44px] h-[44px] md:w-[34px] md:h-[34px] rounded-lg border border-white/[0.08] flex items-center justify-center text-white/30 hover:border-secondary/40 hover:text-secondary hover:bg-secondary/[0.08] transition-all text-xs" title="WhatsApp">
+                💬
+              </a>
             </div>
           </div>
 
