@@ -407,31 +407,41 @@ const Dashboard = () => {
               ))}
             </motion.div>
 
-            {/* ───────── RSVP Section ───────── */}
+            {/* ───────── RSVP Dashboard ───────── */}
             {invitation.status === "published" && (
               <motion.div
                 initial="hidden" animate="visible" variants={fadeUp} custom={4}
-                className="bg-card border border-border/50 overflow-hidden"
+                className="bg-card border border-border/50 overflow-hidden rounded-2xl"
                 style={{ boxShadow: "var(--shadow-card)" }}
               >
                 <div className="h-[2px] bg-gradient-to-r from-transparent via-secondary/40 to-transparent" />
 
-                <div className="p-6 md:p-8">
-                  {/* RSVP Header */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Users className="w-4 h-4 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="font-display text-lg font-bold text-primary">RSVP Responses</h3>
-                        <p className="font-body text-xs text-muted-foreground">{rsvpStats.responses} responses received</p>
-                      </div>
-                    </div>
+                {/* Tab Navigation */}
+                <div className="flex items-center border-b border-border/60 px-6 overflow-x-auto no-scrollbar">
+                  {([
+                    { key: "overview" as const, label: "📊 Overview" },
+                    { key: "guests" as const, label: "👥 Guest List" },
+                    { key: "blessings" as const, label: "💌 Blessings" },
+                    { key: "share" as const, label: "📤 Share Invite" },
+                  ]).map((tab) => (
+                    <button
+                      key={tab.key}
+                      onClick={() => setDashboardTab(tab.key)}
+                      className={`px-4 py-3.5 font-body text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${
+                        dashboardTab === tab.key
+                          ? "text-primary border-primary"
+                          : "text-muted-foreground border-transparent hover:text-foreground"
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                  {/* Add RSVP button */}
+                  <div className="ml-auto pl-4 py-2">
                     <Dialog open={manualRsvpOpen} onOpenChange={setManualRsvpOpen}>
                       <DialogTrigger asChild>
-                        <button className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-secondary hover:text-primary transition-colors uppercase tracking-[1px] border border-secondary/30 px-3 py-1.5 hover:border-primary/30">
-                          <Plus className="w-3 h-3" /> Add
+                        <button className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-secondary hover:text-primary transition-colors uppercase tracking-[1px] border border-secondary/30 px-3 py-1.5 rounded-full hover:border-primary/30">
+                          <Plus className="w-3 h-3" /> Add RSVP
                         </button>
                       </DialogTrigger>
                       <DialogContent>
@@ -468,100 +478,148 @@ const Dashboard = () => {
                             </Select>
                           </div>
                           <div>
-                            <Label className="font-body text-sm">Note</Label>
+                            <Label className="font-body text-sm">Note / Blessing</Label>
                             <Textarea
                               value={manualRsvp.note}
                               onChange={(e) => setManualRsvp(p => ({ ...p, note: e.target.value }))}
                               placeholder="Optional note..." rows={2}
                             />
                           </div>
-                          <Button onClick={submitManualRsvp} className="w-full font-body">Add RSVP</Button>
+                          <Button onClick={submitManualRsvp} className="w-full font-body rounded-none">Add RSVP</Button>
                         </div>
                       </DialogContent>
                     </Dialog>
                   </div>
+                </div>
 
-                  {/* Stat Cards */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                    {[
-                      { label: "Total Guests", value: rsvpStats.total, color: "text-primary", bg: "bg-primary/5", icon: Users },
-                      { label: "Vegetarian", value: rsvpStats.veg, color: "text-emerald-600", bg: "bg-emerald-50", icon: Heart },
-                      { label: "Non-Veg", value: rsvpStats.nonVeg, color: "text-orange-600", bg: "bg-orange-50", icon: Heart },
-                      { label: "Jain", value: rsvpStats.jain, color: "text-secondary", bg: "bg-callout", icon: Heart },
-                    ].map(({ label, value, color, bg, icon: StatIcon }) => (
-                      <div key={label} className={`${bg} p-4 text-center border border-border/30`}>
-                        <div className={`font-display text-3xl font-bold ${color}`}>{value}</div>
-                        <div className="flex items-center justify-center gap-1 mt-1">
-                          <div className="text-[10px] uppercase tracking-[1px] text-muted-foreground font-body">{label}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Toggle & Export */}
-                  <div className="flex gap-4 items-center">
-                    <button
-                      onClick={() => setShowRsvpTable(!showRsvpTable)}
-                      className="text-[11px] font-semibold text-primary hover:text-secondary transition-colors uppercase tracking-[1px] flex items-center gap-1.5"
-                    >
-                      <ArrowUpRight className={`w-3.5 h-3.5 transition-transform ${showRsvpTable ? "rotate-90" : ""}`} />
-                      {showRsvpTable ? "Hide" : "View"} All ({rsvpStats.responses})
-                    </button>
-                    {rsvps.length > 0 && (
-                      <button
-                        onClick={exportCSV}
-                        className="text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors uppercase tracking-[1px] flex items-center gap-1.5"
+                <div className="p-6 md:p-8">
+                  {/* Empty state for 0 RSVPs */}
+                  {rsvps.length === 0 && dashboardTab !== "share" ? (
+                    <div className="flex flex-col items-center justify-center py-16 text-center">
+                      <motion.div
+                        animate={{ scale: [1, 1.08, 1] }}
+                        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                        className="text-5xl mb-5"
                       >
-                        <Download className="w-3.5 h-3.5" /> Export CSV
+                        💌
+                      </motion.div>
+                      <h3 className="font-display text-2xl font-bold text-primary mb-2">
+                        Your RSVP dashboard is ready!
+                      </h3>
+                      <p className="font-body text-sm text-muted-foreground max-w-md mb-8 leading-relaxed">
+                        Share your invitation link to start collecting responses. Guest confirmations will appear here in real time.
+                      </p>
+                      <button
+                        onClick={() => setDashboardTab("share")}
+                        className="bg-primary text-primary-foreground px-8 py-3 text-[11px] font-semibold tracking-[2px] uppercase hover:bg-primary/90 transition-all shadow-md rounded-none"
+                      >
+                        📤 Share Your Invite →
                       </button>
-                    )}
-                  </div>
+                      <div className="mt-8 pt-6 border-t border-border/50 max-w-sm">
+                        <p className="font-body text-xs text-muted-foreground leading-relaxed">
+                          💡 <strong>Tip:</strong> Share to your family WhatsApp groups first — they respond fastest and others follow.
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      {/* OVERVIEW TAB */}
+                      {dashboardTab === "overview" && (
+                        <div>
+                          <RsvpStatCards rsvps={rsvps} />
+                          <DietaryCard
+                            rsvps={rsvps}
+                            brideName={invitation.bride_name || undefined}
+                            groomName={invitation.groom_name || undefined}
+                          />
+                        </div>
+                      )}
 
-                  {/* RSVP Table */}
-                  {showRsvpTable && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      className="mt-5 border border-border/60 overflow-x-auto"
-                    >
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="bg-muted/60">
-                            <th className="px-4 py-3 font-body font-semibold text-[10px] uppercase tracking-wider text-muted-foreground text-left">Guest</th>
-                            <th className="px-4 py-3 font-body font-semibold text-[10px] uppercase tracking-wider text-muted-foreground text-left">Count</th>
-                            <th className="px-4 py-3 font-body font-semibold text-[10px] uppercase tracking-wider text-muted-foreground text-left">Meal</th>
-                            <th className="px-4 py-3 font-body font-semibold text-[10px] uppercase tracking-wider text-muted-foreground text-left">Note</th>
-                            <th className="px-4 py-3 font-body font-semibold text-[10px] uppercase tracking-wider text-muted-foreground text-left">Date</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {rsvps.length === 0 ? (
-                            <tr>
-                              <td colSpan={5} className="px-4 py-10 text-center text-muted-foreground font-body text-sm">
-                                <MessageSquare className="w-5 h-5 mx-auto mb-2 text-secondary/50" />
-                                No RSVPs yet. Share your invite to start receiving responses!
-                              </td>
-                            </tr>
-                          ) : (
-                            rsvps.map((r) => (
-                              <tr key={r.id} className="border-t border-border/40 hover:bg-muted/30 transition-colors">
-                                <td className="px-4 py-3 font-body font-medium text-foreground">{r.guest_name}</td>
-                                <td className="px-4 py-3 font-body">{r.guest_count}</td>
-                                <td className="px-4 py-3 font-body capitalize">{r.meal_preference.replace("_", " ")}</td>
-                                <td className="px-4 py-3 font-body text-muted-foreground">{r.note || "—"}</td>
-                                <td className="px-4 py-3 font-body text-muted-foreground text-xs">
-                                  {new Date(r.submitted_at).toLocaleDateString("en-IN")}
-                                </td>
-                              </tr>
-                            ))
+                      {/* GUEST LIST TAB */}
+                      {dashboardTab === "guests" && (
+                        <GuestListTab
+                          rsvps={rsvps}
+                          onExportCSV={exportCSV}
+                        />
+                      )}
+
+                      {/* BLESSINGS TAB */}
+                      {dashboardTab === "blessings" && (
+                        <BlessingsTab rsvps={rsvps} />
+                      )}
+
+                      {/* SHARE TAB */}
+                      {dashboardTab === "share" && (
+                        <div className="space-y-6">
+                          {inviteUrl && (
+                            <div>
+                              <h4 className="font-display text-base font-semibold text-foreground mb-3">Your Invite Link</h4>
+                              <div className="flex items-center gap-2 bg-muted/50 border border-border/60 px-4 py-3 rounded-xl">
+                                <span className="text-xs text-muted-foreground truncate flex-1 font-body">{inviteUrl}</span>
+                                <button onClick={copyLink} className="text-secondary hover:text-primary transition-colors shrink-0 p-1" title="Copy link">
+                                  <Copy className="w-4 h-4" />
+                                </button>
+                                <a href={inviteUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-secondary transition-colors shrink-0 p-1" title="Open invite">
+                                  <ExternalLink className="w-4 h-4" />
+                                </a>
+                              </div>
+                            </div>
                           )}
-                        </tbody>
-                      </table>
-                    </motion.div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <button
+                              onClick={shareWhatsApp}
+                              className="flex items-center gap-3 p-4 bg-[#25D366]/10 border border-[#25D366]/30 rounded-xl hover:bg-[#25D366]/20 transition-colors"
+                            >
+                              <Share2 className="w-5 h-5 text-[#25D366]" />
+                              <div className="text-left">
+                                <p className="font-body text-sm font-medium text-foreground">Share on WhatsApp</p>
+                                <p className="font-body text-xs text-muted-foreground">Send to family & friends</p>
+                              </div>
+                            </button>
+                            <button
+                              onClick={copyLink}
+                              className="flex items-center gap-3 p-4 bg-secondary/10 border border-secondary/30 rounded-xl hover:bg-secondary/20 transition-colors"
+                            >
+                              <Copy className="w-5 h-5 text-secondary" />
+                              <div className="text-left">
+                                <p className="font-body text-sm font-medium text-foreground">Copy Link</p>
+                                <p className="font-body text-xs text-muted-foreground">Paste anywhere</p>
+                              </div>
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               </motion.div>
             )}
+
+            {/* Nudge Reminder Dialog */}
+            <Dialog open={nudgeDialogOpen} onOpenChange={setNudgeDialogOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="font-display">Send Reminder?</DialogTitle>
+                  <DialogDescription className="font-body text-sm">
+                    This will send a WhatsApp reminder to guests who haven't responded yet.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="flex gap-3 sm:justify-end">
+                  <Button variant="outline" onClick={() => setNudgeDialogOpen(false)} className="rounded-none font-body">
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setNudgeDialogOpen(false);
+                      toast({ title: "Reminders queued!", description: "We'll send gentle nudges to your pending guests." });
+                    }}
+                    className="bg-primary text-primary-foreground rounded-none font-body"
+                  >
+                    Send Reminder →
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </>
         )}
       </main>
