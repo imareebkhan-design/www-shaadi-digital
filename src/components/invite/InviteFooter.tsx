@@ -1,4 +1,5 @@
 import { Share2, Calendar as CalendarIcon, Gift } from "lucide-react";
+import { getWhatsAppShareUrl } from "@/lib/share-messages";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Invitation = Tables<"invitations">;
