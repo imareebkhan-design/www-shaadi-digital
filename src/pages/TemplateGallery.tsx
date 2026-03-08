@@ -297,7 +297,7 @@ const FilterPanelContent = ({
 /* ── MAIN PAGE ── */
 const TemplateGallery = () => {
   const [filters, setFilters] = useState<FilterState>(emptyFilters);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(true);
   const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
