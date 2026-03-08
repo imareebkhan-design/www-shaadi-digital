@@ -24,7 +24,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: "You write beautiful, concise love stories for Indian wedding invitations. Keep the tone warm, joyful, and elegant." },
+          { role: "system", content: "You write love stories for premium Indian wedding invitations. Your tone is warm, poetic, and elegant — never cheesy or generic. Write exactly 3 sentences in first person plural (We...). The story should feel personal and beautiful, worthy of a luxury wedding invite. Never mention specific cities or names. Keep it under 60 words." },
           { role: "user", content: prompt },
         ],
       }),

@@ -166,61 +166,7 @@ const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
           {(data.our_story || "").length}/300 characters
         </p>
 
-        {/* AI Story Generator */}
-        {!showAiFields ? (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="mt-2 rounded-none border-secondary text-secondary hover:bg-secondary/10 font-body text-xs"
-            onClick={() => setShowAiFields(true)}
-          >
-            <Sparkles className="w-3.5 h-3.5 mr-1.5" /> Write with AI
-          </Button>
-        ) : (
-          <div className="mt-3 space-y-3 p-3 border border-secondary/30 bg-accent/30">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="font-body text-xs text-muted-foreground block mb-1">How did you meet?</label>
-                <Select value={howWeMet} onValueChange={setHowWeMet}>
-                  <SelectTrigger className="rounded-none text-sm">
-                    <SelectValue placeholder="Select…" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="College">College</SelectItem>
-                    <SelectItem value="Work">Work</SelectItem>
-                    <SelectItem value="Family Introduction">Family Introduction</SelectItem>
-                    <SelectItem value="Dating App">Dating App</SelectItem>
-                    <SelectItem value="Childhood Friends">Childhood Friends</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="font-body text-xs text-muted-foreground block mb-1">One word to describe it</label>
-                <Input
-                  placeholder="e.g. magical"
-                  value={oneWord}
-                  onChange={(e) => setOneWord(e.target.value)}
-                  className="rounded-none"
-                />
-              </div>
-            </div>
-            <Button
-              type="button"
-              size="sm"
-              className="rounded-none bg-primary text-primary-foreground hover:bg-primary/90 font-body text-xs"
-              onClick={handleGenerateStory}
-              disabled={aiLoading}
-            >
-              {aiLoading ? (
-                <><Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" /> Generating…</>
-              ) : (
-                <>Generate →</>
-              )}
-            </Button>
-          </div>
-        )}
+        <AiStoryGenerator onStoryGenerated={(story) => onChange({ our_story: story })} />
       </div>
     </div>
   );
