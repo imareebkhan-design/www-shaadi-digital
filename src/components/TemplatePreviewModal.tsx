@@ -27,23 +27,14 @@ const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps
         className="relative w-full h-full bg-background overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top bar */}
-        <div className="absolute top-3 right-3 z-[110] flex items-center gap-2">
-          <button
-            onClick={handleBuildForMe}
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-none bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
-          >
-            <Sparkles className="w-4 h-4" />
-            Build for Me
-          </button>
-          <button
-            onClick={onClose}
-            className="w-10 h-10 rounded-full bg-foreground/10 hover:bg-foreground/20 flex items-center justify-center transition-colors"
-            aria-label="Close preview"
-          >
-            <X className="w-5 h-5 text-foreground" />
-          </button>
-        </div>
+        {/* Close button — top right */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 z-[110] w-10 h-10 rounded-full bg-foreground/10 hover:bg-foreground/20 backdrop-blur-sm flex items-center justify-center transition-colors"
+          aria-label="Close preview"
+        >
+          <X className="w-5 h-5 text-foreground" />
+        </button>
 
         <iframe
           src={DEMO_URL}
@@ -51,6 +42,17 @@ const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps
           className="w-full h-full border-0"
           allow="autoplay"
         />
+
+        {/* Bottom center pill CTA */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[110]">
+          <button
+            onClick={handleBuildForMe}
+            className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground text-sm font-medium rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:bg-primary/90 hover:scale-105 transition-all duration-200"
+          >
+            <Sparkles className="w-4 h-4" />
+            Build for Me
+          </button>
+        </div>
       </div>
     </div>
   );
