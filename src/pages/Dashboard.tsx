@@ -54,7 +54,9 @@ const Dashboard = () => {
   const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
   const [customSlug, setCustomSlug] = useState("");
   const [slugSaving, setSlugSaving] = useState(false);
-  const [slugError, setSlugError] = useState("");
+  const [slugError, setSlugError] = "";
+  const [shareMessage, setShareMessage] = useState("");
+  const [linkCopied, setLinkCopied] = useState(false);
   const [manualRsvp, setManualRsvp] = useState({
     guest_name: "",
     guest_count: 1,
