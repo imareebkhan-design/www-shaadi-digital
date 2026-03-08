@@ -1,14 +1,22 @@
 import logo from "@/assets/shaadi-digital-logo.svg";
+import { useLocation } from "react-router-dom";
 
-const BrandBadge = () => (
-  <a
-    href="https://shaadi.digital"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="fixed bottom-4 right-4 z-[9999] flex items-center gap-1.5 bg-primary px-3 py-1.5 rounded-lg shadow-md hover:bg-primary/90 transition-colors no-underline"
-  >
-    <img src={logo} alt="Shaadi.Digital" className="h-3.5 w-auto brightness-0 invert" />
-  </a>
-);
+const BrandBadge = () => {
+  const { pathname } = useLocation();
+
+  // Hide on builder pages to avoid overlapping the Preview button
+  if (pathname.startsWith("/builder")) return null;
+
+  return (
+    <a
+      href="https://shaadi.digital"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-4 right-4 z-[9999] flex items-center gap-1.5 bg-primary px-3 py-1.5 rounded-lg shadow-md hover:bg-primary/90 transition-colors no-underline"
+    >
+      <img src={logo} alt="Shaadi.Digital" className="h-3.5 w-auto brightness-0 invert" />
+    </a>
+  );
+};
 
 export default BrandBadge;
