@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 const MandalaLarge = () => (
@@ -47,13 +47,71 @@ const particles = [
   { w: 5, top: "80%", right: "45%", dur: "17s", del: "6s", op: 0.22 },
 ];
 
+const LINE1 = "The Invitation They'll";
+const LINE2 = "Remember Forever.";
+const BASE_SPEED = 85;
+const JITTER = 25;
+const SPACE_PAUSE = 140;
+
 const HeroSection = () => {
-  const [visible, setVisible] = useState(false);
+  const [line1Text, setLine1Text] = useState("");
+  const [line2Text, setLine2Text] = useState("");
+  const [cursor1Active, setCursor1Active] = useState(false);
+  const [cursor2Active, setCursor2Active] = useState(false);
+  const [cursor2FadeOut, setCursor2FadeOut] = useState(false);
+  const [phase, setPhase] = useState(0); // 0=waiting, 1=typing line1, 2=typing line2, 3=done
+  const timerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const clearTimers = useCallback(() => {
+    timerRef.current.forEach(clearTimeout);
+    timerRef.current = [];
+  }, []);
+
+  const addTimer = useCallback((fn: () => void, ms: number) => {
+    timerRef.current.push(setTimeout(fn, ms));
+  }, []);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 300);
-    return () => clearTimeout(t);
-  }, []);
+    const typeChar = (text: string, setter: React.Dispatch<React.SetStateAction<string>>, onDone: () => void) => {
+      let ci = 0;
+      const tick = () => {
+        ci++;
+        setter(text.slice(0, ci));
+        if (ci >= text.length) {
+          addTimer(onDone, 400);
+          return;
+        }
+        const ch = text[ci] || "";
+        const delay = BASE_SPEED + (Math.random() * JITTER * 2 - JITTER) + (ch === " " ? SPACE_PAUSE : 0);
+        addTimer(tick, Math.max(40, delay));
+      };
+      addTimer(tick, 0);
+    };
+
+    // Start sequence
+    addTimer(() => {
+      setPhase(1);
+      setCursor1Active(true);
+      typeChar(LINE1, setLine1Text, () => {
+        setCursor1Active(false);
+        addTimer(() => {
+          setPhase(2);
+          setCursor2Active(true);
+          typeChar(LINE2, setLine2Text, () => {
+            setPhase(3);
+            addTimer(() => {
+              setCursor2Active(false);
+              setCursor2FadeOut(true);
+            }, 900);
+          });
+        }, 200);
+      });
+    }, 700);
+
+    return clearTimers;
+  }, [addTimer, clearTimers]);
+
+  const afterHeadline = phase >= 3;
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-5 pt-[100px] md:pt-[120px] pb-12 md:pb-20" style={{ background: "#F5EFE4" }}>
@@ -93,28 +151,47 @@ const HeroSection = () => {
       </div>
 
       {/* Eyebrow */}
-      <div className={`relative z-[2] inline-flex items-center gap-2 md:gap-2.5 bg-[rgba(201,148,26,0.08)] border border-secondary/30 backdrop-blur-sm px-4 md:px-5 py-[7px] rounded-full text-[9px] md:text-[10px] font-medium tracking-[1.5px] md:tracking-[2px] uppercase text-secondary mb-6 md:mb-9 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+      <div className={`relative z-[2] inline-flex items-center gap-2 md:gap-2.5 bg-[rgba(201,148,26,0.08)] border border-secondary/30 backdrop-blur-sm px-4 md:px-5 py-[7px] rounded-full text-[9px] md:text-[10px] font-medium tracking-[1.5px] md:tracking-[2px] uppercase text-secondary mb-6 md:mb-9 opacity-0 animate-[fadeUp_0.8s_cubic-bezier(0.22,1,0.36,1)_0.2s_forwards]`}>
         <span className="w-[5px] h-[5px] rounded-full bg-secondary animate-pulse" />
         India's Most Loved Digital Wedding Invitations
         <span className="w-[5px] h-[5px] rounded-full bg-secondary animate-pulse" />
       </div>
 
-      {/* Headline */}
-      <h1 className={`relative z-[2] font-display font-bold leading-[1.15] transition-all duration-700 delay-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ fontSize: "clamp(32px, 8vw, 78px)", color: "hsl(var(--maroon-dark))" }}>
-        The Invitation They'll<br />
-        Remember <em className="italic font-serif text-secondary">Forever.</em>
-      </h1>
+      {/* Typewriter Headline */}
+      <div className="relative z-[2] flex flex-col items-center justify-center text-center min-h-[120px] md:min-h-[200px]">
+        <h1 className="font-display font-bold leading-[1.15]" style={{ fontSize: "clamp(32px, 8vw, 78px)", color: "hsl(var(--maroon-dark))" }}>
+          <span>{line1Text}</span>
+          {cursor1Active && (
+            <span className="inline-block w-[2.5px] bg-secondary rounded-sm ml-[3px] align-middle relative -top-[0.06em] animate-[twBlink_1.05s_step-start_infinite]" style={{ height: "0.8em", boxShadow: "0 0 6px rgba(201,148,26,0.55)" }} />
+          )}
+          {phase >= 2 && <br />}
+          {phase >= 2 && (
+            <span>
+              <span>{line2Text.replace("Forever.", "")}</span>
+              {line2Text.includes("Forever.") && (
+                <em className="italic font-serif text-secondary">Forever.</em>
+              )}
+            </span>
+          )}
+          {cursor2Active && !cursor2FadeOut && (
+            <span className="inline-block w-[2.5px] bg-secondary rounded-sm ml-[3px] align-middle relative -top-[0.06em] animate-[twBlink_1.05s_step-start_infinite]" style={{ height: "0.8em", boxShadow: "0 0 6px rgba(201,148,26,0.55)" }} />
+          )}
+          {cursor2FadeOut && (
+            <span className="inline-block w-[2.5px] bg-secondary rounded-sm ml-[3px] align-middle relative -top-[0.06em] animate-[twFadeOut_0.8s_ease_forwards]" style={{ height: "0.8em", boxShadow: "0 0 6px rgba(201,148,26,0.55)" }} />
+          )}
+        </h1>
+      </div>
 
       {/* Gold divider */}
-      <div className={`h-px mx-auto my-5 md:my-7 bg-gradient-to-r from-transparent via-secondary to-transparent transition-all duration-700 delay-300 ${visible ? "w-24 md:w-32 opacity-100" : "w-0 opacity-0"}`} />
+      <div className={`h-px mx-auto my-5 md:my-7 bg-gradient-to-r from-transparent via-secondary to-transparent transition-all duration-700 ${afterHeadline ? "w-24 md:w-32 opacity-100" : "w-0 opacity-0"}`} />
 
       {/* Subheadline */}
-      <p className={`relative z-[2] text-[15px] md:text-[17px] text-muted-foreground max-w-[540px] leading-[1.8] px-2 font-light transition-all duration-700 delay-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+      <p className={`relative z-[2] text-[15px] md:text-[17px] text-muted-foreground max-w-[540px] leading-[1.8] px-2 font-light transition-all duration-700 delay-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
         Stunning, personalised digital wedding invitations — delivered instantly on WhatsApp, built for every Indian ceremony, from Mehndi to Reception.
       </p>
 
       {/* CTAs */}
-      <div className={`relative z-[2] flex flex-col md:flex-row gap-3.5 w-full md:w-auto items-center justify-center mt-8 md:mt-9 px-4 md:px-0 transition-all duration-700 delay-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+      <div className={`relative z-[2] flex flex-col md:flex-row gap-3.5 w-full md:w-auto items-center justify-center mt-8 md:mt-9 px-4 md:px-0 transition-all duration-700 delay-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
         <Link
           to="/signup"
           className="relative overflow-hidden w-full md:w-auto bg-primary text-primary-foreground px-10 py-4 min-h-[52px] flex items-center justify-center text-[11px] font-semibold tracking-[2px] uppercase rounded-full hover:bg-[hsl(var(--maroon-dark))] hover:-translate-y-[3px] transition-all duration-300 shadow-[0_8px_32px_rgba(123,28,46,0.28)]"
@@ -131,12 +208,12 @@ const HeroSection = () => {
       </div>
 
       {/* Micro trust copy */}
-      <p className={`relative z-[2] text-[11px] md:text-xs text-muted-foreground tracking-[0.5px] mt-5 transition-all duration-700 delay-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
+      <p className={`relative z-[2] text-[11px] md:text-xs text-muted-foreground tracking-[0.5px] mt-5 transition-all duration-700 delay-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
         ✓ 200+ templates &nbsp;·&nbsp; ✓ Live RSVP tracking &nbsp;·&nbsp; ✓ Edit anytime, free
       </p>
 
       {/* Trust badges */}
-      <div className={`relative z-[2] grid grid-cols-2 md:flex mt-8 md:mt-12 bg-white/55 backdrop-blur-xl border border-secondary/[0.18] rounded-2xl overflow-hidden transition-all duration-700 delay-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+      <div className={`relative z-[2] grid grid-cols-2 md:flex mt-8 md:mt-12 bg-white/55 backdrop-blur-xl border border-secondary/[0.18] rounded-2xl overflow-hidden transition-all duration-700 delay-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
         {[
           { icon: "🛡️", label: "100% Secure" },
           { icon: "⏱️", label: "Ready in 10 Minutes" },
@@ -151,7 +228,7 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll hint - hidden on mobile */}
-      <div className={`absolute bottom-9 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 text-[9px] tracking-[3px] uppercase z-[2] transition-opacity duration-1000 delay-[1200ms] ${visible ? "opacity-100" : "opacity-0"}`} style={{ color: "rgba(92,26,26,0.3)" }}>
+      <div className={`absolute bottom-9 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 text-[9px] tracking-[3px] uppercase z-[2] transition-opacity duration-1000 delay-[1500ms] ${afterHeadline ? "opacity-100" : "opacity-0"}`} style={{ color: "rgba(92,26,26,0.3)" }}>
         <span>Scroll</span>
         <div className="w-5 h-8 border border-secondary/35 rounded-[10px] flex items-start justify-center pt-[5px]">
           <div className="w-1 h-1 rounded-full bg-secondary/60 animate-[scrollDot_2s_ease_infinite]" />
