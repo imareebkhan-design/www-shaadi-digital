@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { X, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface TemplatePreviewModalProps {
   templateId: string;
