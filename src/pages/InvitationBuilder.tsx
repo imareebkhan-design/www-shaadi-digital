@@ -14,6 +14,7 @@ import BuilderHelpCard from "@/components/builder/BuilderHelpCard";
 import Step3PhotoLanguage from "@/components/builder/Step3PhotoLanguage";
 import Step4Preview from "@/components/builder/Step4Preview";
 import Step5Publish from "@/components/builder/Step5Publish";
+import PublishSuccess from "@/components/builder/PublishSuccess";
 import TemplateSwitcherModal from "@/components/builder/TemplateSwitcherModal";
 import { Button } from "@/components/ui/button";
 import { Eye, ArrowLeft, ArrowRight, X, Check } from "lucide-react";
