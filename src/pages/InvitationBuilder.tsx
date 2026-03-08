@@ -14,6 +14,7 @@ import BuilderHelpCard from "@/components/builder/BuilderHelpCard";
 import Step3PhotoLanguage from "@/components/builder/Step3PhotoLanguage";
 import Step4Preview from "@/components/builder/Step4Preview";
 import Step5Publish from "@/components/builder/Step5Publish";
+import PublishSuccess from "@/components/builder/PublishSuccess";
 import TemplateSwitcherModal from "@/components/builder/TemplateSwitcherModal";
 import { Button } from "@/components/ui/button";
 import { Eye, ArrowLeft, ArrowRight, X, Check } from "lucide-react";
@@ -77,6 +78,7 @@ const InvitationBuilder = () => {
   const [showMobilePreview, setShowMobilePreview] = useState(false);
   const [showTemplateSwitcher, setShowTemplateSwitcher] = useState(false);
   const [publishLoading, setPublishLoading] = useState(false);
+  const [publishedSlug, setPublishedSlug] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const autoSaveTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const savedTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -347,8 +349,8 @@ const InvitationBuilder = () => {
       .eq("id", invitationId);
     setPublishLoading(false);
     if (error) { toast("Failed to publish. Please try again."); return; }
+    setPublishedSlug(slug);
     toast("🎉 Your invitation is live!");
-    navigate("/dashboard");
   };
 
   if (!template || !TemplateComponent || authLoading) {
@@ -372,7 +374,18 @@ const InvitationBuilder = () => {
           onGoBack={() => setStep(3)}
         />
       );
-      case 5: return <Step5Publish onSelectPlan={handlePublish} loading={publishLoading} brideName={formData.bride_name} groomName={formData.groom_name} weddingDate={formData.wedding_date} />;
+      case 5: return publishedSlug ? (
+        <PublishSuccess
+          brideName={formData.bride_name}
+          groomName={formData.groom_name}
+          slug={publishedSlug}
+          weddingDate={formData.wedding_date}
+          weddingCity={formData.wedding_city}
+          language={formData.language}
+        />
+      ) : (
+        <Step5Publish onSelectPlan={handlePublish} loading={publishLoading} brideName={formData.bride_name} groomName={formData.groom_name} weddingDate={formData.wedding_date} />
+      );
       default: return null;
     }
   };

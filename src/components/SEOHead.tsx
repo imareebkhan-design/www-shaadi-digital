@@ -7,6 +7,9 @@ interface SEOHeadProps {
   noIndex?: boolean;
   ogImage?: string;
   ogType?: string;
+  ogImageWidth?: string;
+  ogImageHeight?: string;
+  ogImageType?: string;
   schemaJson?: Record<string, unknown>;
 }
 
@@ -24,6 +27,9 @@ const SEOHead = ({
   noIndex = false,
   ogImage = DEFAULTS.ogImage,
   ogType = "website",
+  ogImageWidth,
+  ogImageHeight,
+  ogImageType,
   schemaJson,
 }: SEOHeadProps) => {
   const robots = noIndex ? "noindex, nofollow" : "index, follow";
@@ -44,8 +50,12 @@ const SEOHead = ({
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={ogImage} />
+      {ogImageWidth && <meta property="og:image:width" content={ogImageWidth} />}
+      {ogImageHeight && <meta property="og:image:height" content={ogImageHeight} />}
+      {ogImageType && <meta property="og:image:type" content={ogImageType} />}
       <meta property="og:type" content={ogType} />
       <meta property="og:site_name" content={DEFAULTS.ogSiteName} />
+      {canonical && <meta property="og:url" content={canonical} />}
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />

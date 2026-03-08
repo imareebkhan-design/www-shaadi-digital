@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import SEOHead from "@/components/SEOHead";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,8 +14,10 @@ import { useToast } from "@/hooks/use-toast";
 import { getTemplateById } from "@/data/templates";
 import {
   LogOut, Copy, ExternalLink, Edit, Share2, Sparkles,
-  Users, Download, Plus, ArrowUpRight, Eye, Heart, Calendar, MessageSquare
+  Users, Download, Plus, ArrowUpRight, Eye, Heart, Calendar, MessageSquare, Check, Mail
 } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { getWhatsAppMessage, getEmailSubject, getEmailBody } from "@/lib/share-messages";
 import PlanBadge from "@/components/PlanBadge";
 import { usePlan } from "@/contexts/PlanContext";
 import { motion } from "framer-motion";
@@ -53,6 +55,8 @@ const Dashboard = () => {
   const [customSlug, setCustomSlug] = useState("");
   const [slugSaving, setSlugSaving] = useState(false);
   const [slugError, setSlugError] = useState("");
+  const [shareMessage, setShareMessage] = useState("");
+  const [linkCopied, setLinkCopied] = useState(false);
   const [manualRsvp, setManualRsvp] = useState({
     guest_name: "",
     guest_count: 1,
@@ -100,6 +104,8 @@ const Dashboard = () => {
   const copyLink = () => {
     if (inviteUrl) {
       navigator.clipboard.writeText(inviteUrl);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
       toast({ title: "Link copied!", description: "Invite link copied to clipboard" });
     }
   };
@@ -117,7 +123,6 @@ const Dashboard = () => {
     setSlugSaving(true);
     setSlugError("");
 
-    // Check uniqueness
     const { data: existing } = await supabase
       .from("invitations")
       .select("id")
@@ -146,13 +151,66 @@ const Dashboard = () => {
     setSlugSaving(false);
   };
 
-  const shareWhatsApp = () => {
-    if (inviteUrl) {
-      const bride = invitation?.bride_name || "Our";
-      const groom = invitation?.groom_name || "";
-      const text = `You're invited! 🎊 ${bride} & ${groom}'s Wedding — View our invitation: ${inviteUrl}`;
-      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+  // Build formatted data for share messages
+  const formattedWeddingDate = invitation?.wedding_date
+    ? new Date(invitation.wedding_date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
+    : undefined;
+
+  const getDefaultShareMessage = useCallback(() => {
+    if (!inviteUrl || !invitation) return "";
+    return getWhatsAppMessage({
+      brideName: invitation.bride_name || "Bride",
+      groomName: invitation.groom_name || "Groom",
+      formattedDate: formattedWeddingDate,
+      city: (invitation as any).wedding_city,
+      inviteUrl,
+      language: invitation.language || "english",
+    });
+  }, [invitation, inviteUrl, formattedWeddingDate]);
+
+  // Initialize share message when invitation loads
+  useEffect(() => {
+    if (invitation && inviteUrl && !shareMessage) {
+      setShareMessage(getDefaultShareMessage());
     }
+  }, [invitation, inviteUrl, getDefaultShareMessage, shareMessage]);
+
+  const shareWhatsApp = () => {
+    const text = shareMessage || getDefaultShareMessage();
+    if (text) window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+  };
+
+  const shareEmail = () => {
+    if (!invitation || !inviteUrl) return;
+    const subject = getEmailSubject(invitation.bride_name || "Bride", invitation.groom_name || "Groom");
+    const body = getEmailBody({
+      brideName: invitation.bride_name || "Bride",
+      groomName: invitation.groom_name || "Groom",
+      formattedDate: formattedWeddingDate,
+      city: (invitation as any).wedding_city,
+      inviteUrl,
+      language: "english",
+    });
+    window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
+  };
+
+  const downloadQR = () => {
+    const svg = document.getElementById("invite-qr-code");
+    if (!svg) return;
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement("canvas");
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.onload = () => {
+      ctx?.drawImage(img, 0, 0, 512, 512);
+      const a = document.createElement("a");
+      a.download = `${invitation?.bride_name || "bride"}-${invitation?.groom_name || "groom"}-invite-qr.png`;
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+    };
+    img.src = "data:image/svg+xml;base64," + btoa(svgData);
   };
 
   const exportCSV = () => {
@@ -627,13 +685,14 @@ const Dashboard = () => {
                             </p>
                           </div>
 
+                          {/* Invite Link */}
                           {inviteUrl && (
                             <div>
                               <h4 className="font-display text-base font-semibold text-foreground mb-3">Your Invite Link</h4>
                               <div className="flex items-center gap-2 bg-muted/50 border border-border/60 px-4 py-3 rounded-xl">
                                 <span className="text-xs text-muted-foreground truncate flex-1 font-body">{inviteUrl}</span>
                                 <button onClick={copyLink} className="text-secondary hover:text-primary transition-colors shrink-0 p-1" title="Copy link">
-                                  <Copy className="w-4 h-4" />
+                                  {linkCopied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                                 </button>
                                 <a href={inviteUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-secondary transition-colors shrink-0 p-1" title="Open invite">
                                   <ExternalLink className="w-4 h-4" />
@@ -641,28 +700,89 @@ const Dashboard = () => {
                               </div>
                             </div>
                           )}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <button
+
+                          {/* Editable WhatsApp Message */}
+                          <div>
+                            <h4 className="font-display text-base font-semibold text-foreground mb-1">WhatsApp Message</h4>
+                            <p className="font-body text-xs text-muted-foreground mb-3">Edit before sending — make it personal!</p>
+                            <Textarea
+                              value={shareMessage}
+                              onChange={(e) => setShareMessage(e.target.value)}
+                              rows={6}
+                              className="font-body text-sm"
+                            />
+                            <p className="font-body text-[11px] text-muted-foreground mt-1.5">
+                              {shareMessage.length} characters
+                            </p>
+                            <Button
                               onClick={shareWhatsApp}
-                              className="flex items-center gap-3 p-4 bg-[#25D366]/10 border border-[#25D366]/30 rounded-xl hover:bg-[#25D366]/20 transition-colors"
+                              className="w-full mt-3 rounded-none h-12 font-body text-sm gap-2 bg-[#25D366] text-white hover:bg-[#25D366]/90 shadow-md"
                             >
-                              <Share2 className="w-5 h-5 text-[#25D366]" />
-                              <div className="text-left">
-                                <p className="font-body text-sm font-medium text-foreground">Share on WhatsApp</p>
-                                <p className="font-body text-xs text-muted-foreground">Send to family & friends</p>
-                              </div>
-                            </button>
-                            <button
-                              onClick={copyLink}
-                              className="flex items-center gap-3 p-4 bg-secondary/10 border border-secondary/30 rounded-xl hover:bg-secondary/20 transition-colors"
-                            >
-                              <Copy className="w-5 h-5 text-secondary" />
-                              <div className="text-left">
-                                <p className="font-body text-sm font-medium text-foreground">Copy Link</p>
-                                <p className="font-body text-xs text-muted-foreground">Paste anywhere</p>
-                              </div>
-                            </button>
+                              💬 Share on WhatsApp →
+                            </Button>
                           </div>
+
+                          {/* More ways to share */}
+                          <div>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                              <div className="h-px flex-1 bg-border" />
+                              <span className="font-body tracking-wider uppercase">More ways to share</span>
+                              <div className="h-px flex-1 bg-border" />
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <button
+                                onClick={shareEmail}
+                                className="flex items-center gap-3 p-4 bg-muted/30 border border-border/60 rounded-xl hover:bg-muted/50 transition-colors"
+                              >
+                                <Mail className="w-5 h-5 text-primary" />
+                                <div className="text-left">
+                                  <p className="font-body text-sm font-medium text-foreground">Share via Email</p>
+                                  <p className="font-body text-xs text-muted-foreground">Send as email invitation</p>
+                                </div>
+                              </button>
+                              <button
+                                onClick={copyLink}
+                                className="flex items-center gap-3 p-4 bg-secondary/10 border border-secondary/30 rounded-xl hover:bg-secondary/20 transition-colors"
+                              >
+                                {linkCopied ? <Check className="w-5 h-5 text-emerald-600" /> : <Copy className="w-5 h-5 text-secondary" />}
+                                <div className="text-left">
+                                  <p className="font-body text-sm font-medium text-foreground">{linkCopied ? "Copied! ✓" : "Copy Link"}</p>
+                                  <p className="font-body text-xs text-muted-foreground">Paste anywhere</p>
+                                </div>
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* QR Code */}
+                          {inviteUrl && (
+                            <div>
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                                <div className="h-px flex-1 bg-border" />
+                                <span className="font-body tracking-wider uppercase">For in-person sharing</span>
+                                <div className="h-px flex-1 bg-border" />
+                              </div>
+                              <div className="flex flex-col items-center gap-4 p-6 border border-border/60 rounded-xl bg-card">
+                                <QRCodeSVG
+                                  id="invite-qr-code"
+                                  value={inviteUrl}
+                                  size={160}
+                                  fgColor="hsl(348, 63%, 30%)"
+                                  bgColor="transparent"
+                                  level="M"
+                                />
+                                <p className="font-body text-xs text-muted-foreground">
+                                  Guests can scan this to open your invitation
+                                </p>
+                                <Button
+                                  onClick={downloadQR}
+                                  variant="outline"
+                                  className="rounded-none font-body text-xs gap-2"
+                                >
+                                  <Download className="w-3.5 h-3.5" /> Download QR Code
+                                </Button>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </>
