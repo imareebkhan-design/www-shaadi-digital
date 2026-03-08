@@ -163,59 +163,34 @@ const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: numbe
         )}
       </div>
 
-      {/* Info below */}
-      <div className="p-[14px_16px_16px]" style={{ borderTop: "1px solid rgba(0,0,0,0.04)" }}>
-        <h3 className="font-display text-base font-semibold text-foreground leading-tight">{t.name}</h3>
-        <div className="flex items-center gap-1.5 flex-wrap mt-1.5">
-          {t.region.slice(0, 1).map((r) => (
-            <span key={r} className="text-[10px] tracking-[0.8px] uppercase px-2 py-0.5 rounded-full bg-[hsl(var(--gold-pale))] text-secondary font-medium">
-              {r}
-            </span>
-          ))}
-          {t.style.slice(0, 1).map((s) => (
-            <span key={s} className="text-[10px] tracking-[0.8px] uppercase px-2 py-0.5 rounded-full bg-[hsl(var(--gold-pale))] text-secondary font-medium">
-              {s}
-            </span>
-          ))}
-        </div>
-        <p className="text-[11px] text-muted-foreground font-body line-clamp-2 mt-1.5">{t.tagline}</p>
+      {/* Info below — hidden for Coming Soon cards */}
+      {!t.isComingSoon && (
+        <div className="p-[14px_16px_16px]" style={{ borderTop: "1px solid rgba(0,0,0,0.04)" }}>
+          <h3 className="font-display text-base font-semibold text-foreground leading-tight">{t.name}</h3>
+          <div className="flex items-center gap-1.5 flex-wrap mt-1.5">
+            {t.region.slice(0, 1).map((r) => (
+              <span key={r} className="text-[10px] tracking-[0.8px] uppercase px-2 py-0.5 rounded-full bg-[hsl(var(--gold-pale))] text-secondary font-medium">
+                {r}
+              </span>
+            ))}
+            {t.style.slice(0, 1).map((s) => (
+              <span key={s} className="text-[10px] tracking-[0.8px] uppercase px-2 py-0.5 rounded-full bg-[hsl(var(--gold-pale))] text-secondary font-medium">
+                {s}
+              </span>
+            ))}
+          </div>
+          <p className="text-[11px] text-muted-foreground font-body line-clamp-2 mt-1.5">{t.tagline}</p>
 
-        <div className="mt-3">
-          {t.isComingSoon ? (
-            <>
-              {!showNotify ? (
-                <button
-                  onClick={() => setShowNotify(true)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium border border-secondary/40 text-secondary hover:bg-secondary/10 transition-colors"
-                >
-                  <Bell className="w-3 h-3" /> Notify me
-                </button>
-              ) : (
-                <form onSubmit={handleNotify} className="flex gap-1.5">
-                  <input
-                    type="email"
-                    required
-                    value={notifyEmail}
-                    onChange={(e) => setNotifyEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    className="flex-1 min-w-0 px-3 py-1.5 text-xs rounded-full border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
-                  />
-                  <button type="submit" className="px-3 py-1.5 text-xs rounded-full bg-primary text-primary-foreground font-medium shrink-0">
-                    Notify
-                  </button>
-                </form>
-              )}
-            </>
-          ) : (
+          <div className="mt-3">
             <button
               onClick={() => onPreview(t.id)}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               ✦ View demo
             </button>
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </motion.div>
   );
 };
