@@ -46,7 +46,7 @@ const PublishSuccess = ({ brideName, groomName, slug, weddingDate, weddingCity, 
       inviteUrl,
       language,
     });
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    window.open(getWhatsAppShareUrl(text), "_blank");
   };
 
   const copyLink = () => {

@@ -33,7 +33,7 @@ const FooterSection = ({ brideName, groomName, weddingDate, events, personalMess
       inviteUrl,
       language,
     });
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    window.open(getWhatsAppShareUrl(text), "_blank");
   };
 
   const addToGoogleCalendar = () => {

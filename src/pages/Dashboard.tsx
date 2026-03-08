@@ -17,7 +17,7 @@ import {
   Users, Download, Plus, ArrowUpRight, Eye, Heart, Calendar, MessageSquare, Check, Mail
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
-import { getWhatsAppMessage, getEmailSubject, getEmailBody } from "@/lib/share-messages";
+import { getWhatsAppMessage, getEmailSubject, getEmailBody, getWhatsAppShareUrl } from "@/lib/share-messages";
 import PlanBadge from "@/components/PlanBadge";
 import { usePlan } from "@/contexts/PlanContext";
 import { motion } from "framer-motion";
