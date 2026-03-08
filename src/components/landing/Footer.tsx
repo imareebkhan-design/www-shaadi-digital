@@ -49,16 +49,55 @@ const Footer = () => {
           </div>
 
           {[
-            { title: "Product", links: ["Templates", "All Features", "RSVP Dashboard", "Pricing", "What's New"] },
-            { title: "Company", links: ["About Us", "Wedding Blog", "Press & Media", "Careers", "Contact"] },
-            { title: "Support", links: ["Help Center", "WhatsApp Support", "Privacy Policy", "Refund Policy", "Terms of Service"] },
+            {
+              title: "Product",
+              links: [
+                { label: "Templates", href: "/templates" },
+                { label: "All Features", href: "/#features" },
+                { label: "RSVP Dashboard", href: "/#rsvp" },
+                { label: "Pricing", href: "/pricing" },
+                { label: "What's New", href: "/support" },
+              ],
+            },
+            {
+              title: "Company",
+              links: [
+                { label: "About Us", href: "/support" },
+                { label: "Wedding Blog", href: "/blog" },
+                { label: "Press & Media", href: "/support" },
+                { label: "Careers", href: "/support" },
+                { label: "Contact", href: "/support" },
+              ],
+            },
+            {
+              title: "Support",
+              links: [
+                { label: "Help Center", href: "/support" },
+                { label: "WhatsApp Support", href: "https://wa.me/917838189916?text=Hi%2C%20I%27d%20like%20help%20with%20my%20Shaadi.Digital%20invitation", external: true },
+                { label: "Privacy Policy", href: "/privacy-policy" },
+                { label: "Refund Policy", href: "/refund-policy" },
+                { label: "Terms of Service", href: "/terms" },
+              ],
+            },
           ].map((col) => (
             <div key={col.title}>
               <h5 className="text-white/60 text-[10px] tracking-[2.5px] uppercase mb-4 md:mb-[18px] font-medium">{col.title}</h5>
               <ul className="flex flex-col gap-2.5">
-                {col.links.map((l) => (
-                  <li key={l}><a href="#" className="text-white/35 hover:text-secondary transition-colors font-light py-1 inline-block min-h-[44px] md:min-h-0 flex items-center">{l}</a></li>
-                ))}
+                {col.links.map((l) =>
+                  l.external ? (
+                    <li key={l.label}>
+                      <a href={l.href} target="_blank" rel="noopener noreferrer" className="text-white/35 hover:text-secondary transition-colors font-light py-1 inline-block min-h-[44px] md:min-h-0 flex items-center">
+                        {l.label}
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={l.label}>
+                      <Link to={l.href} className="text-white/35 hover:text-secondary transition-colors font-light py-1 inline-block min-h-[44px] md:min-h-0 flex items-center">
+                        {l.label}
+                      </Link>
+                    </li>
+                  )
+                )}
               </ul>
             </div>
           ))}
