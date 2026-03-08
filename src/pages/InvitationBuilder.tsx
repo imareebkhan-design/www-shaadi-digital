@@ -332,7 +332,7 @@ const InvitationBuilder = () => {
           onGoBack={() => setStep(3)}
         />
       );
-      case 5: return <Step5Publish onSelectPlan={handlePublish} loading={publishLoading} />;
+      case 5: return <Step5Publish onSelectPlan={handlePublish} loading={publishLoading} brideName={formData.bride_name} groomName={formData.groom_name} weddingDate={formData.wedding_date} />;
       default: return null;
     }
   };
