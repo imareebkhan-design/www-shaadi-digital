@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, X, Image as ImageIcon, Video, Camera } from "lucide-react";
+import { Upload, X, Image as ImageIcon, Video, Camera, Film } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { BuilderFormData } from "@/types/builder";
