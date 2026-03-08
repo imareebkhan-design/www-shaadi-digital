@@ -144,7 +144,8 @@ const TemplateSwitcherModal = ({
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {availableTemplates.map((t) => {
                 const isCurrent = t.id === currentTemplateId;
-                const isHovered = hoveredId === t.id;
+                const isSelected = selectedId === t.id;
+                const isHovered = hoveredId === t.id && !selectedId;
                 const isComingSoon = t.isComingSoon && !TEMPLATE_REGISTRY[t.id];
 
                 return (
@@ -155,15 +156,18 @@ const TemplateSwitcherModal = ({
                       if (isMobile) {
                         setMobilePreviewId(t.id);
                       } else {
-                        setHoveredId(t.id);
+                        setSelectedId(t.id === selectedId ? null : t.id);
                       }
                     }}
-                    onMouseEnter={() => !isMobile && !isComingSoon && setHoveredId(t.id)}
+                    onMouseEnter={() => !isMobile && !isComingSoon && !selectedId && setHoveredId(t.id)}
+                    onMouseLeave={() => !isMobile && setHoveredId(null)}
                     className={`relative rounded-xl overflow-hidden text-left transition-all duration-200 border-2 ${
-                      isCurrent
+                      isSelected
+                        ? "border-secondary ring-2 ring-secondary/30"
+                        : isCurrent
                         ? "border-primary ring-2 ring-primary/20"
                         : isHovered
-                        ? "border-secondary"
+                        ? "border-secondary/60"
                         : "border-transparent hover:border-border"
                     } ${isComingSoon ? "opacity-50 cursor-not-allowed grayscale" : "cursor-pointer"}`}
                   >
