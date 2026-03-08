@@ -125,19 +125,21 @@ const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: numbe
         }} />
 
         {/* Names */}
-        <div className="relative z-[1] flex flex-col items-center text-center p-5">
-          <div className={`font-display text-lg font-semibold leading-tight ${t.id === "chapel-white" ? "text-foreground" : "text-white"}`}>
-            {t.sampleData.brideName}
-            <br />
-            <span className="font-serif italic text-secondary text-xl">&</span>
-            <br />
-            {t.sampleData.groomName}
+        {!t.isComingSoon && (
+          <div className="relative z-[1] flex flex-col items-center text-center p-5">
+            <div className={`font-display text-lg font-semibold leading-tight ${t.id === "chapel-white" ? "text-foreground" : "text-white"}`}>
+              {t.sampleData.brideName}
+              <br />
+              <span className="font-serif italic text-secondary text-xl">&</span>
+              <br />
+              {t.sampleData.groomName}
+            </div>
+            <div className="w-8 h-px bg-secondary/40 my-2" />
+            <div className={`text-[10px] tracking-widest ${t.id === "chapel-white" ? "text-muted-foreground" : "text-white/35"}`}>
+              {t.sampleData.date} · {t.sampleData.city}
+            </div>
           </div>
-          <div className="w-8 h-px bg-secondary/40 my-2" />
-          <div className={`text-[10px] tracking-widest ${t.id === "chapel-white" ? "text-muted-foreground" : "text-white/35"}`}>
-            {t.sampleData.date} · {t.sampleData.city}
-          </div>
-        </div>
+        )}
 
         {/* Badge */}
         {badgeLabel && (
