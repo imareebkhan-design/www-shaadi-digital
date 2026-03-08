@@ -1,1 +1,4 @@
 project_id = "yqrwvrbhaxkkytsqtvlw"
+
+[functions.generate-love-story]
+verify_jwt = false

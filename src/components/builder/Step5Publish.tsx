@@ -13,7 +13,7 @@ const plans = [
     name: "Basic",
     price: "₹999",
     icon: Star,
-    features: ["1 Wedding Template", "Up to 100 RSVPs", "WhatsApp Sharing", "7-Day Active Link"],
+    features: ["1 Wedding Template", "Up to 100 RSVPs", "WhatsApp Sharing", "30-Day Active Link"],
     popular: false,
   },
   {
