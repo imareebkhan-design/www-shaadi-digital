@@ -17,7 +17,7 @@ const InviteFooter = ({ invitation, events, brideName, groomName }: Props) => {
 
   const shareWhatsApp = () => {
     const text = `You're invited to ${brideName} & ${groomName}'s wedding! 💒✨\n\n${inviteUrl}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    window.open(getWhatsAppShareUrl(text), "_blank");
   };
 
   const addToGoogleCalendar = () => {
