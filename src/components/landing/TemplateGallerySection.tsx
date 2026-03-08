@@ -132,7 +132,7 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
           </div>
           <div className="flex gap-2">
             <Link
-              to="/signup"
+              to={`/builder/${t.id}`}
               className="flex-1 flex items-center justify-center gap-1.5 bg-secondary text-secondary-foreground font-body text-[11px] font-bold tracking-[1.5px] uppercase py-3 px-4 rounded-full transition-all hover:bg-secondary/90 hover:-translate-y-0.5 shadow-gold"
             >
               Use This Template
