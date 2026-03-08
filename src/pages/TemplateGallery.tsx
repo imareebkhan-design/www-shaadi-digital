@@ -227,8 +227,8 @@ const FilterPanelContent = ({
     <div className="space-y-6">
       {/* Religion */}
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body">Religion</h4>
-        <div className="flex flex-wrap gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body hidden md:block">Religion</h4>
+        <div className="flex flex-wrap gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
           {FILTER_OPTIONS.religion.map((r) => (
             <Chip key={r} label={r} active={filters.religion.includes(r)} onClick={() => setFilters((f) => ({ ...f, religion: toggleFilter(f.religion, r) }))} />
           ))}
@@ -237,8 +237,8 @@ const FilterPanelContent = ({
 
       {/* Region */}
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body">Region</h4>
-        <div className="flex flex-wrap gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body hidden md:block">Region</h4>
+        <div className="flex flex-wrap gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
           {FILTER_OPTIONS.region.map((r) => (
             <Chip key={r} label={r} active={filters.region.includes(r)} onClick={() => setFilters((f) => ({ ...f, region: toggleFilter(f.region, r) }))} />
           ))}
@@ -247,8 +247,8 @@ const FilterPanelContent = ({
 
       {/* Style */}
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body">Style</h4>
-        <div className="flex flex-wrap gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body hidden md:block">Style</h4>
+        <div className="flex flex-wrap gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
           {FILTER_OPTIONS.style.map((s) => (
             <Chip key={s} label={s} active={filters.style.includes(s)} onClick={() => setFilters((f) => ({ ...f, style: toggleFilter(f.style, s) }))} />
           ))}
@@ -257,8 +257,8 @@ const FilterPanelContent = ({
 
       {/* Color */}
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body">Color</h4>
-        <div className="flex flex-wrap gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body hidden md:block">Color</h4>
+        <div className="flex flex-wrap gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
           {FILTER_OPTIONS.colorFamily.map((c) => (
             <Chip key={c.label} label={c.label} dot={c.dot} active={filters.color.includes(c.label)} onClick={() => setFilters((f) => ({ ...f, color: toggleFilter(f.color, c.label) }))} />
           ))}
@@ -267,8 +267,8 @@ const FilterPanelContent = ({
 
       {/* Badges */}
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body">Badges</h4>
-        <div className="flex flex-wrap gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 font-body hidden md:block">Badges</h4>
+        <div className="flex flex-wrap gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
           {FILTER_OPTIONS.badge.map((b) => (
             <Chip key={b} label={`${b === "Featured" ? "⭐" : b === "New" ? "✦" : "👑"} ${b}`} active={filters.badge.includes(b)} onClick={() => setFilters((f) => ({ ...f, badge: toggleFilter(f.badge, b) }))} />
           ))}
@@ -297,7 +297,7 @@ const FilterPanelContent = ({
 /* ── MAIN PAGE ── */
 const TemplateGallery = () => {
   const [filters, setFilters] = useState<FilterState>(emptyFilters);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(true);
   const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
@@ -331,7 +331,7 @@ const TemplateGallery = () => {
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="font-display text-[clamp(28px,5vw,48px)] font-semibold leading-tight text-foreground">
-            Choose Your Template
+            Apna style chuniye...
           </h1>
           <p className="mt-2 text-sm md:text-base text-muted-foreground font-body">
             200+ designs for every Indian wedding tradition
@@ -384,7 +384,7 @@ const TemplateGallery = () => {
               className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-border text-sm font-medium font-body text-foreground hover:border-primary transition-colors"
             >
               <SlidersHorizontal className="w-4 h-4" />
-              Filters
+              {showFilters ? "Hide filters" : "Show filters"}
               {activeFilterCount > 0 && (
                 <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
                   {activeFilterCount}
@@ -395,11 +395,20 @@ const TemplateGallery = () => {
           )}
         </div>
 
-        {/* Results count */}
-        <p className="text-xs text-muted-foreground font-body mb-4">
-          Showing {nonComingSoonCount} of {templates.filter((t) => !t.isComingSoon).length} templates
-          {filtered.filter((t) => t.isComingSoon).length > 0 && ` + ${filtered.filter((t) => t.isComingSoon).length} coming soon`}
-        </p>
+        <div className="flex items-center gap-3 mb-4">
+          <p className="text-xs text-muted-foreground font-body">
+            Showing {nonComingSoonCount} of {templates.filter((t) => !t.isComingSoon).length} templates
+            {filtered.filter((t) => t.isComingSoon).length > 0 && ` + ${filtered.filter((t) => t.isComingSoon).length} coming soon`}
+          </p>
+          {activeFilterCount > 0 && (
+            <button
+              onClick={() => setFilters(emptyFilters)}
+              className="text-xs text-primary underline hover:text-primary/80 transition-colors font-body"
+            >
+              × Clear all filters
+            </button>
+          )}
+        </div>
 
         {/* Desktop filter panel */}
         {!isMobile && (
