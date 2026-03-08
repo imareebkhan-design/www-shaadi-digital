@@ -177,7 +177,7 @@ const Dashboard = () => {
 
   const shareWhatsApp = () => {
     const text = shareMessage || getDefaultShareMessage();
-    if (text) window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    if (text) window.open(getWhatsAppShareUrl(text), "_blank");
   };
 
   const shareEmail = () => {
