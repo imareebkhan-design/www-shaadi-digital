@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, MessageCircle, X, ChevronUp } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/sonner";
 
 const isWithinIST = () => {
-  const now = new Date();
-  const istHour = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })).getHours();
-  return istHour >= 9 && istHour < 21;
+  const formatter = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Kolkata", hour: "numeric", hour12: false });
+  const hour = parseInt(formatter.format(new Date()), 10);
+  return hour >= 9 && hour < 21;
 };
 
 const BuilderHelpCard = () => {
@@ -29,7 +28,6 @@ const BuilderHelpCard = () => {
       return;
     }
     setSubmitting(true);
-    // Simulate submission — in production this would call an edge function
     await new Promise(r => setTimeout(r, 1000));
     toast.success("We'll call you within 5 minutes!");
     setSubmitting(false);
@@ -40,7 +38,7 @@ const BuilderHelpCard = () => {
   };
 
   return (
-    <div className="fixed bottom-6 z-20 w-[260px]" style={{ right: "calc(60% + 24px)", maxWidth: "calc(40% - 48px)" }}>
+    <div className="fixed bottom-6 right-6 z-50 w-[220px]">
       <AnimatePresence>
         {expanded && (
           <motion.div
@@ -48,12 +46,12 @@ const BuilderHelpCard = () => {
             animate={{ opacity: 1, y: 0, scaleY: 1 }}
             exit={{ opacity: 0, y: 10, scaleY: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="mb-2 bg-card border border-border/60 rounded-lg p-4 origin-bottom"
-            style={{ boxShadow: "0 8px 30px -8px hsl(20 20% 15% / 0.12)" }}
+            className="mb-2 rounded-lg p-4 origin-bottom relative"
+            style={{ background: "#4A0E1F", boxShadow: "0 12px 40px -8px rgba(74,14,31,0.4)" }}
           >
             <button
               onClick={() => setExpanded(false)}
-              className="absolute top-2.5 right-2.5 text-muted-foreground hover:text-foreground p-0.5"
+              className="absolute top-2.5 right-2.5 text-white/50 hover:text-white p-0.5"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -63,12 +61,12 @@ const BuilderHelpCard = () => {
               href="https://wa.me/917838189916?text=Hi, I need help creating my wedding invitation on Shaadi.Digital"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-2.5 rounded-md hover:bg-muted/50 transition-colors group"
+              className="flex items-center gap-3 p-2 rounded-md hover:bg-white/10 transition-colors group"
             >
-              <div className="w-8 h-8 rounded-full bg-[#25D366]/10 flex items-center justify-center shrink-0">
-                <MessageCircle className="w-4 h-4 text-[#25D366]" />
+              <div className="w-7 h-7 rounded-full bg-[#25D366]/20 flex items-center justify-center shrink-0">
+                <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
               </div>
-              <span className="font-body text-sm font-medium text-foreground group-hover:text-primary transition-colors">Chat on WhatsApp</span>
+              <span className="font-body text-xs font-medium text-white/90 group-hover:text-white">Chat on WhatsApp</span>
             </a>
 
             {/* Callback */}
@@ -76,12 +74,12 @@ const BuilderHelpCard = () => {
               {!showCallbackForm ? (
                 <button
                   onClick={() => setShowCallbackForm(true)}
-                  className="flex items-center gap-3 p-2.5 rounded-md hover:bg-muted/50 transition-colors w-full group"
+                  className="flex items-center gap-3 p-2 rounded-md hover:bg-white/10 transition-colors w-full group"
                 >
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <Phone className="w-4 h-4 text-primary" />
+                  <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                    <Phone className="w-3.5 h-3.5 text-white/80" />
                   </div>
-                  <span className="font-body text-sm font-medium text-foreground group-hover:text-primary transition-colors">Request a Callback</span>
+                  <span className="font-body text-xs font-medium text-white/90 group-hover:text-white">Request a Callback</span>
                 </button>
               ) : (
                 <motion.div
@@ -94,19 +92,20 @@ const BuilderHelpCard = () => {
                     placeholder="Your name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3 py-2 text-sm font-body bg-background border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary/40"
+                    className="w-full px-3 py-2 text-xs font-body bg-white/10 border border-white/15 rounded-md text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-white/30"
                   />
                   <input
                     type="tel"
                     placeholder="Your number"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3 py-2 text-sm font-body bg-background border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary/40"
+                    className="w-full px-3 py-2 text-xs font-body bg-white/10 border border-white/15 rounded-md text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-white/30"
                   />
                   <button
                     onClick={handleCallback}
                     disabled={submitting}
-                    className="w-full bg-primary text-primary-foreground text-xs font-body font-semibold py-2 rounded-none hover:bg-primary/90 transition-colors disabled:opacity-60"
+                    className="w-full text-[11px] font-body font-semibold py-2 rounded-none transition-colors disabled:opacity-60"
+                    style={{ background: "hsl(40, 65%, 55%)", color: "#4A0E1F" }}
                   >
                     {submitting ? "Requesting…" : "Call me in 5 mins"}
                   </button>
@@ -115,7 +114,7 @@ const BuilderHelpCard = () => {
             </div>
 
             {/* Availability */}
-            <p className="font-body text-[10px] text-muted-foreground italic text-center mt-3 pt-2 border-t border-border/40">
+            <p className="font-body text-[9px] text-white/40 italic text-center mt-3 pt-2 border-t border-white/10">
               Available 9am – 9pm, 7 days a week
             </p>
           </motion.div>
@@ -124,24 +123,24 @@ const BuilderHelpCard = () => {
 
       {/* Main card */}
       <div
-        className="bg-callout rounded-lg p-4 cursor-pointer"
-        style={{ boxShadow: "0 4px 20px -4px hsl(20 20% 15% / 0.1)" }}
+        className="rounded-lg p-3.5 cursor-pointer"
+        style={{ background: "#4A0E1F", boxShadow: "0 8px 30px -6px rgba(74,14,31,0.35)" }}
         onClick={() => !expanded && setExpanded(true)}
       >
-        <div className="flex items-center gap-2.5 mb-1">
-          <span className="relative flex h-2.5 w-2.5 shrink-0">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="relative flex h-2 w-2 shrink-0">
             {isOnline ? (
               <>
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: "#22c55e" }} />
+                <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: "#22c55e" }} />
               </>
             ) : (
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-muted-foreground/40" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-white/30" />
             )}
           </span>
-          <span className="font-body text-sm font-semibold text-primary">Stuck? Talk to an expert</span>
+          <span className="font-body text-xs font-semibold text-white">Stuck? Talk to an expert</span>
         </div>
-        <p className="font-body text-[11px] text-muted-foreground ml-5">
+        <p className="font-body text-[10px] text-white/50 ml-4">
           {isOnline
             ? "We'll set it up for you in 5 mins"
             : "Leave your number — we'll call you back"
@@ -150,7 +149,8 @@ const BuilderHelpCard = () => {
         {!expanded && (
           <button
             onClick={(e) => { e.stopPropagation(); setExpanded(true); }}
-            className="mt-3 w-full bg-primary text-primary-foreground text-[11px] font-body font-semibold py-2 rounded-none hover:bg-primary/90 transition-colors flex items-center justify-center gap-1"
+            className="mt-2.5 w-full text-[10px] font-body font-bold py-1.5 rounded-none transition-colors flex items-center justify-center gap-1"
+            style={{ background: "hsl(40, 65%, 55%)", color: "#4A0E1F" }}
           >
             Connect Now <ChevronUp className="w-3 h-3" />
           </button>
