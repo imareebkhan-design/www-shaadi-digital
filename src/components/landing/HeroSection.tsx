@@ -47,13 +47,71 @@ const particles = [
   { w: 5, top: "80%", right: "45%", dur: "17s", del: "6s", op: 0.22 },
 ];
 
+const LINE1 = "The Invitation They'll";
+const LINE2 = "Remember Forever.";
+const BASE_SPEED = 85;
+const JITTER = 25;
+const SPACE_PAUSE = 140;
+
 const HeroSection = () => {
-  const [visible, setVisible] = useState(false);
+  const [line1Text, setLine1Text] = useState("");
+  const [line2Text, setLine2Text] = useState("");
+  const [cursor1Active, setCursor1Active] = useState(false);
+  const [cursor2Active, setCursor2Active] = useState(false);
+  const [cursor2FadeOut, setCursor2FadeOut] = useState(false);
+  const [phase, setPhase] = useState(0); // 0=waiting, 1=typing line1, 2=typing line2, 3=done
+  const timerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const clearTimers = useCallback(() => {
+    timerRef.current.forEach(clearTimeout);
+    timerRef.current = [];
+  }, []);
+
+  const addTimer = useCallback((fn: () => void, ms: number) => {
+    timerRef.current.push(setTimeout(fn, ms));
+  }, []);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 300);
-    return () => clearTimeout(t);
-  }, []);
+    const typeChar = (text: string, setter: React.Dispatch<React.SetStateAction<string>>, onDone: () => void) => {
+      let ci = 0;
+      const tick = () => {
+        ci++;
+        setter(text.slice(0, ci));
+        if (ci >= text.length) {
+          addTimer(onDone, 400);
+          return;
+        }
+        const ch = text[ci] || "";
+        const delay = BASE_SPEED + (Math.random() * JITTER * 2 - JITTER) + (ch === " " ? SPACE_PAUSE : 0);
+        addTimer(tick, Math.max(40, delay));
+      };
+      addTimer(tick, 0);
+    };
+
+    // Start sequence
+    addTimer(() => {
+      setPhase(1);
+      setCursor1Active(true);
+      typeChar(LINE1, setLine1Text, () => {
+        setCursor1Active(false);
+        addTimer(() => {
+          setPhase(2);
+          setCursor2Active(true);
+          typeChar(LINE2, setLine2Text, () => {
+            setPhase(3);
+            addTimer(() => {
+              setCursor2Active(false);
+              setCursor2FadeOut(true);
+            }, 900);
+          });
+        }, 200);
+      });
+    }, 700);
+
+    return clearTimers;
+  }, [addTimer, clearTimers]);
+
+  const afterHeadline = phase >= 3;
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-5 pt-[100px] md:pt-[120px] pb-12 md:pb-20" style={{ background: "#F5EFE4" }}>
