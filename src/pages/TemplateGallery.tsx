@@ -165,34 +165,41 @@ const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: numbe
         )}
       </div>
 
-      {/* Info below — hidden for Coming Soon cards */}
-      {!t.isComingSoon && (
-        <div className="p-[14px_16px_16px]" style={{ borderTop: "1px solid rgba(0,0,0,0.04)" }}>
-          <h3 className="font-display text-base font-semibold text-foreground leading-tight">{t.name}</h3>
-          <div className="flex items-center gap-1.5 flex-wrap mt-1.5">
-            {t.region.slice(0, 1).map((r) => (
-              <span key={r} className="text-[10px] tracking-[0.8px] uppercase px-2 py-0.5 rounded-full bg-[hsl(var(--gold-pale))] text-secondary font-medium">
-                {r}
-              </span>
-            ))}
-            {t.style.slice(0, 1).map((s) => (
-              <span key={s} className="text-[10px] tracking-[0.8px] uppercase px-2 py-0.5 rounded-full bg-[hsl(var(--gold-pale))] text-secondary font-medium">
-                {s}
-              </span>
-            ))}
-          </div>
-          <p className="text-[11px] text-muted-foreground font-body line-clamp-2 mt-1.5">{t.tagline}</p>
+      {/* Info below */}
+      <div className="p-[14px_16px_16px]" style={{ borderTop: "1px solid rgba(0,0,0,0.04)" }}>
+        <h3 className="font-display text-base font-semibold text-foreground leading-tight">{t.name}</h3>
+        <div className="flex items-center gap-1.5 flex-wrap mt-1.5">
+          {t.region.slice(0, 1).map((r) => (
+            <span key={r} className="text-[10px] tracking-[0.8px] uppercase px-2 py-0.5 rounded-full bg-[hsl(var(--gold-pale))] text-secondary font-medium">
+              {r}
+            </span>
+          ))}
+          {t.style.slice(0, 1).map((s) => (
+            <span key={s} className="text-[10px] tracking-[0.8px] uppercase px-2 py-0.5 rounded-full bg-[hsl(var(--gold-pale))] text-secondary font-medium">
+              {s}
+            </span>
+          ))}
+        </div>
+        <p className="text-[11px] text-muted-foreground font-body line-clamp-2 mt-1.5">{t.tagline}</p>
 
-          <div className="mt-3">
+        <div className="mt-3">
+          {t.isComingSoon ? (
+            <button
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium border border-secondary/30 text-secondary hover:bg-secondary hover:text-secondary-foreground transition-colors"
+              onClick={() => toast.success(`✓ We'll notify you when ${t.name} launches!`)}
+            >
+              <Bell className="w-3 h-3" /> Notify me
+            </button>
+          ) : (
             <button
               onClick={() => onPreview(t.id)}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               ✦ View demo
             </button>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </motion.div>
   );
 };
