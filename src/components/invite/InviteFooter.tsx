@@ -1,4 +1,5 @@
 import { Share2, Calendar as CalendarIcon, Gift } from "lucide-react";
+import { getWhatsAppShareUrl } from "@/lib/share-messages";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Invitation = Tables<"invitations">;
@@ -16,7 +17,7 @@ const InviteFooter = ({ invitation, events, brideName, groomName }: Props) => {
 
   const shareWhatsApp = () => {
     const text = `You're invited to ${brideName} & ${groomName}'s wedding! 💒✨\n\n${inviteUrl}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    window.open(getWhatsAppShareUrl(text), "_blank");
   };
 
   const addToGoogleCalendar = () => {

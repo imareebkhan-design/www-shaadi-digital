@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Copy, ExternalLink, Check, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { getWhatsAppMessage } from "@/lib/share-messages";
+import { getWhatsAppMessage, getWhatsAppShareUrl } from "@/lib/share-messages";
 
 interface Props {
   brideName: string;
@@ -46,7 +46,7 @@ const PublishSuccess = ({ brideName, groomName, slug, weddingDate, weddingCity, 
       inviteUrl,
       language,
     });
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    window.open(getWhatsAppShareUrl(text), "_blank");
   };
 
   const copyLink = () => {
