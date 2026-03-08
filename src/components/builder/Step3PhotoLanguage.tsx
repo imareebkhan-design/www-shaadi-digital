@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, X, Image as ImageIcon, Video, Camera } from "lucide-react";
+import { Upload, X, Image as ImageIcon, Video, Camera, Film } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { BuilderFormData } from "@/types/builder";
@@ -33,6 +33,7 @@ const languages = [
 const Step3PhotoLanguage = ({ data, onChange, errors }: Props) => {
   const { user } = useAuth();
   const fileRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLInputElement>(null);
   const venuePhotoRef = useRef<HTMLInputElement>(null);
   const galleryRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [uploading, setUploading] = useState("");
@@ -61,6 +62,27 @@ const Step3PhotoLanguage = ({ data, onChange, errors }: Props) => {
     setUploading("venue");
     const url = await uploadFile(file, "couple-photos");
     if (url) onChange({ venue_photo: url });
+    setUploading("");
+  };
+
+  const handleVideoUpload = async (file: File) => {
+    setUploadError("");
+    if (file.size > 50 * 1024 * 1024) {
+      setUploadError("Video must be under 50MB");
+      return;
+    }
+    const videoTypes = ["video/mp4", "video/webm", "video/ogg", "video/quicktime", "video/x-msvideo", "video/x-matroska", "video/mpeg"];
+    if (!videoTypes.includes(file.type)) {
+      setUploadError("Unsupported video format. Use MP4, WebM, MOV, AVI, or MKV.");
+      return;
+    }
+    setUploading("video");
+    const ext = file.name.split(".").pop();
+    const path = `${user?.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error } = await supabase.storage.from("hero-videos").upload(path, file, { upsert: true });
+    if (error) { setUploadError(error.message); setUploading(""); return; }
+    const { data: urlData } = supabase.storage.from("hero-videos").getPublicUrl(path);
+    onChange({ hero_media_url: urlData.publicUrl });
     setUploading("");
   };
 
@@ -124,13 +146,68 @@ const Step3PhotoLanguage = ({ data, onChange, errors }: Props) => {
             <Video className="w-4 h-4" /> Use Video
           </button>
         </div>
-        {data.hero_media_type === "video" ? (
-          <Input
-            placeholder="Paste YouTube, Vimeo, or direct MP4 URL"
-            value={data.hero_media_url || ""}
-            onChange={(e) => onChange({ hero_media_url: e.target.value })}
-          />
-        ) : null}
+        {data.hero_media_type === "video" && (
+          <div className="space-y-3">
+            {/* Uploaded video preview */}
+            {data.hero_media_url && (
+              <div className="relative border border-border overflow-hidden">
+                <video src={data.hero_media_url} className="w-full h-40 object-cover" muted />
+                <button
+                  type="button"
+                  onClick={() => onChange({ hero_media_url: "" })}
+                  className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full p-1"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+                <div className="absolute bottom-2 left-2 bg-foreground/70 text-background px-2 py-0.5 text-xs font-body rounded">
+                  ✓ Video uploaded
+                </div>
+              </div>
+            )}
+
+            {/* Upload button */}
+            {!data.hero_media_url && (
+              <div
+                onClick={() => videoRef.current?.click()}
+                onDrop={(e) => handleDrop(e, handleVideoUpload)}
+                onDragOver={(e) => e.preventDefault()}
+                className="border-2 border-dashed border-border hover:border-secondary cursor-pointer flex flex-col items-center justify-center py-10 px-6 transition-colors"
+              >
+                {uploading === "video" ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
+                    <p className="font-body text-xs text-muted-foreground">Uploading video…</p>
+                  </div>
+                ) : (
+                  <>
+                    <Film className="w-8 h-8 text-muted-foreground mb-3" />
+                    <p className="font-body text-sm text-muted-foreground">Drag & drop or click to upload video</p>
+                    <p className="font-body text-xs text-muted-foreground mt-1">MP4, WebM, MOV, AVI, MKV • Max 50MB</p>
+                  </>
+                )}
+              </div>
+            )}
+            <input
+              ref={videoRef}
+              type="file"
+              accept="video/mp4,video/webm,video/ogg,video/quicktime,video/x-msvideo,video/x-matroska,video/mpeg,.mp4,.webm,.mov,.avi,.mkv,.ogg"
+              className="hidden"
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) handleVideoUpload(f); }}
+            />
+
+            {/* Or paste URL */}
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-border" />
+              <span className="font-body text-xs text-muted-foreground">or paste a URL</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+            <Input
+              placeholder="YouTube, Vimeo, or direct MP4 URL"
+              value={data.hero_media_url || ""}
+              onChange={(e) => onChange({ hero_media_url: e.target.value })}
+            />
+          </div>
+        )}
       </div>
 
       {/* Couple Photo upload */}
