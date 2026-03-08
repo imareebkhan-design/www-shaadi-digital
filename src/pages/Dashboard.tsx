@@ -92,13 +92,6 @@ const Dashboard = () => {
   });
   const displayName = userProfile?.full_name || user?.email?.split("@")[0] || "there";
 
-  const rsvpStats = useMemo(() => {
-    const total = rsvps.reduce((sum, r) => sum + r.guest_count, 0);
-    const veg = rsvps.filter(r => r.meal_preference === "veg").reduce((s, r) => s + r.guest_count, 0);
-    const nonVeg = rsvps.filter(r => r.meal_preference === "non_veg").reduce((s, r) => s + r.guest_count, 0);
-    const jain = rsvps.filter(r => r.meal_preference === "jain").reduce((s, r) => s + r.guest_count, 0);
-    return { total, veg, nonVeg, jain, responses: rsvps.length };
-  }, [rsvps]);
 
   const copyLink = () => {
     if (inviteUrl) {
