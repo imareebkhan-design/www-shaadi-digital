@@ -19,7 +19,7 @@ const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps
 
   const handleBuildForMe = () => {
     onClose();
-    navigate(`/builder?template=${templateId}`);
+    navigate(`/templates`);
   };
 
   return (
