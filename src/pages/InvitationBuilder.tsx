@@ -124,10 +124,10 @@ const InvitationBuilder = () => {
   // Redirect if not authenticated
   useEffect(() => {
     if (!authLoading && !user) {
-      sessionStorage.setItem("selectedTemplateId", templateId || "");
+      sessionStorage.setItem("selectedTemplateId", activeTemplateId || "");
       navigate("/login");
     }
-  }, [authLoading, user, navigate, templateId]);
+  }, [authLoading, user, navigate, activeTemplateId]);
 
   // Redirect if invalid template
   useEffect(() => {
