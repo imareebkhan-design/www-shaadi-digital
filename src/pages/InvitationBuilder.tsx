@@ -517,7 +517,7 @@ const InvitationBuilder = () => {
               </button>
             </div>
             <div className="overflow-y-auto" style={{ height: "calc(85vh - 60px)" }}>
-              <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
+              <WeddingTemplate config={invitationDataToConfig(formData)} templateId={activeTemplateId!} />
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-4 bg-background border-t border-border">
               <Button onClick={() => setShowMobilePreview(false)} className="w-full bg-primary text-primary-foreground rounded-none h-12 font-body">
