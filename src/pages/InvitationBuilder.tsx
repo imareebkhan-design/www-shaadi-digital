@@ -344,18 +344,19 @@ const InvitationBuilder = () => {
         description="Customise your digital wedding invitation with couple names, events, photos, and more."
         noIndex
       />
-      {/* Save status indicator */}
+
+      {/* Save status — refined pill */}
       {saveStatus !== "idle" && (
-        <div className="fixed top-3 right-3 z-50 flex items-center gap-1.5 bg-card border border-border px-3 py-1.5 shadow-sm font-body text-xs text-muted-foreground">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-card/95 backdrop-blur-sm border border-border px-4 py-2 shadow-elegant font-body text-xs text-muted-foreground rounded-full">
           {saveStatus === "saving" ? (
             <>
               <div className="animate-spin w-3 h-3 border border-primary border-t-transparent rounded-full" />
-              Saving…
+              Auto-saving…
             </>
           ) : (
             <>
-              <Check className="w-3 h-3 text-emerald-600" />
-              Saved ✓
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              All changes saved
             </>
           )}
         </div>
@@ -363,7 +364,7 @@ const InvitationBuilder = () => {
 
       {/* Mobile sticky bar */}
       {isMobile && (
-        <div className="sticky top-0 z-40 bg-primary text-primary-foreground py-2 px-4 text-center font-display text-sm">
+        <div className="sticky top-0 z-40 bg-primary text-primary-foreground py-2.5 px-4 text-center font-display text-sm tracking-wide">
           {formData.groom_name || "Groom"} ♡ {formData.bride_name || "Bride"}
         </div>
       )}
@@ -373,16 +374,24 @@ const InvitationBuilder = () => {
         <div className={`${isMobile ? "w-full" : "w-2/5"} h-screen overflow-y-auto border-r border-border relative`}>
           <StepIndicator currentStep={step} totalSteps={5} />
 
-          <div className="p-6 md:p-8 max-w-xl mx-auto">
+          <div className="p-6 md:p-8 max-w-xl mx-auto pb-32">
             {renderStep()}
 
             {step <= 3 && (
-              <div className="flex justify-between mt-8 pt-6 border-t border-border">
-                <Button variant="outline" onClick={handleBack} disabled={step === 1} className="rounded-none font-body gap-2">
+              <div className="flex justify-between mt-10 pt-6 border-t border-border">
+                <Button
+                  variant="outline"
+                  onClick={handleBack}
+                  disabled={step === 1}
+                  className="rounded-none font-body gap-2 h-11 px-6 border-border/60"
+                >
                   <ArrowLeft className="w-4 h-4" /> Back
                 </Button>
-                <Button onClick={handleNext} className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none font-body gap-2">
-                  Next <ArrowRight className="w-4 h-4" />
+                <Button
+                  onClick={handleNext}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none font-body gap-2 h-11 px-8 shadow-sm"
+                >
+                  {step === 3 ? "Preview" : "Next"} <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
             )}
@@ -392,7 +401,10 @@ const InvitationBuilder = () => {
 
         {/* ─── RIGHT: iPhone 16 Pro Max frame preview (60%) — desktop only ─── */}
         {!isMobile && (
-          <div className="w-3/5 h-screen sticky top-0 flex items-center justify-center bg-muted/30">
+          <div className="w-3/5 h-screen sticky top-0 flex flex-col items-center justify-center bg-muted/20">
+            {/* Label */}
+            <p className="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-4">Live Preview</p>
+
             {/* iPhone 16 Pro Max: 430×932 logical, scaled to fit */}
             <div className="relative" style={{ width: 280, height: 606 }}>
               {/* Phone frame */}
@@ -406,22 +418,12 @@ const InvitationBuilder = () => {
               {/* Dynamic Island notch */}
               <div
                 className="absolute top-[10px] left-1/2 -translate-x-1/2 z-20 rounded-full"
-                style={{
-                  width: 72,
-                  height: 20,
-                  background: "#1a1a1a",
-                }}
+                style={{ width: 72, height: 20, background: "#1a1a1a" }}
               />
               {/* Scrollable template inside, scaled down */}
               <div
                 className="absolute overflow-hidden"
-                style={{
-                  top: 8,
-                  left: 8,
-                  right: 8,
-                  bottom: 8,
-                  borderRadius: 32,
-                }}
+                style={{ top: 8, left: 8, right: 8, bottom: 8, borderRadius: 32 }}
               >
                 <div
                   className="overflow-y-auto"
@@ -435,16 +437,14 @@ const InvitationBuilder = () => {
                   <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
                 </div>
               </div>
-              {/* Home indicator — on top of everything */}
+              {/* Home indicator */}
               <div
                 className="absolute bottom-[14px] left-1/2 -translate-x-1/2 z-30 rounded-full"
-                style={{
-                  width: 80,
-                  height: 4,
-                  background: "rgba(255,255,255,0.5)",
-                }}
+                style={{ width: 80, height: 4, background: "rgba(255,255,255,0.5)" }}
               />
             </div>
+
+            <p className="font-body text-[10px] text-muted-foreground mt-4">Changes update in real-time</p>
           </div>
         )}
       </div>
