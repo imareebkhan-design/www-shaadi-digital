@@ -474,7 +474,7 @@ const InvitationBuilder = () => {
                     transformOrigin: "top left",
                   }}
                 >
-                  <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
+                  <WeddingTemplate config={invitationDataToConfig(formData)} templateId={activeTemplateId!} />
                 </div>
               </div>
               {/* Home indicator */}
