@@ -50,6 +50,9 @@ const Dashboard = () => {
   const [dashboardTab, setDashboardTab] = useState<"overview" | "guests" | "blessings" | "share">("overview");
   const [manualRsvpOpen, setManualRsvpOpen] = useState(false);
   const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
+  const [customSlug, setCustomSlug] = useState("");
+  const [slugSaving, setSlugSaving] = useState(false);
+  const [slugError, setSlugError] = useState("");
   const [manualRsvp, setManualRsvp] = useState({
     guest_name: "",
     guest_count: 1,
