@@ -136,14 +136,14 @@ const InvitationBuilder = () => {
 
   // Create or load invitation
   useEffect(() => {
-    if (!user || !templateId) return;
+    if (!user || !activeTemplateId) return;
 
     const loadOrCreate = async () => {
       const { data: existing } = await supabase
         .from("invitations")
         .select("*")
         .eq("user_id", user.id)
-        .eq("template_id", templateId)
+        .eq("template_id", activeTemplateId)
         .eq("status", "draft")
         .maybeSingle();
 
@@ -206,7 +206,7 @@ const InvitationBuilder = () => {
       } else {
         const { data: newInv } = await supabase
           .from("invitations")
-          .insert({ user_id: user.id, template_id: templateId })
+          .insert({ user_id: user.id, template_id: activeTemplateId })
           .select()
           .single();
 
@@ -226,7 +226,7 @@ const InvitationBuilder = () => {
     };
 
     loadOrCreate();
-  }, [user, templateId]);
+  }, [user, activeTemplateId]);
 
   // Save to Supabase
   const saveToSupabase = useCallback(async () => {
