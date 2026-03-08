@@ -504,7 +504,7 @@ const InvitationBuilder = () => {
                     transformOrigin: "top left",
                   }}
                 >
-                  <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} />
+                  <WeddingTemplate config={invitationDataToConfig(formData)} templateId={templateId!} isPreview />
                 </div>
               </div>
 
