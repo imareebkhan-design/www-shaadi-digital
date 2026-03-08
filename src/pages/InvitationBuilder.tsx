@@ -62,18 +62,20 @@ const defaultFormData = (ceremonyLabel: string): InvitationData => ({
 });
 
 const InvitationBuilder = () => {
-  const { templateId } = useParams<{ templateId: string }>();
+  const { templateId: urlTemplateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const isMobile = useIsMobile();
 
-  const template = templateId ? TEMPLATE_REGISTRY[templateId] : null;
+  const [activeTemplateId, setActiveTemplateId] = useState(urlTemplateId || "");
+  const template = activeTemplateId ? TEMPLATE_REGISTRY[activeTemplateId] : null;
   const TemplateComponent = template?.component;
 
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [invitationId, setInvitationId] = useState<string | null>(null);
   const [showMobilePreview, setShowMobilePreview] = useState(false);
+  const [showTemplateSwitcher, setShowTemplateSwitcher] = useState(false);
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const autoSaveTimer = useRef<ReturnType<typeof setInterval> | null>(null);
