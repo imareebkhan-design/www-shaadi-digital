@@ -367,7 +367,7 @@ const InvitationBuilder = () => {
       case 4: return (
         <Step4Preview
           data={formData}
-          templateId={templateId!}
+          templateId={activeTemplateId!}
           onProceed={() => setStep(5)}
           onGoBack={() => setStep(3)}
         />
