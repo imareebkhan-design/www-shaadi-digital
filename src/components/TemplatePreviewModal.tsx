@@ -18,8 +18,9 @@ const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps
   }, []);
 
   const handleBuildForMe = () => {
+    const targetPath = templateId ? `/builder/${templateId}` : "/templates";
     onClose();
-    navigate(`/builder/${templateId}`);
+    window.location.assign(targetPath);
   };
 
   return (
