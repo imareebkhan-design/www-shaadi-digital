@@ -85,6 +85,42 @@ const InvitationBuilder = () => {
     defaultFormData(getCeremonyLabel(template?.community || ""))
   );
 
+  // Keep activeTemplateId in sync with URL changes
+  useEffect(() => {
+    if (urlTemplateId && urlTemplateId !== activeTemplateId) {
+      setActiveTemplateId(urlTemplateId);
+    }
+  }, [urlTemplateId]);
+
+  // Template switch handler
+  const handleTemplateSwitch = useCallback(async (newTemplateId: string) => {
+    if (newTemplateId === activeTemplateId) return;
+    
+    // Update DB
+    if (invitationId) {
+      await supabase
+        .from("invitations")
+        .update({ template_id: newTemplateId } as any)
+        .eq("id", invitationId);
+    }
+
+    setActiveTemplateId(newTemplateId);
+    setShowTemplateSwitcher(false);
+
+    // Navigate to new URL without losing state
+    navigate(`/builder/${newTemplateId}`, { replace: true });
+
+    toast("✓ Template switched! Your details are all here.", {
+      duration: 3000,
+      position: "top-center",
+      style: {
+        background: "#1C1410",
+        color: "#ffffff",
+        border: "none",
+      },
+    });
+  }, [activeTemplateId, invitationId, navigate]);
+
   // Redirect if not authenticated
   useEffect(() => {
     if (!authLoading && !user) {
