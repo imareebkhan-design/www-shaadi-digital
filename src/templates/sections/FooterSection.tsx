@@ -66,10 +66,6 @@ const FooterSection = ({ brideName, groomName, weddingDate, events, personalMess
     URL.revokeObjectURL(url);
   };
 
-  const formattedDate = weddingDate
-    ? new Date(weddingDate).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
-    : null;
-
   return (
     <footer className="py-20 md:py-28 bg-burgundy text-center relative overflow-hidden">
       {/* Gradient mesh */}
