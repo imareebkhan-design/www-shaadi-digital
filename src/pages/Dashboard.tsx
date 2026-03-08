@@ -104,6 +104,48 @@ const Dashboard = () => {
     }
   };
 
+  const sanitizeSlug = (val: string) =>
+    val.toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+
+  const saveCustomSlug = async () => {
+    if (!invitation) return;
+    const slug = sanitizeSlug(customSlug);
+    if (!slug || slug.length < 3) {
+      setSlugError("Slug must be at least 3 characters");
+      return;
+    }
+    setSlugSaving(true);
+    setSlugError("");
+
+    // Check uniqueness
+    const { data: existing } = await supabase
+      .from("invitations")
+      .select("id")
+      .eq("slug", slug)
+      .neq("id", invitation.id)
+      .maybeSingle();
+
+    if (existing) {
+      setSlugError("This link is already taken. Try another one!");
+      setSlugSaving(false);
+      return;
+    }
+
+    const { error } = await supabase
+      .from("invitations")
+      .update({ slug })
+      .eq("id", invitation.id);
+
+    if (error) {
+      setSlugError(error.message);
+    } else {
+      setInvitation((prev) => prev ? { ...prev, slug } : prev);
+      setCustomSlug(slug);
+      toast({ title: "✓ Custom link saved!", description: `Your invite is now at /invite/${slug}` });
+    }
+    setSlugSaving(false);
+  };
+
   const shareWhatsApp = () => {
     if (inviteUrl) {
       const bride = invitation?.bride_name || "Our";
