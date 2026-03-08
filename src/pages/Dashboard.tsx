@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import SEOHead from "@/components/SEOHead";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,8 +14,10 @@ import { useToast } from "@/hooks/use-toast";
 import { getTemplateById } from "@/data/templates";
 import {
   LogOut, Copy, ExternalLink, Edit, Share2, Sparkles,
-  Users, Download, Plus, ArrowUpRight, Eye, Heart, Calendar, MessageSquare
+  Users, Download, Plus, ArrowUpRight, Eye, Heart, Calendar, MessageSquare, Check, Mail
 } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { getWhatsAppMessage, getEmailSubject, getEmailBody } from "@/lib/share-messages";
 import PlanBadge from "@/components/PlanBadge";
 import { usePlan } from "@/contexts/PlanContext";
 import { motion } from "framer-motion";
