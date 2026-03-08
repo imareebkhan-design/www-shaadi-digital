@@ -13,7 +13,7 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const prompt = `Write a warm, romantic 3-sentence first-person love story (as "we") for an Indian wedding invitation. The couple met through: ${how_we_met}. The tone/feeling word is: ${one_word || "magical"}. Keep it under 280 characters. Do not use quotes around it. Write only the story text, nothing else.`;
+    const prompt = `Write a love story for a couple who met: ${how_we_met}. Their relationship feels: ${one_word || "magical"}.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -24,7 +24,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: "You write beautiful, concise love stories for Indian wedding invitations. Keep the tone warm, joyful, and elegant." },
+          { role: "system", content: "You write love stories for premium Indian wedding invitations. Your tone is warm, poetic, and elegant — never cheesy or generic. Write exactly 3 sentences in first person plural (We...). The story should feel personal and beautiful, worthy of a luxury wedding invite. Never mention specific cities or names. Keep it under 60 words." },
           { role: "user", content: prompt },
         ],
       }),

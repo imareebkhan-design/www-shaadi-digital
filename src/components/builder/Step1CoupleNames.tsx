@@ -1,12 +1,7 @@
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Sparkles, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { BuilderFormData } from "@/types/builder";
-import { toast } from "@/components/ui/sonner";
+import AiStoryGenerator from "./AiStoryGenerator";
 
 interface Props {
   data: BuilderFormData;
@@ -15,35 +10,6 @@ interface Props {
 }
 
 const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
-  const [showAiFields, setShowAiFields] = useState(false);
-  const [howWeMet, setHowWeMet] = useState("");
-  const [oneWord, setOneWord] = useState("");
-  const [aiLoading, setAiLoading] = useState(false);
-
-  const handleGenerateStory = async () => {
-    if (!howWeMet) {
-      toast.error("Please select how you met");
-      return;
-    }
-    setAiLoading(true);
-    try {
-      const { data: result, error } = await supabase.functions.invoke("generate-love-story", {
-        body: { how_we_met: howWeMet, one_word: oneWord || "magical" },
-      });
-      if (error) throw error;
-      if (result?.story) {
-        onChange({ our_story: result.story });
-        toast.success("Story generated!");
-      } else if (result?.error) {
-        toast.error(result.error);
-      }
-    } catch (e: any) {
-      toast.error("Failed to generate story. Please try again.");
-      console.error(e);
-    } finally {
-      setAiLoading(false);
-    }
-  };
 
   return (
     <div className="space-y-6">
@@ -200,61 +166,7 @@ const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
           {(data.our_story || "").length}/300 characters
         </p>
 
-        {/* AI Story Generator */}
-        {!showAiFields ? (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="mt-2 rounded-none border-secondary text-secondary hover:bg-secondary/10 font-body text-xs"
-            onClick={() => setShowAiFields(true)}
-          >
-            <Sparkles className="w-3.5 h-3.5 mr-1.5" /> Write with AI
-          </Button>
-        ) : (
-          <div className="mt-3 space-y-3 p-3 border border-secondary/30 bg-accent/30">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="font-body text-xs text-muted-foreground block mb-1">How did you meet?</label>
-                <Select value={howWeMet} onValueChange={setHowWeMet}>
-                  <SelectTrigger className="rounded-none text-sm">
-                    <SelectValue placeholder="Select…" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="College">College</SelectItem>
-                    <SelectItem value="Work">Work</SelectItem>
-                    <SelectItem value="Family Introduction">Family Introduction</SelectItem>
-                    <SelectItem value="Dating App">Dating App</SelectItem>
-                    <SelectItem value="Childhood Friends">Childhood Friends</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="font-body text-xs text-muted-foreground block mb-1">One word to describe it</label>
-                <Input
-                  placeholder="e.g. magical"
-                  value={oneWord}
-                  onChange={(e) => setOneWord(e.target.value)}
-                  className="rounded-none"
-                />
-              </div>
-            </div>
-            <Button
-              type="button"
-              size="sm"
-              className="rounded-none bg-primary text-primary-foreground hover:bg-primary/90 font-body text-xs"
-              onClick={handleGenerateStory}
-              disabled={aiLoading}
-            >
-              {aiLoading ? (
-                <><Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" /> Generating…</>
-              ) : (
-                <>Generate →</>
-              )}
-            </Button>
-          </div>
-        )}
+        <AiStoryGenerator onStoryGenerated={(story) => onChange({ our_story: story })} />
       </div>
     </div>
   );
