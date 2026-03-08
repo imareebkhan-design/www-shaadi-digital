@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { X, Sparkles } from "lucide-react";
 
 interface TemplatePreviewModalProps {
@@ -10,7 +9,6 @@ interface TemplatePreviewModalProps {
 const DEMO_URL = "https://vivaah-visions-kit.lovable.app";
 
 const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps) => {
-  const navigate = useNavigate();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -18,8 +16,9 @@ const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps
   }, []);
 
   const handleBuildForMe = () => {
+    const targetPath = templateId ? `/builder/${templateId}` : "/templates";
     onClose();
-    navigate(`/builder/${templateId}`);
+    window.location.assign(targetPath);
   };
 
   return (
