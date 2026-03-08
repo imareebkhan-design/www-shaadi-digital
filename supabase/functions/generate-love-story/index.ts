@@ -13,7 +13,7 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const prompt = `Write a warm, romantic 3-sentence first-person love story (as "we") for an Indian wedding invitation. The couple met through: ${how_we_met}. The tone/feeling word is: ${one_word || "magical"}. Keep it under 280 characters. Do not use quotes around it. Write only the story text, nothing else.`;
+    const prompt = `Write a love story for a couple who met: ${how_we_met}. Their relationship feels: ${one_word || "magical"}.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
