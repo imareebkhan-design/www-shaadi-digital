@@ -527,6 +527,18 @@ const InvitationBuilder = () => {
           </div>
         </div>
       )}
+
+      {/* Template Switcher Modal */}
+      <AnimatePresence>
+        {showTemplateSwitcher && (
+          <TemplateSwitcherModal
+            currentTemplateId={activeTemplateId}
+            formData={formData}
+            onSwitch={handleTemplateSwitch}
+            onClose={() => setShowTemplateSwitcher(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
