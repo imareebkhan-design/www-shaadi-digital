@@ -590,6 +590,43 @@ const Dashboard = () => {
                       {/* SHARE TAB */}
                       {dashboardTab === "share" && (
                         <div className="space-y-6">
+                          {/* Custom Link Editor */}
+                          <div className="border border-secondary/20 bg-[hsl(var(--callout))] p-5 rounded-xl">
+                            <h4 className="font-display text-base font-semibold text-foreground mb-1">✨ Create Your Custom Link</h4>
+                            <p className="font-body text-xs text-muted-foreground mb-4">
+                              Make it personal — choose a memorable link for your invitation
+                            </p>
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                              <div className="flex items-center gap-0 flex-1 min-w-0 border border-border bg-background rounded-lg overflow-hidden">
+                                <span className="font-body text-xs text-muted-foreground bg-muted/60 px-3 py-2.5 shrink-0 border-r border-border">
+                                  shaadi.digital/invite/
+                                </span>
+                                <Input
+                                  value={customSlug}
+                                  onChange={(e) => {
+                                    setCustomSlug(e.target.value);
+                                    setSlugError("");
+                                  }}
+                                  placeholder="areeb-rida"
+                                  className="border-0 rounded-none h-auto py-2.5 text-sm font-body focus-visible:ring-0 focus-visible:ring-offset-0"
+                                />
+                              </div>
+                              <Button
+                                onClick={saveCustomSlug}
+                                disabled={slugSaving || sanitizeSlug(customSlug) === invitation?.slug}
+                                className="bg-primary text-primary-foreground rounded-none font-body text-xs tracking-wider h-10 px-6 shrink-0"
+                              >
+                                {slugSaving ? "Saving…" : sanitizeSlug(customSlug) === invitation?.slug ? "✓ Saved" : "Save Link"}
+                              </Button>
+                            </div>
+                            {slugError && (
+                              <p className="font-body text-xs text-destructive mt-2">{slugError}</p>
+                            )}
+                            <p className="font-body text-[11px] text-muted-foreground mt-2">
+                              💡 Use lowercase letters, numbers and hyphens only. e.g. <strong>priya-arjun</strong>, <strong>sharma-wedding</strong>
+                            </p>
+                          </div>
+
                           {inviteUrl && (
                             <div>
                               <h4 className="font-display text-base font-semibold text-foreground mb-3">Your Invite Link</h4>
