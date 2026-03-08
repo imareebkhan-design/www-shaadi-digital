@@ -47,7 +47,9 @@ const Dashboard = () => {
   const [invitation, setInvitation] = useState<Invitation | null>(null);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showRsvpTable, setShowRsvpTable] = useState(false);
+  const [dashboardTab, setDashboardTab] = useState<"overview" | "guests" | "blessings" | "share">("overview");
+  const [manualRsvpOpen, setManualRsvpOpen] = useState(false);
+  const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
   const [manualRsvpOpen, setManualRsvpOpen] = useState(false);
   const [manualRsvp, setManualRsvp] = useState({
     guest_name: "",
