@@ -86,23 +86,48 @@ const Chip = ({ label, active, onClick, dot }: { label: string; active: boolean;
 );
 
 /* ── Template Card (portrait 9:16 layout) ── */
-const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: number; onPreview: (id: string) => void }) => {
-  const [notifyEmail, setNotifyEmail] = useState("");
-  const [showNotify, setShowNotify] = useState(false);
-
-  const handleNotify = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success(`✓ We'll notify you when ${t.name} launches!`);
-    setShowNotify(false);
-    setNotifyEmail("");
-  };
-
+const TemplateCard = ({
+  t,
+  index,
+  onPreview,
+  draftTemplateId,
+  onSwitchTemplate,
+}: {
+  t: TemplateConfig;
+  index: number;
+  onPreview: (id: string) => void;
+  draftTemplateId: string | null;
+  onSwitchTemplate?: (templateId: string) => void;
+}) => {
   const badgeLabel = t.isFeatured ? "🏅 Limited Ed." : t.isNew && !t.isComingSoon ? "✦ New" : t.isPremium ? "👑 Premium" : null;
   const badgeColor = t.isFeatured
     ? "bg-primary/85 text-primary-foreground"
     : t.isNew && !t.isComingSoon
     ? "bg-green-700/90 text-green-100"
     : "bg-secondary/90 text-secondary-foreground";
+
+  const hasDraft = !!draftTemplateId;
+  const isCurrentDraft = draftTemplateId === t.id;
+
+  const ctaLabel = t.isComingSoon
+    ? null
+    : hasDraft
+    ? isCurrentDraft
+      ? "✦ Continue editing"
+      : "⟳ Switch to this"
+    : "✦ View demo";
+
+  const handleCtaClick = () => {
+    if (t.isComingSoon) return;
+    if (hasDraft && !isCurrentDraft && onSwitchTemplate) {
+      onSwitchTemplate(t.id);
+    } else if (isCurrentDraft) {
+      // Navigate to builder with current template
+      window.location.assign(`/builder/${t.id}`);
+    } else {
+      onPreview(t.id);
+    }
+  };
 
   return (
     <motion.div
@@ -197,10 +222,10 @@ const TemplateCard = ({ t, index, onPreview }: { t: TemplateConfig; index: numbe
             </button>
           ) : (
             <button
-              onClick={() => onPreview(t.id)}
+              onClick={handleCtaClick}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
             >
-              ✦ View demo
+              {ctaLabel}
             </button>
           )}
         </div>
