@@ -104,6 +104,8 @@ const Dashboard = () => {
   const copyLink = () => {
     if (inviteUrl) {
       navigator.clipboard.writeText(inviteUrl);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
       toast({ title: "Link copied!", description: "Invite link copied to clipboard" });
     }
   };
@@ -121,7 +123,6 @@ const Dashboard = () => {
     setSlugSaving(true);
     setSlugError("");
 
-    // Check uniqueness
     const { data: existing } = await supabase
       .from("invitations")
       .select("id")
@@ -150,13 +151,66 @@ const Dashboard = () => {
     setSlugSaving(false);
   };
 
-  const shareWhatsApp = () => {
-    if (inviteUrl) {
-      const bride = invitation?.bride_name || "Our";
-      const groom = invitation?.groom_name || "";
-      const text = `You're invited! 🎊 ${bride} & ${groom}'s Wedding — View our invitation: ${inviteUrl}`;
-      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+  // Build formatted data for share messages
+  const formattedWeddingDate = invitation?.wedding_date
+    ? new Date(invitation.wedding_date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
+    : undefined;
+
+  const getDefaultShareMessage = useCallback(() => {
+    if (!inviteUrl || !invitation) return "";
+    return getWhatsAppMessage({
+      brideName: invitation.bride_name || "Bride",
+      groomName: invitation.groom_name || "Groom",
+      formattedDate: formattedWeddingDate,
+      city: (invitation as any).wedding_city,
+      inviteUrl,
+      language: invitation.language || "english",
+    });
+  }, [invitation, inviteUrl, formattedWeddingDate]);
+
+  // Initialize share message when invitation loads
+  useEffect(() => {
+    if (invitation && inviteUrl && !shareMessage) {
+      setShareMessage(getDefaultShareMessage());
     }
+  }, [invitation, inviteUrl, getDefaultShareMessage, shareMessage]);
+
+  const shareWhatsApp = () => {
+    const text = shareMessage || getDefaultShareMessage();
+    if (text) window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+  };
+
+  const shareEmail = () => {
+    if (!invitation || !inviteUrl) return;
+    const subject = getEmailSubject(invitation.bride_name || "Bride", invitation.groom_name || "Groom");
+    const body = getEmailBody({
+      brideName: invitation.bride_name || "Bride",
+      groomName: invitation.groom_name || "Groom",
+      formattedDate: formattedWeddingDate,
+      city: (invitation as any).wedding_city,
+      inviteUrl,
+      language: "english",
+    });
+    window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
+  };
+
+  const downloadQR = () => {
+    const svg = document.getElementById("invite-qr-code");
+    if (!svg) return;
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement("canvas");
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.onload = () => {
+      ctx?.drawImage(img, 0, 0, 512, 512);
+      const a = document.createElement("a");
+      a.download = `${invitation?.bride_name || "bride"}-${invitation?.groom_name || "groom"}-invite-qr.png`;
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+    };
+    img.src = "data:image/svg+xml;base64," + btoa(svgData);
   };
 
   const exportCSV = () => {
