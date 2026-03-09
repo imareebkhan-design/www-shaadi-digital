@@ -148,7 +148,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                 className="absolute bottom-0 left-0 right-0"
                 style={{
                   height: "50%",
-                  background: "linear-gradient(0deg, hsl(var(--maroon)), hsl(var(--maroon-light) / 0.6))",
+                  background: "linear-gradient(0deg, hsl(var(--template-bg-secondary, var(--maroon))), hsl(var(--template-bg-secondary, var(--maroon-light)) / 0.6))",
                   clipPath: "polygon(0 100%, 50% 20%, 100% 100%)",
                 }}
               />
@@ -163,7 +163,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                 <div
                   className="absolute inset-0"
                   style={{
-                    background: "linear-gradient(180deg, hsl(var(--maroon-light)), hsl(var(--maroon)))",
+                    background: "linear-gradient(180deg, hsl(var(--template-bg-secondary, var(--maroon-light))), hsl(var(--template-bg-secondary, var(--maroon))))",
                     clipPath: "polygon(0 0, 50% 100%, 100% 0)",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
                     backfaceVisibility: "hidden",
@@ -172,7 +172,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                 <div
                   className="absolute inset-0"
                   style={{
-                    background: "linear-gradient(180deg, hsl(var(--burgundy)), hsl(var(--maroon)))",
+                    background: "linear-gradient(180deg, hsl(var(--template-bg, var(--burgundy))), hsl(var(--template-bg-secondary, var(--maroon))))",
                     clipPath: "polygon(0 0, 50% 100%, 100% 0)",
                     transform: "rotateX(180deg)",
                     backfaceVisibility: "hidden",
