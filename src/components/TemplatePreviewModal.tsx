@@ -63,10 +63,21 @@ const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps
             onClick={handleBuildForMe}
             className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground text-sm font-medium rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:bg-primary/90 hover:scale-105 transition-all duration-200"
           >
-            <Sparkles className="w-4 h-4" />
-            Build for Me
+            {isCustom ? (
+              <>
+                <MessageCircle className="w-4 h-4" />
+                Get in Touch
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4" />
+                Build for Me
+              </>
+            )}
           </button>
         </motion.div>
+
+        <ContactOptionsDialog open={showContact} onOpenChange={setShowContact} />
       </div>
     </div>
   );
