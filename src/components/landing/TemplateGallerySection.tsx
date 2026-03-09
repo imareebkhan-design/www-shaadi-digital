@@ -139,11 +139,11 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
       />
 
 
-      {/* Video background for Royal Maroon */}
-      {t.id === "royal-maroon" && (
+      {/* Video background for templates with video */}
+      {hasVideo && (
         <video
           ref={videoRef}
-          src="/videos/royal-maroon-preview.mov"
+          src={VIDEO_TEMPLATES[t.id]}
           className="absolute inset-0 w-full h-full object-cover pointer-events-none z-[2]"
           style={{
             opacity: videoVisible ? 1 : 0,
@@ -152,7 +152,7 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
           muted
           loop
           playsInline
-          preload="metadata"
+          preload={isAutoplayVideo ? "auto" : "metadata"}
         />
       )}
 
