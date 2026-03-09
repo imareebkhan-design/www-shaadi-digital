@@ -68,8 +68,20 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
 
   return (
     <div
-      className={`reel-card group flex-shrink-0 w-[300px] h-[520px] rounded-[20px] relative overflow-hidden scroll-snap-align-center cursor-pointer transition-transform duration-500 ease-[cubic-bezier(0.34,1.2,0.64,1)] border border-secondary/10 hover:scale-[1.04] hover:-translate-y-2 hover:border-secondary/30 bg-gradient-to-b ${bgClass}`}
+      className={`reel-card group flex-shrink-0 w-[300px] h-[520px] rounded-[20px] relative overflow-hidden scroll-snap-align-center cursor-pointer border border-secondary/10 bg-gradient-to-b ${bgClass}`}
+      style={{
+        animation: `reelFadeUp 0.6s ease-out ${index * 100}ms both`,
+        transition: "transform 0.5s cubic-bezier(0.34,1.2,0.64,1), border-color 0.3s ease",
+      }}
     >
+      {/* Hover shimmer overlay */}
+      <div 
+        className="absolute inset-0 z-[6] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{
+          background: "linear-gradient(135deg, transparent 0%, hsl(40 72% 52% / 0.08) 50%, transparent 100%)",
+        }}
+      />
+
       {/* Live iframe background for Royal Maroon */}
       {t.id === "royal-maroon" && (
         <iframe
@@ -95,20 +107,27 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
         {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
       </span>
 
-      {/* Pattern background */}
-      <div className="absolute inset-0 pointer-events-none z-[1]">
+      {/* Pattern background with parallax */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-[1] transition-transform duration-700 ease-out group-hover:scale-110"
+      >
         <MandalaPattern />
       </div>
 
       {/* Hover glow — gold */}
       <div className="absolute inset-0 z-[4] rounded-[20px] opacity-0 transition-opacity duration-400 border border-secondary/40 shadow-gold pointer-events-none group-hover:opacity-100" />
 
-      {/* Content */}
-      <div className="absolute inset-0 z-[5] flex flex-col justify-end p-7">
+      {/* Content with parallax float */}
+      <div 
+        className="absolute inset-0 z-[5] flex flex-col justify-end p-7 transition-transform duration-500 ease-out group-hover:-translate-y-1"
+      >
         {/* Top: Couple names - hidden for royal-maroon since live demo is background */}
         {t.id !== "royal-maroon" && (
-          <div className="flex flex-col items-center text-center pt-10 flex-1 justify-center">
-            <span className="text-4xl mb-5 block drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] animate-[float_5s_ease-in-out_infinite]">
+          <div className="flex flex-col items-center text-center pt-10 flex-1 justify-center transition-transform duration-700 ease-out group-hover:-translate-y-2">
+            <span 
+              className="text-4xl mb-5 block drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] transition-transform duration-700 ease-out group-hover:scale-110"
+              style={{ animation: "float 5s ease-in-out infinite" }}
+            >
               {t.motif}
             </span>
             <div className="font-serif text-[28px] font-normal text-primary-foreground leading-tight tracking-wide drop-shadow-[0_2px_20px_rgba(0,0,0,0.6)]">
@@ -116,7 +135,7 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
               <span className="block italic text-xl font-light text-secondary opacity-85 my-1">&amp;</span>
               {t.sampleData.groomName}
             </div>
-            <div className="w-10 h-px bg-gradient-to-r from-transparent via-secondary/60 to-transparent my-4" />
+            <div className="w-10 h-px bg-gradient-to-r from-transparent via-secondary/60 to-transparent my-4 transition-all duration-500 group-hover:w-16" />
             <span className="text-[9px] tracking-[3px] uppercase text-primary-foreground/35">
               {t.sampleData.date} · {t.sampleData.city}
             </span>
@@ -124,7 +143,7 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
         )}
 
         {/* Bottom: Info panel */}
-        <div className="bg-gradient-to-t from-foreground/95 via-foreground/85 to-transparent -mx-7 -mb-7 px-6 pt-8 pb-6">
+        <div className="bg-gradient-to-t from-foreground/95 via-foreground/85 to-transparent -mx-7 -mb-7 px-6 pt-8 pb-6 transition-transform duration-500 ease-out group-hover:translate-y-0.5">
           <h3 className="font-serif text-2xl font-semibold text-primary-foreground mb-1.5 tracking-wide">
             {t.name}
           </h3>
@@ -170,6 +189,28 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
           </div>
         </div>
       </div>
+
+      {/* Scale transform on hover applied via CSS */}
+      <style>{`
+        .reel-card:hover {
+          transform: scale(1.03) translateY(-8px);
+          border-color: hsl(40 72% 52% / 0.3);
+        }
+        @keyframes reelFadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+      `}</style>
     </div>
   );
 };
