@@ -103,12 +103,14 @@ const TemplateCard = ({
   onPreview,
   draftTemplateId,
   onSwitchTemplate,
+  onGetInTouch,
 }: {
   t: TemplateConfig;
   index: number;
   onPreview: (id: string) => void;
   draftTemplateId: string | null;
   onSwitchTemplate?: (templateId: string) => void;
+  onGetInTouch?: () => void;
 }) => {
   const badgeLabel = t.isFeatured ? "👑 Limited Ed." : t.isNew && !t.isComingSoon ? "✦ New" : t.isPremium ? "👑 Premium" : null;
   const badgeClass = t.isFeatured
