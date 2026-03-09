@@ -342,7 +342,7 @@ const TemplateGallerySection = () => {
           style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
         >
           {filteredTemplates.map((t, i) => (
-            <ReelCard key={t.id} t={t} index={i} total={filteredTemplates.length} />
+            <ReelCard key={t.id} t={t} index={i} total={filteredTemplates.length} onGetInTouch={() => setShowContact(true)} />
           ))}
         </div>
       </div>
