@@ -213,8 +213,8 @@ const HeroSection = () => {
       {/* Gold divider */}
       <div className={`h-px mx-auto my-5 md:my-7 bg-gradient-to-r from-transparent via-secondary to-transparent transition-all duration-700 ${afterHeadline ? "w-24 md:w-32 opacity-100" : "w-0 opacity-0"}`} />
 
-      {/* Subheadline */}
-      <p className={`relative z-[2] text-[15px] md:text-[17px] text-muted-foreground max-w-[540px] leading-[1.8] px-2 font-light transition-all duration-700 delay-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+      {/* Subheadline - visible early via CSS animation to avoid LCP render delay */}
+      <p className="relative z-[2] text-[15px] md:text-[17px] text-muted-foreground max-w-[540px] leading-[1.8] px-2 font-light opacity-0 animate-[fadeUp_0.8s_cubic-bezier(0.22,1,0.36,1)_1.2s_forwards]">
         Stunning, personalised digital wedding invitations — delivered instantly on WhatsApp, built for every Indian ceremony, from Mehndi to Reception.
       </p>
 
