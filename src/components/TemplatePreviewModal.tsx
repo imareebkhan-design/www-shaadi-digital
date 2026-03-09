@@ -1,6 +1,7 @@
-import { useEffect } from "react";
-import { X, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X, Sparkles, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import ContactOptionsDialog from "@/components/ContactOptionsDialog";
 
 interface TemplatePreviewModalProps {
   templateId: string;
@@ -8,8 +9,11 @@ interface TemplatePreviewModalProps {
 }
 
 const DEMO_URL = "https://vivaah.shaadi.digital/";
+const CUSTOM_TEMPLATES = ["midnight-blue"];
 
 const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps) => {
+  const [showContact, setShowContact] = useState(false);
+  const isCustom = CUSTOM_TEMPLATES.includes(templateId);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -17,6 +21,10 @@ const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps
   }, []);
 
   const handleBuildForMe = () => {
+    if (isCustom) {
+      setShowContact(true);
+      return;
+    }
     const targetPath = templateId ? `/builder/${templateId}` : "/templates";
     onClose();
     window.location.assign(targetPath);
@@ -55,10 +63,21 @@ const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps
             onClick={handleBuildForMe}
             className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground text-sm font-medium rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:bg-primary/90 hover:scale-105 transition-all duration-200"
           >
-            <Sparkles className="w-4 h-4" />
-            Build for Me
+            {isCustom ? (
+              <>
+                <MessageCircle className="w-4 h-4" />
+                Get in Touch
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4" />
+                Build for Me
+              </>
+            )}
           </button>
         </motion.div>
+
+        <ContactOptionsDialog open={showContact} onOpenChange={setShowContact} />
       </div>
     </div>
   );

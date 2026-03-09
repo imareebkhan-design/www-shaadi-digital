@@ -4,6 +4,7 @@ import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import TemplatePreviewModal from "@/components/TemplatePreviewModal";
+import ContactOptionsDialog from "@/components/ContactOptionsDialog";
 import { templates, FILTER_OPTIONS, type TemplateConfig } from "@/data/templates";
 import { Search, SlidersHorizontal, X, Bell, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -102,12 +103,14 @@ const TemplateCard = ({
   onPreview,
   draftTemplateId,
   onSwitchTemplate,
+  onGetInTouch,
 }: {
   t: TemplateConfig;
   index: number;
   onPreview: (id: string) => void;
   draftTemplateId: string | null;
   onSwitchTemplate?: (templateId: string) => void;
+  onGetInTouch?: () => void;
 }) => {
   const badgeLabel = t.isFeatured ? "👑 Limited Ed." : t.isNew && !t.isComingSoon ? "✦ New" : t.isPremium ? "👑 Premium" : null;
   const badgeClass = t.isFeatured
@@ -119,8 +122,12 @@ const TemplateCard = ({
   const hasDraft = !!draftTemplateId;
   const isCurrentDraft = draftTemplateId === t.id;
 
+  const isCustomTemplate = t.id === "midnight-blue";
+
   const ctaLabel = t.isComingSoon
     ? null
+    : isCustomTemplate
+    ? "Get in Touch"
     : hasDraft
     ? isCurrentDraft
       ? "Continue editing"
@@ -129,6 +136,10 @@ const TemplateCard = ({
 
   const handleCtaClick = () => {
     if (t.isComingSoon) return;
+    if (isCustomTemplate) {
+      // handled by parent via onGetInTouch
+      return;
+    }
     if (hasDraft && !isCurrentDraft && onSwitchTemplate) {
       onSwitchTemplate(t.id);
     } else if (isCurrentDraft) {
@@ -238,7 +249,11 @@ const TemplateCard = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleCtaClick();
+                    if (t.id === "midnight-blue" && onGetInTouch) {
+                      onGetInTouch();
+                    } else {
+                      handleCtaClick();
+                    }
                   }}
                   className="flex-1 bg-white text-[hsl(345,60%,15%)] font-body text-[9px] font-bold tracking-[1.2px] uppercase py-2.5 px-3 rounded-full transition-all hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(0,0,0,0.4)]"
                 >
@@ -367,6 +382,7 @@ const TemplateGallery = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
   const [switchConfirm, setSwitchConfirm] = useState<{ templateId: string; name: string } | null>(null);
+  const [showContact, setShowContact] = useState(false);
   const isMobile = useIsMobile();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -594,7 +610,7 @@ const TemplateGallery = () => {
         {filtered.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
             {filtered.map((t, i) => (
-              <TemplateCard key={t.id} t={t} index={i} onPreview={openPreview} draftTemplateId={draftTemplateId} onSwitchTemplate={handleSwitchTemplate} />
+              <TemplateCard key={t.id} t={t} index={i} onPreview={openPreview} draftTemplateId={draftTemplateId} onSwitchTemplate={handleSwitchTemplate} onGetInTouch={() => setShowContact(true)} />
             ))}
           </div>
         ) : (
@@ -643,6 +659,8 @@ const TemplateGallery = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <ContactOptionsDialog open={showContact} onOpenChange={setShowContact} />
     </div>
   );
 };

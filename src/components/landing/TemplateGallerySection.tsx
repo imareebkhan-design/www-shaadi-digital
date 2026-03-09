@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
+import ContactOptionsDialog from "@/components/ContactOptionsDialog";
 import { templates, type TemplateConfig } from "@/data/templates";
 
 /* Show first 6 templates for reels display */
@@ -58,8 +59,9 @@ const MandalaPattern = () => (
   </svg>
 );
 
-/* Single Reel Card */
-const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total: number }) => {
+const CUSTOM_TEMPLATES = ["midnight-blue"];
+
+const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index: number; total: number; onGetInTouch: () => void }) => {
   const bgClass = reelBgClasses[t.id] || "from-maroon-dark via-primary to-maroon-dark";
   const badgeLabel = t.isFeatured ? "👑 Limited Ed." : t.isNew && !t.isComingSoon ? "✦ New" : null;
   const badgeClass = t.isFeatured
@@ -192,12 +194,21 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
             ))}
           </div>
           <div className="flex gap-2">
+          {CUSTOM_TEMPLATES.includes(t.id) ? (
+            <button
+              onClick={onGetInTouch}
+              className="flex-1 flex items-center justify-center gap-1.5 bg-secondary text-secondary-foreground font-body text-[11px] font-bold tracking-[1.5px] uppercase py-3 px-4 rounded-full transition-all hover:bg-secondary/90 hover:-translate-y-0.5 shadow-gold"
+            >
+              Get in Touch
+            </button>
+          ) : (
           <Link
             to={`/builder/${t.id}`}
             className="flex-1 flex items-center justify-center gap-1.5 bg-secondary text-secondary-foreground font-body text-[11px] font-bold tracking-[1.5px] uppercase py-3 px-4 rounded-full transition-all hover:bg-secondary/90 hover:-translate-y-0.5 shadow-gold"
           >
             Use This Template
           </Link>
+          )}
           {t.id === "royal-maroon" || t.id === "emerald-south" || t.id === "golden-sehra" || t.id === "pearl-nikah" || t.id === "midnight-blue" ? (
             <a
               href={{"royal-maroon": "https://vivaah.shaadi.digital/", "emerald-south": "https://dravidian-gold.shaadi.digital/", "golden-sehra": "https://golden-sehra.shaadi.digital/", "pearl-nikah": "https://midnight-nikkah.shaadi.digital/", "midnight-blue": "https://midnight-blue.shaadi.digital/"}[t.id]}
@@ -248,6 +259,7 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
 
 const TemplateGallerySection = () => {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
+  const [showContact, setShowContact] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
   const filteredTemplates = displayTemplates.filter((t) => getFilterMatch(t, activeFilter));
@@ -330,7 +342,7 @@ const TemplateGallerySection = () => {
           style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
         >
           {filteredTemplates.map((t, i) => (
-            <ReelCard key={t.id} t={t} index={i} total={filteredTemplates.length} />
+            <ReelCard key={t.id} t={t} index={i} total={filteredTemplates.length} onGetInTouch={() => setShowContact(true)} />
           ))}
         </div>
       </div>
@@ -366,6 +378,8 @@ const TemplateGallerySection = () => {
           New designs added every month
         </span>
       </div>
+
+      <ContactOptionsDialog open={showContact} onOpenChange={setShowContact} />
     </section>
   );
 };
