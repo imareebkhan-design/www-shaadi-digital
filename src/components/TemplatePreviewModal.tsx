@@ -1,6 +1,7 @@
-import { useEffect } from "react";
-import { X, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X, Sparkles, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import ContactOptionsDialog from "@/components/ContactOptionsDialog";
 
 interface TemplatePreviewModalProps {
   templateId: string;
@@ -8,8 +9,11 @@ interface TemplatePreviewModalProps {
 }
 
 const DEMO_URL = "https://vivaah.shaadi.digital/";
+const CUSTOM_TEMPLATES = ["midnight-blue"];
 
 const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps) => {
+  const [showContact, setShowContact] = useState(false);
+  const isCustom = CUSTOM_TEMPLATES.includes(templateId);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -17,6 +21,10 @@ const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps
   }, []);
 
   const handleBuildForMe = () => {
+    if (isCustom) {
+      setShowContact(true);
+      return;
+    }
     const targetPath = templateId ? `/builder/${templateId}` : "/templates";
     onClose();
     window.location.assign(targetPath);
