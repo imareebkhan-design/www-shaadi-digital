@@ -27,7 +27,7 @@ const PlanBadge = () => {
     );
   }
 
-  const info = PLAN_LABELS[plan!.plan_name] || { label: plan!.plan_name };
+  const info = PLAN_LABELS[plan!.plan] || { label: plan!.plan };
 
   return (
     <div className="inline-flex items-center gap-1.5 bg-secondary/10 text-secondary px-3 py-1.5 text-[10px] font-semibold tracking-[1px] uppercase border border-secondary/20">
