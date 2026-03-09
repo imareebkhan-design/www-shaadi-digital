@@ -104,55 +104,6 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
         }}
       />
 
-      {/* Mini phone mockup — slides up & envelope flap opens on hover */}
-      <div
-        className="absolute z-[7] pointer-events-none left-1/2 top-[38%] -translate-x-1/2 translate-y-[60px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
-        style={{
-          transition: "transform 0.6s cubic-bezier(0.34,1.2,0.64,1), opacity 0.4s ease",
-          perspective: "600px",
-        }}
-      >
-        {/* Phone frame */}
-        <div className="relative w-[100px] h-[170px] rounded-[12px] border-2 border-secondary/40 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]" style={{ background: "hsl(0 0% 8%)" }}>
-          {/* Envelope flap — 3D flip open */}
-          <div
-            className="absolute top-0 left-0 right-0 z-[2] origin-top"
-            style={{
-              transition: "transform 0.5s cubic-bezier(0.34,1.2,0.64,1) 0.15s",
-              transformStyle: "preserve-3d",
-            }}
-          >
-            <div 
-              className="envelope-flap w-full h-[40px]"
-              style={{
-                background: "linear-gradient(180deg, hsl(40 72% 52% / 0.3) 0%, hsl(40 72% 52% / 0.1) 100%)",
-                clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-                transition: "transform 0.5s cubic-bezier(0.34,1.2,0.64,1) 0.2s",
-                transformOrigin: "top center",
-              }}
-            />
-          </div>
-          {/* Template preview inside phone */}
-          <div 
-            className="absolute inset-0 rounded-[10px] overflow-hidden"
-            style={{ background: t.previewGradient }}
-          >
-            {/* Mini invite content */}
-            <div className="flex flex-col items-center justify-center h-full text-center px-2">
-              <span className="text-[14px] mb-1 block">{t.motif}</span>
-              <div className="font-serif text-[9px] text-primary-foreground/90 leading-tight">
-                {t.sampleData.brideName}
-                <span className="block text-[7px] text-secondary/80 italic">&amp;</span>
-                {t.sampleData.groomName}
-              </div>
-              <div className="w-5 h-px bg-secondary/40 my-1.5" />
-              <span className="text-[5px] tracking-[1.5px] uppercase text-primary-foreground/40">{t.sampleData.date}</span>
-            </div>
-          </div>
-          {/* Phone notch */}
-          <div className="absolute top-[3px] left-1/2 -translate-x-1/2 w-[28px] h-[4px] rounded-full bg-foreground/60 z-[3]" />
-        </div>
-      </div>
 
       {/* Video background for Royal Maroon */}
       {t.id === "royal-maroon" && (
@@ -289,10 +240,6 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
         @keyframes float {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-8px); }
-        }
-        .reel-card:hover .envelope-flap {
-          transform: rotateX(-180deg);
-        }
         }
       `}</style>
     </div>
