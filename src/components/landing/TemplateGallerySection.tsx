@@ -76,11 +76,10 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
   const cardRef = useRef<HTMLDivElement>(null);
   const [videoVisible, setVideoVisible] = useState(false);
   const hasVideo = !!VIDEO_TEMPLATES[t.id];
-  const isAutoplayVideo = t.id === "teal-luxury";
 
-  /* IntersectionObserver for autoplay video cards (Marigold Mandap) */
+  /* IntersectionObserver for autoplay video cards */
   useEffect(() => {
-    if (!isAutoplayVideo) return;
+    if (!hasVideo) return;
     const card = cardRef.current;
     const video = videoRef.current;
     if (!card || !video) return;
@@ -99,25 +98,7 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
     );
     observer.observe(card);
     return () => observer.disconnect();
-  }, [isAutoplayVideo]);
-
-  const handleMouseEnter = useCallback(() => {
-    if (t.id !== "royal-maroon") return;
-    const v = videoRef.current;
-    if (!v) return;
-    setVideoVisible(true);
-    v.currentTime = 0;
-    v.play().catch(() => {});
-  }, [t.id]);
-
-  const handleMouseLeave = useCallback(() => {
-    if (t.id !== "royal-maroon") return;
-    const v = videoRef.current;
-    if (!v) return;
-    setVideoVisible(false);
-    v.pause();
-    v.currentTime = 0;
-  }, [t.id]);
+  }, [hasVideo]);
 
   return (
     <div
