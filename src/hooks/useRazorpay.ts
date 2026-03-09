@@ -33,43 +33,47 @@ function loadRazorpayScript(): Promise<void> {
 
 async function savePaymentAndPlan(
   userId: string,
+  planId: PlanId,
   planConfig: typeof PLAN_CONFIG[PlanId],
+  email: string,
   response: { razorpay_payment_id: string; razorpay_order_id?: string; razorpay_signature?: string }
 ) {
+  const orderId = response.razorpay_order_id || response.razorpay_payment_id;
+
   // Save payment record
-  const { error: payError } = await supabase.from("payments").insert({
+  const { error: payError } = await (supabase.from("payments" as any) as any).insert({
     user_id: userId,
     razorpay_payment_id: response.razorpay_payment_id,
-    razorpay_order_id: response.razorpay_order_id || response.razorpay_payment_id,
-    plan: planConfig.dbPlan,
+    razorpay_order_id: orderId,
+    razorpay_signature: response.razorpay_signature || null,
     amount: planConfig.amount,
-    status: "success" as const,
+    plan: planId,
+    email,
+    status: "success",
   });
 
   if (payError) {
     console.error("Payment record save failed:", payError);
   }
 
-  // Upsert user plan
-  const { error: planError } = await (supabase.from("user_plans" as any) as any).upsert(
-    {
-      user_id: userId,
-      plan_name: planConfig.dbName,
-      plan_amount: planConfig.amount,
-      payment_id: response.razorpay_payment_id,
-      activated_at: new Date().toISOString(),
-      is_active: true,
-    },
-    { onConflict: "user_id" }
-  );
+  // Insert user plan
+  const now = new Date();
+  const expiresAt = new Date(now);
+  expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
+  const { error: planError } = await (supabase.from("user_plans" as any) as any).insert({
+    user_id: userId,
+    plan: planId,
+    razorpay_order_id: orderId,
+    activated_at: now.toISOString(),
+    expires_at: expiresAt.toISOString(),
+  });
 
   if (planError) {
     console.error("Plan activation save failed:", planError);
-    // Store in localStorage as backup
     localStorage.setItem(PENDING_KEY, JSON.stringify({
-      payment_id: response.razorpay_payment_id,
-      plan_name: planConfig.dbName,
-      plan_amount: planConfig.amount,
+      plan: planId,
+      razorpay_order_id: orderId,
     }));
   }
 
