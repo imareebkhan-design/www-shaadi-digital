@@ -137,7 +137,7 @@ export function useRazorpay() {
         processingRef.current = false;
 
         // Save to DB
-        await savePaymentAndPlan(user.id, plan, response);
+        await savePaymentAndPlan(user.id, planId, plan, user.email || "", response);
 
         // Refresh plan context
         await refreshPlan();
