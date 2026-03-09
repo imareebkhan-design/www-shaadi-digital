@@ -8,9 +8,9 @@ import { toast } from "sonner";
 const RAZORPAY_SCRIPT_URL = "https://checkout.razorpay.com/v1/checkout.js";
 
 const PLAN_CONFIG = {
-  shubh: { name: "Shubh Plan", dbName: "shubh" as PlanName, dbPlan: "basic" as const, amount: 99900 },
-  shaadi: { name: "Shaadi Plan", dbName: "shaadi" as PlanName, dbPlan: "premium" as const, amount: 199900 },
-  shaahi: { name: "Shaahi Plan", dbName: "shaahi" as PlanName, dbPlan: "elite" as const, amount: 349900 },
+  shubh: { name: "Shubh Plan", amount: 99900 },
+  shaadi: { name: "Shaadi Plan", amount: 199900 },
+  shaahi: { name: "Shaahi Plan", amount: 349900 },
 } as const;
 
 type PlanId = keyof typeof PLAN_CONFIG;
