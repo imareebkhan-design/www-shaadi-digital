@@ -104,7 +104,7 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
       <div className="absolute inset-0 z-[4] rounded-[20px] opacity-0 transition-opacity duration-400 border border-secondary/40 shadow-gold pointer-events-none group-hover:opacity-100" />
 
       {/* Content */}
-      <div className="absolute inset-0 z-[5] flex flex-col justify-between p-7">
+      <div className="absolute inset-0 z-[5] flex flex-col justify-end p-7">
         {/* Top: Couple names - hidden for royal-maroon since live demo is background */}
         {t.id !== "royal-maroon" && (
           <div className="flex flex-col items-center text-center pt-10 flex-1 justify-center">
