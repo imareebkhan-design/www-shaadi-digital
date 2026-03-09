@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
+import PostPaymentSignupModal from "@/components/PostPaymentSignupModal";
 
 const Check = () => (
   <div className="w-4 h-4 rounded-full bg-secondary/[0.12] border border-secondary/25 flex items-center justify-center shrink-0 mt-[1px]">
