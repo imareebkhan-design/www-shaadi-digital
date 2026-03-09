@@ -13,6 +13,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
   const [phase, setPhase] = useState<"sealed" | "breaking" | "opening" | "done">("sealed");
   const initials = `${brideName.charAt(0)}&${groomName.charAt(0)}`;
 
+  // Auto-open sequence
   const handleTap = useCallback(() => {
     if (phase !== "sealed") return;
     setPhase("breaking");
@@ -22,6 +23,14 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
       onOpen();
     }, 2800);
   }, [phase, onOpen]);
+
+  // Automatically start opening after 2 seconds
+  useState(() => {
+    const timer = setTimeout(() => {
+      handleTap();
+    }, 2000);
+    return () => clearTimeout(timer);
+  });
 
   return (
     <AnimatePresence>
