@@ -83,16 +83,16 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
               <div
                 className="absolute inset-0 rounded-lg overflow-hidden"
                 style={{
-                  background: "linear-gradient(145deg, hsl(var(--maroon)), hsl(var(--burgundy)))",
-                  border: "1px solid hsl(var(--gold) / 0.3)",
-                  boxShadow: "0 20px 60px -15px rgba(0,0,0,0.5), inset 0 1px 0 hsl(var(--gold) / 0.1)",
+                  background: "linear-gradient(145deg, hsl(var(--template-bg-secondary, var(--maroon))), hsl(var(--template-bg, var(--burgundy))))",
+                  border: "1px solid hsl(var(--template-accent, var(--gold)) / 0.3)",
+                  boxShadow: "0 20px 60px -15px rgba(0,0,0,0.5), inset 0 1px 0 hsl(var(--template-accent, var(--gold)) / 0.1)",
                 }}
               />
 
-              {/* Gold inner border */}
+              {/* Accent inner border */}
               <div
                 className="absolute inset-3 rounded border pointer-events-none"
-                style={{ borderColor: "hsl(var(--gold) / 0.15)" }}
+                style={{ borderColor: "hsl(var(--template-accent, var(--gold)) / 0.15)" }}
               />
 
               {/* Letter inside */}
@@ -114,7 +114,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                       <div className="text-center px-6">
                         <motion.p
                           className="font-elegant text-[10px] tracking-[0.3em] uppercase"
-                          style={{ color: "hsl(var(--maroon))" }}
+                          style={{ color: "hsl(var(--template-accent, var(--gold)))" }}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 1, duration: 0.6 }}
@@ -123,7 +123,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                         </motion.p>
                         <motion.p
                           className="font-display text-xl md:text-2xl mt-2"
-                          style={{ color: "hsl(var(--maroon))" }}
+                          style={{ color: "hsl(var(--template-accent, var(--gold)))" }}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 1.2, duration: 0.6 }}
@@ -132,7 +132,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                         </motion.p>
                         <motion.div
                           className="mt-2 mx-auto w-10 h-px"
-                          style={{ background: "hsl(var(--gold))" }}
+                          style={{ background: "hsl(var(--template-accent, var(--gold)))" }}
                           initial={{ scaleX: 0 }}
                           animate={{ scaleX: 1 }}
                           transition={{ delay: 1.4, duration: 0.5 }}
@@ -148,7 +148,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                 className="absolute bottom-0 left-0 right-0"
                 style={{
                   height: "50%",
-                  background: "linear-gradient(0deg, hsl(var(--maroon)), hsl(var(--maroon-light) / 0.6))",
+                  background: "linear-gradient(0deg, hsl(var(--template-bg-secondary, var(--maroon))), hsl(var(--template-bg-secondary, var(--maroon-light)) / 0.6))",
                   clipPath: "polygon(0 100%, 50% 20%, 100% 100%)",
                 }}
               />
@@ -163,7 +163,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                 <div
                   className="absolute inset-0"
                   style={{
-                    background: "linear-gradient(180deg, hsl(var(--maroon-light)), hsl(var(--maroon)))",
+                    background: "linear-gradient(180deg, hsl(var(--template-bg-secondary, var(--maroon-light))), hsl(var(--template-bg-secondary, var(--maroon))))",
                     clipPath: "polygon(0 0, 50% 100%, 100% 0)",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
                     backfaceVisibility: "hidden",
@@ -172,7 +172,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                 <div
                   className="absolute inset-0"
                   style={{
-                    background: "linear-gradient(180deg, hsl(var(--burgundy)), hsl(var(--maroon)))",
+                    background: "linear-gradient(180deg, hsl(var(--template-bg, var(--burgundy))), hsl(var(--template-bg-secondary, var(--maroon))))",
                     clipPath: "polygon(0 0, 50% 100%, 100% 0)",
                     transform: "rotateX(180deg)",
                     backfaceVisibility: "hidden",
@@ -196,7 +196,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                     <motion.div
                       className="absolute inset-0 rounded-full -m-3"
                       style={{
-                        background: "radial-gradient(circle, hsl(var(--gold) / 0.4), transparent)",
+                        background: "radial-gradient(circle, hsl(var(--template-accent, var(--gold)) / 0.4), transparent)",
                         filter: "blur(8px)",
                       }}
                       animate={phase === "sealed" ? {
@@ -221,7 +221,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                       <span
                         className="font-display text-base md:text-lg font-bold"
                         style={{
-                          color: "hsl(var(--gold-light))",
+                          color: "hsl(var(--template-accent-light, var(--gold-light)))",
                           textShadow: "0 1px 2px rgba(0,0,0,0.3)",
                         }}
                       >
@@ -258,7 +258,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
             {phase === "sealed" && (
               <motion.p
                 className="text-center mt-8 font-body text-[10px] md:text-xs tracking-[0.4em] uppercase"
-                style={{ color: "hsl(var(--gold-light) / 0.5)" }}
+                style={{ color: "hsl(var(--template-accent-light, var(--gold-light)) / 0.5)" }}
                 animate={{ opacity: [0.3, 0.7, 0.3] }}
                 transition={{ duration: 2.5, repeat: Infinity }}
               >
