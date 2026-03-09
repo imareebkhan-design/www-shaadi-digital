@@ -83,16 +83,16 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
               <div
                 className="absolute inset-0 rounded-lg overflow-hidden"
                 style={{
-                  background: "linear-gradient(145deg, hsl(var(--maroon)), hsl(var(--burgundy)))",
-                  border: "1px solid hsl(var(--gold) / 0.3)",
-                  boxShadow: "0 20px 60px -15px rgba(0,0,0,0.5), inset 0 1px 0 hsl(var(--gold) / 0.1)",
+                  background: "linear-gradient(145deg, hsl(var(--template-bg-secondary, var(--maroon))), hsl(var(--template-bg, var(--burgundy))))",
+                  border: "1px solid hsl(var(--template-accent, var(--gold)) / 0.3)",
+                  boxShadow: "0 20px 60px -15px rgba(0,0,0,0.5), inset 0 1px 0 hsl(var(--template-accent, var(--gold)) / 0.1)",
                 }}
               />
 
-              {/* Gold inner border */}
+              {/* Accent inner border */}
               <div
                 className="absolute inset-3 rounded border pointer-events-none"
-                style={{ borderColor: "hsl(var(--gold) / 0.15)" }}
+                style={{ borderColor: "hsl(var(--template-accent, var(--gold)) / 0.15)" }}
               />
 
               {/* Letter inside */}

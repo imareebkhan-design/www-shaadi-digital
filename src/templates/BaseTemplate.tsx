@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import type { InvitationData } from "./types";
 import FloatingMusicPlayer from "@/components/FloatingMusicPlayer";
 import EnvelopeIntro from "./sections/EnvelopeIntro";
