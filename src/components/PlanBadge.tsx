@@ -32,7 +32,7 @@ const PlanBadge = () => {
   return (
     <div className="inline-flex items-center gap-1.5 bg-secondary/10 text-secondary px-3 py-1.5 text-[10px] font-semibold tracking-[1px] uppercase border border-secondary/20">
       {info.label}
-      {info.extra && (
+      {'extra' in info && info.extra && (
         <span className="bg-secondary text-primary-foreground px-1.5 py-0.5 text-[8px] tracking-[1px]">
           {info.extra}
         </span>
