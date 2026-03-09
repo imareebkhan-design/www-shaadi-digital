@@ -121,6 +121,7 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
 
   return (
     <div
+      ref={cardRef}
       className={`reel-card group flex-shrink-0 w-[300px] h-[520px] rounded-[20px] relative overflow-hidden scroll-snap-align-center cursor-pointer border border-secondary/10 bg-gradient-to-b ${bgClass}`}
       style={{
         animation: `reelFadeUp 0.6s ease-out ${index * 100}ms both`,
