@@ -225,6 +225,15 @@ const Pricing = () => {
           onClose={closeSignupModal}
         />
       )}
+
+      {failureModalData && (
+        <PaymentFailedModal
+          open={!!failureModalData}
+          data={failureModalData}
+          onRetry={retryPayment}
+          onClose={closeFailureModal}
+        />
+      )}
     </div>
   );
 };
