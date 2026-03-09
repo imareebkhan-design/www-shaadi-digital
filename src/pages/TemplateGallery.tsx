@@ -249,7 +249,11 @@ const TemplateCard = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleCtaClick();
+                    if (t.id === "midnight-blue" && onGetInTouch) {
+                      onGetInTouch();
+                    } else {
+                      handleCtaClick();
+                    }
                   }}
                   className="flex-1 bg-white text-[hsl(345,60%,15%)] font-body text-[9px] font-bold tracking-[1.2px] uppercase py-2.5 px-3 rounded-full transition-all hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(0,0,0,0.4)]"
                 >
