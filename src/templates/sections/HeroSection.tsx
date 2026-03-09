@@ -22,7 +22,10 @@ const HeroSection = ({ brideName, groomName, formattedDate, weddingCity, photoUr
   const useVideo = heroMediaType === "video" && heroMediaUrl;
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-burgundy">
+    <section 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      style={{ backgroundColor: "hsl(var(--template-bg, var(--burgundy)))" }}
+    >
       {/* BG layer: video, photo, or gradient */}
       {useVideo ? (
         <video
@@ -43,10 +46,18 @@ const HeroSection = ({ brideName, groomName, formattedDate, weddingCity, photoUr
       )}
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-burgundy/60" />
+      <div 
+        className="absolute inset-0" 
+        style={{ backgroundColor: "hsl(var(--template-bg, var(--burgundy)) / 0.6)" }} 
+      />
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-b from-burgundy/40 via-transparent to-burgundy/70" />
+      <div 
+        className="absolute inset-0 z-[1] pointer-events-none" 
+        style={{ 
+          background: `linear-gradient(180deg, hsl(var(--template-bg, var(--burgundy)) / 0.4) 0%, transparent 50%, hsl(var(--template-bg, var(--burgundy)) / 0.7) 100%)` 
+        }} 
+      />
 
       {/* Noise grain texture */}
       <div

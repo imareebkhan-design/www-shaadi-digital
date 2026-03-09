@@ -67,7 +67,10 @@ const FooterSection = ({ brideName, groomName, weddingDate, events, personalMess
   };
 
   return (
-    <footer className="py-20 md:py-28 bg-burgundy text-center relative overflow-hidden">
+    <footer 
+      className="py-20 md:py-28 text-center relative overflow-hidden"
+      style={{ backgroundColor: "hsl(var(--template-bg, var(--burgundy)))" }}
+    >
       {/* Gradient mesh */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-gold/10 blur-[120px]" />
