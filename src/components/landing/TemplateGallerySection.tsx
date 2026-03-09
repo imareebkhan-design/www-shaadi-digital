@@ -59,8 +59,9 @@ const MandalaPattern = () => (
   </svg>
 );
 
-/* Single Reel Card */
-const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total: number }) => {
+const CUSTOM_TEMPLATES = ["midnight-blue"];
+
+const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index: number; total: number; onGetInTouch: () => void }) => {
   const bgClass = reelBgClasses[t.id] || "from-maroon-dark via-primary to-maroon-dark";
   const badgeLabel = t.isFeatured ? "👑 Limited Ed." : t.isNew && !t.isComingSoon ? "✦ New" : null;
   const badgeClass = t.isFeatured
