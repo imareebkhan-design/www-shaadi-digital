@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ContactOptionsDialog from "@/components/ContactOptionsDialog";
 import { templates, type TemplateConfig } from "@/data/templates";
@@ -61,6 +61,11 @@ const MandalaPattern = () => (
 
 const CUSTOM_TEMPLATES = ["midnight-blue"];
 
+const VIDEO_TEMPLATES: Record<string, string> = {
+  "royal-maroon": "/videos/royal-maroon-preview.mov",
+  "teal-luxury": "/videos/marigold-mandap.mov",
+};
+
 const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index: number; total: number; onGetInTouch: () => void }) => {
   const bgClass = reelBgClasses[t.id] || "from-maroon-dark via-primary to-maroon-dark";
   const badgeLabel = t.isFeatured ? "👑 Limited Ed." : t.isNew && !t.isComingSoon ? "✦ New" : null;
@@ -68,7 +73,33 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
     ? "bg-secondary/20 border-secondary/50 text-secondary"
     : "bg-secondary/15 border-secondary/40 text-secondary";
   const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [videoVisible, setVideoVisible] = useState(false);
+  const hasVideo = !!VIDEO_TEMPLATES[t.id];
+  const isAutoplayVideo = t.id === "teal-luxury";
+
+  /* IntersectionObserver for autoplay video cards (Marigold Mandap) */
+  useEffect(() => {
+    if (!isAutoplayVideo) return;
+    const card = cardRef.current;
+    const video = videoRef.current;
+    if (!card || !video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVideoVisible(true);
+          video.play().catch(() => {});
+        } else {
+          setVideoVisible(false);
+          video.pause();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [isAutoplayVideo]);
 
   const handleMouseEnter = useCallback(() => {
     if (t.id !== "royal-maroon") return;
@@ -90,6 +121,7 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
 
   return (
     <div
+      ref={cardRef}
       className={`reel-card group flex-shrink-0 w-[300px] h-[520px] rounded-[20px] relative overflow-hidden scroll-snap-align-center cursor-pointer border border-secondary/10 bg-gradient-to-b ${bgClass}`}
       style={{
         animation: `reelFadeUp 0.6s ease-out ${index * 100}ms both`,
@@ -107,11 +139,11 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
       />
 
 
-      {/* Video background for Royal Maroon */}
-      {t.id === "royal-maroon" && (
+      {/* Video background for templates with video */}
+      {hasVideo && (
         <video
           ref={videoRef}
-          src="/videos/royal-maroon-preview.mov"
+          src={VIDEO_TEMPLATES[t.id]}
           className="absolute inset-0 w-full h-full object-cover pointer-events-none z-[2]"
           style={{
             opacity: videoVisible ? 1 : 0,
@@ -120,7 +152,7 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
           muted
           loop
           playsInline
-          preload="metadata"
+          preload={isAutoplayVideo ? "auto" : "metadata"}
         />
       )}
 
@@ -154,8 +186,8 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
       <div 
         className="absolute inset-0 z-[5] flex flex-col justify-end p-7 transition-transform duration-500 ease-out group-hover:-translate-y-1"
       >
-        {/* Top: Couple names - hidden for royal-maroon since live demo is background */}
-        {t.id !== "royal-maroon" && (
+        {/* Top: Couple names - hidden for cards with video background */}
+        {!hasVideo && (
           <div className="flex flex-col items-center text-center pt-10 flex-1 justify-center transition-transform duration-700 ease-out group-hover:-translate-y-2">
             <span 
               className="text-4xl mb-5 block drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] transition-transform duration-700 ease-out group-hover:scale-110"

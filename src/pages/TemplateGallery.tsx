@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/landing/Navbar";
@@ -124,6 +124,33 @@ const TemplateCard = ({
 
   const isCustomTemplate = t.id === "midnight-blue";
 
+  const videoSrc = ({"royal-maroon": "/videos/royal-maroon-preview.mov", "teal-luxury": "/videos/marigold-mandap.mov"} as Record<string, string>)[t.id];
+  const hasVideo = !!videoSrc;
+  const cardRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoVisible, setVideoVisible] = useState(false);
+
+  useEffect(() => {
+    if (!hasVideo) return;
+    const card = cardRef.current;
+    const video = videoRef.current;
+    if (!card || !video) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVideoVisible(true);
+          video.play().catch(() => {});
+        } else {
+          setVideoVisible(false);
+          video.pause();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [hasVideo]);
+
   const ctaLabel = t.isComingSoon
     ? null
     : isCustomTemplate
@@ -154,6 +181,7 @@ const TemplateCard = ({
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.04 }}
@@ -162,6 +190,20 @@ const TemplateCard = ({
     >
       {/* Top shimmer line */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary to-transparent opacity-50 z-10" />
+
+      {/* Video background */}
+      {hasVideo && (
+        <video
+          ref={videoRef}
+          src={videoSrc}
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-[2]"
+          style={{ opacity: videoVisible ? 1 : 0, transition: "opacity 0.3s ease" }}
+          muted
+          loop
+          playsInline
+          preload="auto"
+        />
+      )}
 
       {/* Badge */}
       {badgeLabel && (
