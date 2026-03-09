@@ -335,4 +335,10 @@
   /* Hide scrollbar utility */
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Star twinkle animations for Nikah envelope */
+  @keyframes twinkle-1 { 0%,100% { opacity: 0.1; } 50% { opacity: 0.4; } }
+  @keyframes twinkle-2 { 0%,100% { opacity: 0.15; } 40% { opacity: 0.45; } 80% { opacity: 0.1; } }
+  @keyframes twinkle-3 { 0%,100% { opacity: 0.1; } 30% { opacity: 0.35; } 70% { opacity: 0.5; } }
+  @keyframes pulse-glow { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.15); } }
 }
