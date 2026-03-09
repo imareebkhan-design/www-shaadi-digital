@@ -93,7 +93,7 @@ const Pricing = () => {
   const { plan: activePlan, hasPlan } = usePlan();
   const { openCheckout } = useRazorpay();
 
-  const currentPlanName = activePlan?.plan_name || null;
+  const currentPlanName = activePlan?.plan || null;
 
   return (
     <div className="min-h-screen bg-background">

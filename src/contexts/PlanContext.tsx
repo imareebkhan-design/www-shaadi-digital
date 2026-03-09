@@ -5,11 +5,10 @@ import { useAuth } from "@/contexts/AuthContext";
 export type PlanName = "shubh" | "shaadi" | "shaahi";
 
 interface UserPlan {
-  plan_name: PlanName;
-  plan_amount: number;
-  payment_id: string | null;
+  plan: PlanName;
+  razorpay_order_id: string | null;
   activated_at: string;
-  is_active: boolean;
+  expires_at: string;
 }
 
 interface PlanContextType {
@@ -49,17 +48,17 @@ export const PlanProvider = ({ children }: { children: ReactNode }) => {
     if (pending) {
       try {
         const data = JSON.parse(pending);
-        const { error } = await (supabase.from("user_plans" as any) as any).upsert(
-          {
-            user_id: user.id,
-            plan_name: data.plan_name,
-            plan_amount: data.plan_amount,
-            payment_id: data.payment_id,
-            activated_at: new Date().toISOString(),
-            is_active: true,
-          },
-          { onConflict: "user_id" }
-        );
+        const now = new Date();
+        const expiresAt = new Date(now);
+        expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
+        const { error } = await (supabase.from("user_plans" as any) as any).insert({
+          user_id: user.id,
+          plan: data.plan,
+          razorpay_order_id: data.razorpay_order_id,
+          activated_at: now.toISOString(),
+          expires_at: expiresAt.toISOString(),
+        });
         if (!error) {
           localStorage.removeItem(PENDING_KEY);
         }
@@ -68,10 +67,13 @@ export const PlanProvider = ({ children }: { children: ReactNode }) => {
       }
     }
 
+    // Fetch the latest active plan (not expired)
     const { data, error } = await (supabase.from("user_plans" as any) as any)
       .select("*")
       .eq("user_id", user.id)
-      .eq("is_active", true)
+      .gte("expires_at", new Date().toISOString())
+      .order("activated_at", { ascending: false })
+      .limit(1)
       .maybeSingle();
 
     if (error) {

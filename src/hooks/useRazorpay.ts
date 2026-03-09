@@ -1,16 +1,16 @@
 import { useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { usePlan, type PlanName } from "@/contexts/PlanContext";
+import { usePlan } from "@/contexts/PlanContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const RAZORPAY_SCRIPT_URL = "https://checkout.razorpay.com/v1/checkout.js";
 
 const PLAN_CONFIG = {
-  shubh: { name: "Shubh Plan", dbName: "shubh" as PlanName, dbPlan: "basic" as const, amount: 99900 },
-  shaadi: { name: "Shaadi Plan", dbName: "shaadi" as PlanName, dbPlan: "premium" as const, amount: 199900 },
-  shaahi: { name: "Shaahi Plan", dbName: "shaahi" as PlanName, dbPlan: "elite" as const, amount: 349900 },
+  shubh: { name: "Shubh Plan", amount: 99900 },
+  shaadi: { name: "Shaadi Plan", amount: 199900 },
+  shaahi: { name: "Shaahi Plan", amount: 349900 },
 } as const;
 
 type PlanId = keyof typeof PLAN_CONFIG;
@@ -33,43 +33,47 @@ function loadRazorpayScript(): Promise<void> {
 
 async function savePaymentAndPlan(
   userId: string,
+  planId: PlanId,
   planConfig: typeof PLAN_CONFIG[PlanId],
+  email: string,
   response: { razorpay_payment_id: string; razorpay_order_id?: string; razorpay_signature?: string }
 ) {
+  const orderId = response.razorpay_order_id || response.razorpay_payment_id;
+
   // Save payment record
-  const { error: payError } = await supabase.from("payments").insert({
+  const { error: payError } = await (supabase.from("payments" as any) as any).insert({
     user_id: userId,
     razorpay_payment_id: response.razorpay_payment_id,
-    razorpay_order_id: response.razorpay_order_id || response.razorpay_payment_id,
-    plan: planConfig.dbPlan,
+    razorpay_order_id: orderId,
+    razorpay_signature: response.razorpay_signature || null,
     amount: planConfig.amount,
-    status: "success" as const,
+    plan: planId,
+    email,
+    status: "success",
   });
 
   if (payError) {
     console.error("Payment record save failed:", payError);
   }
 
-  // Upsert user plan
-  const { error: planError } = await (supabase.from("user_plans" as any) as any).upsert(
-    {
-      user_id: userId,
-      plan_name: planConfig.dbName,
-      plan_amount: planConfig.amount,
-      payment_id: response.razorpay_payment_id,
-      activated_at: new Date().toISOString(),
-      is_active: true,
-    },
-    { onConflict: "user_id" }
-  );
+  // Insert user plan
+  const now = new Date();
+  const expiresAt = new Date(now);
+  expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
+  const { error: planError } = await (supabase.from("user_plans" as any) as any).insert({
+    user_id: userId,
+    plan: planId,
+    razorpay_order_id: orderId,
+    activated_at: now.toISOString(),
+    expires_at: expiresAt.toISOString(),
+  });
 
   if (planError) {
     console.error("Plan activation save failed:", planError);
-    // Store in localStorage as backup
     localStorage.setItem(PENDING_KEY, JSON.stringify({
-      payment_id: response.razorpay_payment_id,
-      plan_name: planConfig.dbName,
-      plan_amount: planConfig.amount,
+      plan: planId,
+      razorpay_order_id: orderId,
     }));
   }
 
@@ -133,7 +137,7 @@ export function useRazorpay() {
         processingRef.current = false;
 
         // Save to DB
-        await savePaymentAndPlan(user.id, plan, response);
+        await savePaymentAndPlan(user.id, planId, plan, user.email || "", response);
 
         // Refresh plan context
         await refreshPlan();
