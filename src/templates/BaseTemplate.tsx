@@ -76,11 +76,11 @@ export const TEMPLATE_THEMES: Record<string, TemplateTheme> = {
     accentLight: "42 80% 72%",
   },
   "pearl-nikah": {
-    bgPrimary: "20 14% 15%",       // stone-900
-    bgSecondary: "24 10% 22%",     // stone-800
-    textPrimary: "30 25% 95%",
-    textMuted: "25 15% 65%",
-    accent: "42 72% 52%",          // gold
+    bgPrimary: "222 60% 10%",       // midnight navy
+    bgSecondary: "222 55% 14%",     // slightly lighter navy
+    textPrimary: "210 40% 96%",
+    textMuted: "210 20% 65%",
+    accent: "40 72% 52%",           // gold
     accentLight: "42 80% 72%",
   },
   "ivory-classic": {
