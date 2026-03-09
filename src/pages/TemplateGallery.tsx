@@ -124,6 +124,33 @@ const TemplateCard = ({
 
   const isCustomTemplate = t.id === "midnight-blue";
 
+  const videoSrc = ({"royal-maroon": "/videos/royal-maroon-preview.mov", "teal-luxury": "/videos/marigold-mandap.mov"} as Record<string, string>)[t.id];
+  const hasVideo = !!videoSrc;
+  const cardRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoVisible, setVideoVisible] = useState(false);
+
+  useEffect(() => {
+    if (!hasVideo) return;
+    const card = cardRef.current;
+    const video = videoRef.current;
+    if (!card || !video) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVideoVisible(true);
+          video.play().catch(() => {});
+        } else {
+          setVideoVisible(false);
+          video.pause();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [hasVideo]);
+
   const ctaLabel = t.isComingSoon
     ? null
     : isCustomTemplate
