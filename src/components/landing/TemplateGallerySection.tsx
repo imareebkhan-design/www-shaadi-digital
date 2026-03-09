@@ -209,9 +209,9 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
             Use This Template
           </Link>
           )}
-          {t.id === "royal-maroon" || t.id === "emerald-south" || t.id === "golden-sehra" || t.id === "pearl-nikah" || t.id === "midnight-blue" ? (
+          {t.id === "royal-maroon" || t.id === "emerald-south" || t.id === "golden-sehra" || t.id === "pearl-nikah" || t.id === "midnight-blue" || t.id === "teal-luxury" ? (
             <a
-              href={{"royal-maroon": "https://vivaah.shaadi.digital/", "emerald-south": "https://dravidian-gold.shaadi.digital/", "golden-sehra": "https://golden-sehra.shaadi.digital/", "pearl-nikah": "https://midnight-nikkah.shaadi.digital/", "midnight-blue": "https://midnight-blue.shaadi.digital/"}[t.id]}
+              href={{"royal-maroon": "https://vivaah.shaadi.digital/", "emerald-south": "https://dravidian-gold.shaadi.digital/", "golden-sehra": "https://golden-sehra.shaadi.digital/", "pearl-nikah": "https://midnight-nikkah.shaadi.digital/", "midnight-blue": "https://midnight-blue.shaadi.digital/", "teal-luxury": "https://marigold-mandap.shaadi.digital"}[t.id]}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-11 h-11 rounded-full border border-primary-foreground/20 bg-transparent text-primary-foreground/60 text-base transition-all hover:border-secondary hover:text-secondary hover:bg-secondary/10"
