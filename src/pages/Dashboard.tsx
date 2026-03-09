@@ -41,7 +41,7 @@ const fadeUp = {
 
 const Dashboard = () => {
   const { user, signOut, loading: authLoading } = useAuth();
-  const { hasPlan } = usePlan();
+  const { plan: activePlan, hasPlan } = usePlan();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -311,12 +311,27 @@ const Dashboard = () => {
             <h1 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground leading-tight">
               Namaste, {displayName} 👋
             </h1>
-            {weddingDate && daysUntilWedding !== null && daysUntilWedding > 0 && (
-              <p className="font-body text-sm text-primary-foreground/60 mt-2 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-secondary" />
-                <span className="text-secondary font-semibold">{daysUntilWedding} days</span> until the big day
-              </p>
-            )}
+             {weddingDate && daysUntilWedding !== null && daysUntilWedding > 0 && (
+               <p className="font-body text-sm text-primary-foreground/60 mt-2 flex items-center gap-2">
+                 <Calendar className="w-4 h-4 text-secondary" />
+                 <span className="text-secondary font-semibold">{daysUntilWedding} days</span> until the big day
+               </p>
+             )}
+             {activePlan && (
+               <div className="flex flex-wrap items-center gap-3 mt-3">
+                 <span
+                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[10px] font-semibold tracking-[1.5px] uppercase"
+                   style={{ background: "rgba(201, 148, 26, 0.18)", color: "#C9941A", border: "1px solid rgba(201, 148, 26, 0.35)" }}
+                 >
+                   {activePlan.plan.charAt(0).toUpperCase() + activePlan.plan.slice(1)} Plan — Active
+                 </span>
+                 {activePlan.expires_at && (
+                   <span className="font-body text-[11px] text-primary-foreground/45">
+                     Valid until {new Date(activePlan.expires_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                   </span>
+                 )}
+               </div>
+             )}
           </motion.div>
         </div>
         {/* Gold accent line */}
