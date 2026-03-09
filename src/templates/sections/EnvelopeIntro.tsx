@@ -114,7 +114,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                       <div className="text-center px-6">
                         <motion.p
                           className="font-elegant text-[10px] tracking-[0.3em] uppercase"
-                          style={{ color: "hsl(var(--maroon))" }}
+                          style={{ color: "hsl(var(--template-accent, var(--gold)))" }}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 1, duration: 0.6 }}
@@ -123,7 +123,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                         </motion.p>
                         <motion.p
                           className="font-display text-xl md:text-2xl mt-2"
-                          style={{ color: "hsl(var(--maroon))" }}
+                          style={{ color: "hsl(var(--template-accent, var(--gold)))" }}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 1.2, duration: 0.6 }}
@@ -132,7 +132,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                         </motion.p>
                         <motion.div
                           className="mt-2 mx-auto w-10 h-px"
-                          style={{ background: "hsl(var(--gold))" }}
+                          style={{ background: "hsl(var(--template-accent, var(--gold)))" }}
                           initial={{ scaleX: 0 }}
                           animate={{ scaleX: 1 }}
                           transition={{ delay: 1.4, duration: 0.5 }}
