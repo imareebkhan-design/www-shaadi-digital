@@ -194,12 +194,21 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
             ))}
           </div>
           <div className="flex gap-2">
+          {CUSTOM_TEMPLATES.includes(t.id) ? (
+            <button
+              onClick={onGetInTouch}
+              className="flex-1 flex items-center justify-center gap-1.5 bg-secondary text-secondary-foreground font-body text-[11px] font-bold tracking-[1.5px] uppercase py-3 px-4 rounded-full transition-all hover:bg-secondary/90 hover:-translate-y-0.5 shadow-gold"
+            >
+              Get in Touch
+            </button>
+          ) : (
           <Link
             to={`/builder/${t.id}`}
             className="flex-1 flex items-center justify-center gap-1.5 bg-secondary text-secondary-foreground font-body text-[11px] font-bold tracking-[1.5px] uppercase py-3 px-4 rounded-full transition-all hover:bg-secondary/90 hover:-translate-y-0.5 shadow-gold"
           >
             Use This Template
           </Link>
+          )}
           {t.id === "royal-maroon" || t.id === "emerald-south" || t.id === "golden-sehra" || t.id === "pearl-nikah" || t.id === "midnight-blue" ? (
             <a
               href={{"royal-maroon": "https://vivaah.shaadi.digital/", "emerald-south": "https://dravidian-gold.shaadi.digital/", "golden-sehra": "https://golden-sehra.shaadi.digital/", "pearl-nikah": "https://midnight-nikkah.shaadi.digital/", "midnight-blue": "https://midnight-blue.shaadi.digital/"}[t.id]}
