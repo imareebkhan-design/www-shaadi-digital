@@ -166,11 +166,17 @@ export function useRazorpay() {
         contact: user?.phone || "",
       },
       theme: { color: "#C9941A" },
-      handler: async (response) => {
+      handler: async (response: any) => {
         processingRef.current = false;
 
+        const paymentResponse = {
+          razorpay_payment_id: response.razorpay_payment_id as string,
+          razorpay_order_id: response.razorpay_order_id as string,
+          razorpay_signature: response.razorpay_signature as string,
+        };
+
         const success = await handlePaymentSuccess(
-          response,
+          paymentResponse,
           planId,
           user.email || "",
           plan.amount,
