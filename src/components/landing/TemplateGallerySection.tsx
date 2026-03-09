@@ -70,6 +70,15 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
     <div
       className={`reel-card group flex-shrink-0 w-[300px] h-[520px] rounded-[20px] relative overflow-hidden scroll-snap-align-center cursor-pointer transition-transform duration-500 ease-[cubic-bezier(0.34,1.2,0.64,1)] border border-secondary/10 hover:scale-[1.04] hover:-translate-y-2 hover:border-secondary/30 bg-gradient-to-b ${bgClass}`}
     >
+      {/* Live iframe background for Royal Maroon */}
+      {t.id === "royal-maroon" && (
+        <iframe
+          src="https://vivaah.shaadi.digital/"
+          className="absolute inset-0 w-full h-full border-0 pointer-events-none z-0"
+          title="Royal Maroon Live Demo"
+        />
+      )}
+
       {/* Shimmer lines — gold */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary to-transparent opacity-40 z-10" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/20 to-transparent z-10" />
