@@ -198,9 +198,9 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
           >
             Use This Template
           </Link>
-          {t.id === "royal-maroon" ? (
+          {t.id === "royal-maroon" || t.id === "emerald-south" ? (
             <a
-              href="https://vivaah.shaadi.digital/"
+              href={t.id === "royal-maroon" ? "https://vivaah.shaadi.digital/" : "https://dravidian-gold.shaadi.digital/"}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-11 h-11 rounded-full border border-primary-foreground/20 bg-transparent text-primary-foreground/60 text-base transition-all hover:border-secondary hover:text-secondary hover:bg-secondary/10"
