@@ -7,6 +7,7 @@ import Footer from "@/components/landing/Footer";
 import { Check } from "lucide-react";
 import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
 import PostPaymentSignupModal from "@/components/PostPaymentSignupModal";
+import PaymentFailedModal from "@/components/PaymentFailedModal";
 import {
   Accordion,
   AccordionContent,
