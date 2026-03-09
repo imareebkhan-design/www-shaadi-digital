@@ -93,7 +93,7 @@ function getButtonState(
 const Pricing = () => {
   const { user } = useAuth();
   const { plan: activePlan, hasPlan } = usePlan();
-  const { openCheckout, signupModalData, closeSignupModal } = useRazorpay();
+  const { openCheckout, signupModalData, closeSignupModal, failureModalData, closeFailureModal, retryPayment } = useRazorpay();
 
   const currentPlanName = activePlan?.plan || null;
 
