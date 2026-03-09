@@ -41,7 +41,7 @@ const fadeUp = {
 
 const Dashboard = () => {
   const { user, signOut, loading: authLoading } = useAuth();
-  const { hasPlan } = usePlan();
+  const { plan: activePlan, hasPlan } = usePlan();
   const navigate = useNavigate();
   const { toast } = useToast();
 
