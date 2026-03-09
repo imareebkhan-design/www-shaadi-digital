@@ -65,6 +65,26 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
   const badgeClass = t.isFeatured
     ? "bg-secondary/20 border-secondary/50 text-secondary"
     : "bg-secondary/15 border-secondary/40 text-secondary";
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoVisible, setVideoVisible] = useState(false);
+
+  const handleMouseEnter = useCallback(() => {
+    if (t.id !== "royal-maroon") return;
+    const v = videoRef.current;
+    if (!v) return;
+    setVideoVisible(true);
+    v.currentTime = 0;
+    v.play().catch(() => {});
+  }, [t.id]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (t.id !== "royal-maroon") return;
+    const v = videoRef.current;
+    if (!v) return;
+    setVideoVisible(false);
+    v.pause();
+    v.currentTime = 0;
+  }, [t.id]);
 
   return (
     <div
