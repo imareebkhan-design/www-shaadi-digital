@@ -131,7 +131,7 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
           muted
           loop
           playsInline
-          preload={isAutoplayVideo ? "auto" : "metadata"}
+          preload="auto"
         />
       )}
 
