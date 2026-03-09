@@ -38,7 +38,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
       {phase !== "done" && (
         <motion.div
           className="fixed inset-0 z-[100] flex items-center justify-center"
-          style={{ background: "hsl(var(--burgundy))" }}
+          style={{ background: "hsl(var(--template-bg, var(--burgundy)))" }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.2, ease }}
         >
