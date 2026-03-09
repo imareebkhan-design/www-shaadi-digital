@@ -143,7 +143,7 @@ const BaseTemplate = ({ data, isPreview = false, gradient, motif, templateId = "
     "--template-text-muted": theme.textMuted,
     "--template-accent": theme.accent,
     "--template-accent-light": theme.accentLight,
-  } as React.CSSProperties;
+  } as CSSProperties;
 
   return (
     <div className="min-h-screen bg-background" style={themeStyles}>

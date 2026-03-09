@@ -196,7 +196,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                     <motion.div
                       className="absolute inset-0 rounded-full -m-3"
                       style={{
-                        background: "radial-gradient(circle, hsl(var(--gold) / 0.4), transparent)",
+                        background: "radial-gradient(circle, hsl(var(--template-accent, var(--gold)) / 0.4), transparent)",
                         filter: "blur(8px)",
                       }}
                       animate={phase === "sealed" ? {
@@ -221,7 +221,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
                       <span
                         className="font-display text-base md:text-lg font-bold"
                         style={{
-                          color: "hsl(var(--gold-light))",
+                          color: "hsl(var(--template-accent-light, var(--gold-light)))",
                           textShadow: "0 1px 2px rgba(0,0,0,0.3)",
                         }}
                       >
@@ -258,7 +258,7 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
             {phase === "sealed" && (
               <motion.p
                 className="text-center mt-8 font-body text-[10px] md:text-xs tracking-[0.4em] uppercase"
-                style={{ color: "hsl(var(--gold-light) / 0.5)" }}
+                style={{ color: "hsl(var(--template-accent-light, var(--gold-light)) / 0.5)" }}
                 animate={{ opacity: [0.3, 0.7, 0.3] }}
                 transition={{ duration: 2.5, repeat: Infinity }}
               >

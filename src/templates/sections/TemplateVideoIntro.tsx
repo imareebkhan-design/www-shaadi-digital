@@ -45,7 +45,8 @@ const TemplateVideoIntro = ({ videoUrl, onComplete, brideName, groomName }: Temp
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
+          className="fixed inset-0 z-[100] flex items-center justify-center"
+          style={{ backgroundColor: "hsl(var(--template-bg, var(--burgundy)))" }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease }}
         >
