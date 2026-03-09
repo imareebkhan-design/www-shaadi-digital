@@ -154,12 +154,20 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
         </div>
       </div>
 
-      {/* Live iframe background for Royal Maroon */}
+      {/* Video background for Royal Maroon */}
       {t.id === "royal-maroon" && (
-        <iframe
-          src="https://vivaah.shaadi.digital/"
-          className="absolute inset-0 w-full h-full border-0 pointer-events-none z-0"
-          title="Royal Maroon Live Demo"
+        <video
+          ref={videoRef}
+          src="/videos/royal-maroon-preview.mov"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-[2]"
+          style={{
+            opacity: videoVisible ? 1 : 0,
+            transition: "opacity 0.3s ease",
+          }}
+          muted
+          loop
+          playsInline
+          preload="metadata"
         />
       )}
 
