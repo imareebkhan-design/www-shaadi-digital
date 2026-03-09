@@ -260,6 +260,10 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-8px); }
         }
+        .reel-card:hover .envelope-flap {
+          transform: rotateX(-180deg);
+        }
+        }
       `}</style>
     </div>
   );
