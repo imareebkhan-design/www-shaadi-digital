@@ -67,6 +67,7 @@ const VIDEO_TEMPLATES: Record<string, string> = {
   "golden-sehra": "/videos/golden-sehra.mp4?v=2",
   "emerald-south": "/videos/emerald-south.mp4?v=2",
   "pearl-nikah": "/videos/pearl-nikah.mp4",
+  "midnight-blue": "/videos/midnight-blue.mp4",
 };
 
 const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index: number; total: number; onGetInTouch: () => void }) => {
