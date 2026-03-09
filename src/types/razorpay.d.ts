@@ -22,13 +22,14 @@ interface RazorpayOptions {
 
 interface RazorpayResponse {
   razorpay_payment_id: string;
-  razorpay_order_id?: string;
-  razorpay_signature?: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
 }
 
 interface RazorpayInstance {
   open: () => void;
   close: () => void;
+  on: (event: string, handler: (response: any) => void) => void;
 }
 
 interface RazorpayConstructor {

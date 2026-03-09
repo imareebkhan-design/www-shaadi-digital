@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePlan } from "@/contexts/PlanContext";
@@ -8,9 +8,9 @@ import { toast } from "sonner";
 const RAZORPAY_SCRIPT_URL = "https://checkout.razorpay.com/v1/checkout.js";
 
 const PLAN_CONFIG = {
-  shubh: { name: "Shubh Plan", amount: 99900 },
-  shaadi: { name: "Shaadi Plan", amount: 199900 },
-  shaahi: { name: "Shaahi Plan", amount: 349900 },
+  shubh: { name: "Shubh", amount: 99900 },
+  shaadi: { name: "Shaadi", amount: 199900 },
+  shaahi: { name: "Shaahi", amount: 349900 },
 } as const;
 
 type PlanId = keyof typeof PLAN_CONFIG;
@@ -31,53 +31,58 @@ function loadRazorpayScript(): Promise<void> {
   });
 }
 
-async function savePaymentAndPlan(
-  userId: string,
+async function handlePaymentSuccess(
+  response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string },
   planId: PlanId,
-  planConfig: typeof PLAN_CONFIG[PlanId],
   email: string,
-  response: { razorpay_payment_id: string; razorpay_order_id?: string; razorpay_signature?: string }
+  amount: number,
+  userId: string | null
 ) {
-  const orderId = response.razorpay_order_id || response.razorpay_payment_id;
+  // 1. Verify signature server-side
+  const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
+    "verify-razorpay-payment",
+    {
+      body: {
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_signature: response.razorpay_signature,
+        plan: planId,
+        email,
+        amount,
+      },
+    }
+  );
 
-  // Save payment record
-  const { error: payError } = await (supabase.from("payments" as any) as any).insert({
-    user_id: userId,
-    razorpay_payment_id: response.razorpay_payment_id,
-    razorpay_order_id: orderId,
-    razorpay_signature: response.razorpay_signature || null,
-    amount: planConfig.amount,
-    plan: planId,
-    email,
-    status: "success",
-  });
-
-  if (payError) {
-    console.error("Payment record save failed:", payError);
+  if (verifyError || !verifyData?.success) {
+    console.error("Payment verification failed:", verifyError || verifyData);
+    toast.error("Payment verification failed. Please contact support.");
+    return false;
   }
 
-  // Insert user plan
-  const now = new Date();
-  const expiresAt = new Date(now);
-  expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+  // 2. Activate user plan if logged in
+  if (userId) {
+    const now = new Date();
+    const expiresAt = new Date(now);
+    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
 
-  const { error: planError } = await (supabase.from("user_plans" as any) as any).insert({
-    user_id: userId,
-    plan: planId,
-    razorpay_order_id: orderId,
-    activated_at: now.toISOString(),
-    expires_at: expiresAt.toISOString(),
-  });
-
-  if (planError) {
-    console.error("Plan activation save failed:", planError);
-    localStorage.setItem(PENDING_KEY, JSON.stringify({
+    const { error: planError } = await (supabase.from("user_plans" as any) as any).insert({
+      user_id: userId,
       plan: planId,
-      razorpay_order_id: orderId,
-    }));
+      razorpay_order_id: response.razorpay_order_id,
+      activated_at: now.toISOString(),
+      expires_at: expiresAt.toISOString(),
+    });
+
+    if (planError) {
+      console.error("Plan activation save failed:", planError);
+      localStorage.setItem(PENDING_KEY, JSON.stringify({
+        plan: planId,
+        razorpay_order_id: response.razorpay_order_id,
+      }));
+    }
   }
 
-  return { payError, planError };
+  return true;
 }
 
 export function useRazorpay() {
@@ -85,6 +90,8 @@ export function useRazorpay() {
   const { user } = useAuth();
   const { refreshPlan } = usePlan();
   const processingRef = useRef(false);
+  const [selectedPlan, setSelectedPlan] = useState<PlanId | null>(null);
+  const [selectedAmount, setSelectedAmount] = useState<number>(0);
 
   const openCheckout = useCallback(async (planId: PlanId) => {
     if (processingRef.current) return;
@@ -100,12 +107,17 @@ export function useRazorpay() {
     const plan = PLAN_CONFIG[planId];
     const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SP8s2WhxqMj8BB";
 
+    // Store selected plan in state
+    setSelectedPlan(planId);
+    setSelectedAmount(plan.amount);
+
     if (!keyId) {
       toast.error("Payment gateway is not configured. Please contact support.");
       processingRef.current = false;
       return;
     }
 
+    // Load Razorpay script
     try {
       await loadRazorpayScript();
     } catch {
@@ -120,31 +132,56 @@ export function useRazorpay() {
       return;
     }
 
+    // Create order via edge function
+    const { data: orderData, error: orderError } = await supabase.functions.invoke(
+      "create-razorpay-order",
+      {
+        body: {
+          amount: plan.amount,
+          currency: "INR",
+          receipt: `receipt_${Date.now()}`,
+          plan: planId,
+        },
+      }
+    );
+
+    if (orderError || !orderData?.id) {
+      console.error("Order creation failed:", orderError || orderData);
+      toast.error("Could not create order. Please try again.");
+      processingRef.current = false;
+      return;
+    }
+
     const options: RazorpayOptions = {
       key: keyId,
       amount: plan.amount,
       currency: "INR",
       name: "Shaadi.Digital",
-      description: plan.name,
+      description: `${plan.name} Wedding Invitation Plan`,
+      order_id: orderData.id,
       image: "https://shaadi.digital/favicon.svg",
       prefill: {
         name: user?.user_metadata?.full_name || "",
         email: user?.email || "",
         contact: user?.phone || "",
       },
-      theme: { color: "#7B1C2E" },
+      theme: { color: "#C9941A" },
       handler: async (response) => {
         processingRef.current = false;
 
-        // Save to DB
-        await savePaymentAndPlan(user.id, planId, plan, user.email || "", response);
+        const success = await handlePaymentSuccess(
+          response,
+          planId,
+          user.email || "",
+          plan.amount,
+          user.id
+        );
 
-        // Refresh plan context
-        await refreshPlan();
-
-        toast.success(`🎉 Welcome to ${plan.name}! All features are now unlocked.`);
-
-        setTimeout(() => navigate("/dashboard"), 1500);
+        if (success) {
+          await refreshPlan();
+          toast.success(`🎉 Welcome to ${plan.name} Plan! All features are now unlocked.`);
+          setTimeout(() => navigate("/dashboard"), 1500);
+        }
       },
       modal: {
         ondismiss: () => {
@@ -155,10 +192,14 @@ export function useRazorpay() {
     };
 
     const rzp = new window.Razorpay(options);
+    rzp.on("payment.failed", () => {
+      processingRef.current = false;
+      toast.error("Payment failed. Please try again.");
+    });
     rzp.open();
   }, [user, navigate, refreshPlan]);
 
-  return { openCheckout };
+  return { openCheckout, selectedPlan, selectedAmount };
 }
 
 export type { PlanId };
