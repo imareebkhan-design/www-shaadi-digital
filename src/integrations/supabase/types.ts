@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      abandoned_checkouts: {
+        Row: {
+          amount: number
+          attempted_at: string
+          email: string | null
+          failure_code: string | null
+          failure_reason: string | null
+          id: string
+          phone: string | null
+          plan: string
+          razorpay_order_id: string | null
+          status: string
+        }
+        Insert: {
+          amount: number
+          attempted_at?: string
+          email?: string | null
+          failure_code?: string | null
+          failure_reason?: string | null
+          id?: string
+          phone?: string | null
+          plan: string
+          razorpay_order_id?: string | null
+          status?: string
+        }
+        Update: {
+          amount?: number
+          attempted_at?: string
+          email?: string | null
+          failure_code?: string | null
+          failure_reason?: string | null
+          id?: string
+          phone?: string | null
+          plan?: string
+          razorpay_order_id?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       contact_requests: {
         Row: {
           created_at: string

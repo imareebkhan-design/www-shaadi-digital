@@ -7,6 +7,7 @@ import Footer from "@/components/landing/Footer";
 import { Check } from "lucide-react";
 import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
 import PostPaymentSignupModal from "@/components/PostPaymentSignupModal";
+import PaymentFailedModal from "@/components/PaymentFailedModal";
 import {
   Accordion,
   AccordionContent,
@@ -92,7 +93,7 @@ function getButtonState(
 const Pricing = () => {
   const { user } = useAuth();
   const { plan: activePlan, hasPlan } = usePlan();
-  const { openCheckout, signupModalData, closeSignupModal } = useRazorpay();
+  const { openCheckout, signupModalData, closeSignupModal, failureModalData, closeFailureModal, retryPayment } = useRazorpay();
 
   const currentPlanName = activePlan?.plan || null;
 
@@ -222,6 +223,15 @@ const Pricing = () => {
           amount={signupModalData.amount}
           razorpayOrderId={signupModalData.razorpayOrderId}
           onClose={closeSignupModal}
+        />
+      )}
+
+      {failureModalData && (
+        <PaymentFailedModal
+          open={!!failureModalData}
+          data={failureModalData}
+          onRetry={retryPayment}
+          onClose={closeFailureModal}
         />
       )}
     </div>

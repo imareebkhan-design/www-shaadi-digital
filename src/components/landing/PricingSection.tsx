@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
 import PostPaymentSignupModal from "@/components/PostPaymentSignupModal";
+import PaymentFailedModal from "@/components/PaymentFailedModal";
 
 const Check = () => (
   <div className="w-4 h-4 rounded-full bg-secondary/[0.12] border border-secondary/25 flex items-center justify-center shrink-0 mt-[1px]">
@@ -186,7 +187,7 @@ const productSchemas = [
 ];
 
 const PricingSection = () => {
-  const { openCheckout, signupModalData, closeSignupModal } = useRazorpay();
+  const { openCheckout, signupModalData, closeSignupModal, failureModalData, closeFailureModal, retryPayment } = useRazorpay();
 
   return (
   <section id="pricing" className="section-padding bg-background relative overflow-hidden">
@@ -282,6 +283,15 @@ const PricingSection = () => {
         amount={signupModalData.amount}
         razorpayOrderId={signupModalData.razorpayOrderId}
         onClose={closeSignupModal}
+      />
+    )}
+
+    {failureModalData && (
+      <PaymentFailedModal
+        open={!!failureModalData}
+        data={failureModalData}
+        onRetry={retryPayment}
+        onClose={closeFailureModal}
       />
     )}
   </section>
