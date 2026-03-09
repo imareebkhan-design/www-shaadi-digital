@@ -214,6 +214,16 @@ const Pricing = () => {
       </section>
 
       <Footer />
+
+      {signupModalData && (
+        <PostPaymentSignupModal
+          open={!!signupModalData}
+          planId={signupModalData.planId}
+          amount={signupModalData.amount}
+          razorpayOrderId={signupModalData.razorpayOrderId}
+          onClose={closeSignupModal}
+        />
+      )}
     </div>
   );
 };
