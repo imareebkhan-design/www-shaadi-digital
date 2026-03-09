@@ -7,7 +7,7 @@ interface TemplatePreviewModalProps {
   onClose: () => void;
 }
 
-const DEMO_URL = "https://vivaah-spark-kit.lovable.app/";
+const DEMO_URL = "https://vivaah.shaadi.digital/";
 
 const TemplatePreviewModal = ({ templateId, onClose }: TemplatePreviewModalProps) => {
 
