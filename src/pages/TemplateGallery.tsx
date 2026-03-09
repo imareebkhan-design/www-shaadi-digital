@@ -244,16 +244,29 @@ const TemplateCard = ({
                 >
                   {ctaLabel}
                 </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onPreview(t.id);
-                  }}
-                  className="w-9 h-9 rounded-full border border-white/20 bg-transparent text-white/50 flex items-center justify-center transition-all hover:border-secondary hover:text-secondary hover:bg-secondary/10"
-                  title="Preview"
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                </button>
+                {({"royal-maroon": "https://vivaah.shaadi.digital/", "emerald-south": "https://dravidian-gold.shaadi.digital/", "golden-sehra": "https://golden-sehra.shaadi.digital/"} as Record<string, string>)[t.id] ? (
+                  <a
+                    href={({"royal-maroon": "https://vivaah.shaadi.digital/", "emerald-south": "https://dravidian-gold.shaadi.digital/", "golden-sehra": "https://golden-sehra.shaadi.digital/"} as Record<string, string>)[t.id]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-9 h-9 rounded-full border border-white/20 bg-transparent text-white/50 flex items-center justify-center transition-all hover:border-secondary hover:text-secondary hover:bg-secondary/10"
+                    title="Preview"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                  </a>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onPreview(t.id);
+                    }}
+                    className="w-9 h-9 rounded-full border border-white/20 bg-transparent text-white/50 flex items-center justify-center transition-all hover:border-secondary hover:text-secondary hover:bg-secondary/10"
+                    title="Preview"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </>
             )}
           </div>
