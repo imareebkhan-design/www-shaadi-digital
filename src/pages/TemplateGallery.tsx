@@ -124,7 +124,7 @@ const TemplateCard = ({
 
   const isCustomTemplate = t.id === "midnight-blue";
 
-  const videoSrc = ({"royal-maroon": "/videos/royal-maroon-preview.mov", "teal-luxury": "/videos/marigold-mandap.mp4", "golden-sehra": "/videos/golden-sehra.mp4"} as Record<string, string>)[t.id];
+  const videoSrc = ({"royal-maroon": "/videos/royal-maroon-preview.mov", "teal-luxury": "/videos/marigold-mandap.mp4", "golden-sehra": "/videos/golden-sehra.mp4", "emerald-south": "/videos/emerald-south.mp4"} as Record<string, string>)[t.id];
   const hasVideo = !!videoSrc;
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
