@@ -186,8 +186,8 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
       <div 
         className="absolute inset-0 z-[5] flex flex-col justify-end p-7 transition-transform duration-500 ease-out group-hover:-translate-y-1"
       >
-        {/* Top: Couple names - hidden for royal-maroon since live demo is background */}
-        {t.id !== "royal-maroon" && (
+        {/* Top: Couple names - hidden for cards with video background */}
+        {!hasVideo && (
           <div className="flex flex-col items-center text-center pt-10 flex-1 justify-center transition-transform duration-700 ease-out group-hover:-translate-y-2">
             <span 
               className="text-4xl mb-5 block drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] transition-transform duration-700 ease-out group-hover:scale-110"
