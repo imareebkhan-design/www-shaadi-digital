@@ -198,7 +198,7 @@ export function useRazorpay() {
     };
 
     const rzp = new window.Razorpay(options);
-    rzp.on("payment.failed", () => {
+    (rzp as any).on("payment.failed", () => {
       processingRef.current = false;
       toast.error("Payment failed. Please try again.");
     });
