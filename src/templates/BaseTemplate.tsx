@@ -123,7 +123,7 @@ const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplate
       <MusicSection musicUrl={data.music_url} isPreview={isPreview} />
 
       {/* 12. FOOTER */}
-      <FooterSection brideName={brideName} groomName={groomName} weddingDate={data.wedding_date} events={data.events} personalMessage={data.personal_message} />
+      <FooterSection brideName={brideName} groomName={groomName} weddingDate={data.wedding_date} events={data.events} personalMessage={data.personal_message} />}
     </div>
   );
 };
