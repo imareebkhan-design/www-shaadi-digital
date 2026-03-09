@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { usePlan } from "@/contexts/PlanContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import type { PaymentFailureData } from "@/components/PaymentFailedModal";
 
 const RAZORPAY_SCRIPT_URL = "https://checkout.razorpay.com/v1/checkout.js";
 
@@ -45,8 +46,20 @@ export function useRazorpay() {
   const [selectedPlan, setSelectedPlan] = useState<PlanId | null>(null);
   const [selectedAmount, setSelectedAmount] = useState<number>(0);
   const [signupModalData, setSignupModalData] = useState<PaymentSuccessData | null>(null);
+  const [failureModalData, setFailureModalData] = useState<PaymentFailureData | null>(null);
 
-  const openCheckout = useCallback(async (planId: PlanId) => {
+  // Store last order info for retry
+  const lastOrderRef = useRef<{ orderId: string; planId: PlanId; createdAt: number } | null>(null);
+
+  const logFailedPayment = useCallback(async (payload: Record<string, unknown>) => {
+    try {
+      await supabase.functions.invoke("log-failed-payment", { body: payload });
+    } catch (e) {
+      console.error("Failed to log payment failure:", e);
+    }
+  }, []);
+
+  const openCheckout = useCallback(async (planId: PlanId, existingOrderId?: string) => {
     if (processingRef.current) return;
 
     processingRef.current = true;
@@ -55,6 +68,7 @@ export function useRazorpay() {
 
     setSelectedPlan(planId);
     setSelectedAmount(plan.amount);
+    setFailureModalData(null);
 
     if (!keyId) {
       toast.error("Payment gateway is not configured. Please contact support.");
@@ -76,25 +90,32 @@ export function useRazorpay() {
       return;
     }
 
-    // Create order via edge function
-    const { data: orderData, error: orderError } = await supabase.functions.invoke(
-      "create-razorpay-order",
-      {
-        body: {
-          amount: plan.amount,
-          currency: "INR",
-          receipt: `receipt_${Date.now()}`,
-          plan: planId,
-        },
-      }
-    );
+    let orderId = existingOrderId;
 
-    if (orderError || !orderData?.id) {
-      console.error("Order creation failed:", orderError || orderData);
-      toast.error("Could not create order. Please try again.");
-      processingRef.current = false;
-      return;
+    // Create new order if not retrying with existing one
+    if (!orderId) {
+      const { data: orderData, error: orderError } = await supabase.functions.invoke(
+        "create-razorpay-order",
+        {
+          body: {
+            amount: plan.amount,
+            currency: "INR",
+            receipt: `receipt_${Date.now()}`,
+            plan: planId,
+          },
+        }
+      );
+
+      if (orderError || !orderData?.id) {
+        console.error("Order creation failed:", orderError || orderData);
+        toast.error("Could not create order. Please try again.");
+        processingRef.current = false;
+        return;
+      }
+      orderId = orderData.id;
     }
+
+    lastOrderRef.current = { orderId: orderId!, planId, createdAt: Date.now() };
 
     const options: RazorpayOptions = {
       key: keyId,
@@ -102,7 +123,7 @@ export function useRazorpay() {
       currency: "INR",
       name: "Shaadi.Digital",
       description: `${plan.name} Wedding Invitation Plan`,
-      order_id: orderData.id,
+      order_id: orderId!,
       image: "https://shaadi.digital/favicon.svg",
       prefill: {
         name: user?.user_metadata?.full_name || "",
@@ -171,22 +192,100 @@ export function useRazorpay() {
       modal: {
         ondismiss: () => {
           processingRef.current = false;
-          toast("Payment cancelled. You can try again anytime.", { icon: "ℹ️" });
+
+          // Log abandonment
+          logFailedPayment({
+            razorpay_order_id: orderId,
+            plan: planId,
+            amount: plan.amount,
+            email: user?.email || "",
+            status: "abandoned",
+          });
+
+          // Check if order is still valid (< 15 min old)
+          const orderAge = lastOrderRef.current
+            ? Date.now() - lastOrderRef.current.createdAt
+            : Infinity;
+          const isOrderValid = orderAge < 15 * 60 * 1000;
+
+          toast(
+            "Changed your mind? Your plan is saved — complete payment anytime.",
+            {
+              icon: "ℹ️",
+              duration: 8000,
+              action: isOrderValid
+                ? {
+                    label: "Resume →",
+                    onClick: () => openCheckout(planId, orderId),
+                  }
+                : undefined,
+            }
+          );
         },
       },
     };
 
     const rzp = new window.Razorpay(options);
-    (rzp as any).on("payment.failed", () => {
+    (rzp as any).on("payment.failed", (response: any) => {
       processingRef.current = false;
-      toast.error("Payment failed. Please try again.");
+
+      const errorData = response.error || {};
+
+      // Log the failure
+      logFailedPayment({
+        razorpay_order_id: errorData.metadata?.order_id || orderId,
+        razorpay_payment_id: errorData.metadata?.payment_id || "",
+        failure_code: errorData.code || "",
+        failure_reason: errorData.reason || errorData.description || "",
+        failure_source: errorData.source || "",
+        failure_step: errorData.step || "",
+        plan: planId,
+        amount: plan.amount,
+        email: user?.email || "",
+        status: "failed",
+      });
+
+      // Show failure modal
+      setFailureModalData({
+        planId,
+        failureCode: errorData.code || errorData.reason || "",
+        failureReason: errorData.description || errorData.reason || "",
+        orderId: errorData.metadata?.order_id || orderId,
+      });
     });
     rzp.open();
-  }, [user, navigate, refreshPlan]);
+  }, [user, navigate, refreshPlan, logFailedPayment]);
+
+  const retryPayment = useCallback(() => {
+    if (!failureModalData) return;
+    const { planId, orderId } = failureModalData;
+
+    // Check if order is still valid (< 15 min)
+    const orderAge = lastOrderRef.current
+      ? Date.now() - lastOrderRef.current.createdAt
+      : Infinity;
+    const isOrderValid = orderAge < 15 * 60 * 1000;
+
+    setFailureModalData(null);
+    openCheckout(planId, isOrderValid ? orderId : undefined);
+  }, [failureModalData, openCheckout]);
 
   const closeSignupModal = useCallback(() => {
     setSignupModalData(null);
   }, []);
 
-  return { openCheckout, selectedPlan, selectedAmount, signupModalData, closeSignupModal };
+  const closeFailureModal = useCallback(() => {
+    setFailureModalData(null);
+  }, []);
+
+  return {
+    openCheckout,
+    selectedPlan,
+    selectedAmount,
+    signupModalData,
+    closeSignupModal,
+    failureModalData,
+    closeFailureModal,
+    retryPayment,
+  };
 }
