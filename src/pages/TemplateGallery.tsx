@@ -659,6 +659,8 @@ const TemplateGallery = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <ContactOptionsDialog open={showContact} onOpenChange={setShowContact} />
     </div>
   );
 };
