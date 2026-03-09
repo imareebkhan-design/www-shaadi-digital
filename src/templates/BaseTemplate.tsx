@@ -65,7 +65,7 @@ const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplate
       {videoComplete && <FloatingMusicPlayer musicUrl={data.music_url} />}
 
       {/* 1. HERO */}
-      <HeroSection
+      {videoComplete && <HeroSection
         brideName={brideName}
         groomName={groomName}
         brideFamily={brideFamily}
