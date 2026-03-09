@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { InvitationData } from "./types";
 import FloatingMusicPlayer from "@/components/FloatingMusicPlayer";
 import EnvelopeIntro from "./sections/EnvelopeIntro";
+import TemplateVideoIntro from "./sections/TemplateVideoIntro";
 import HeroSection from "./sections/HeroSection";
 import SaveTheDateSection from "./sections/SaveTheDateSection";
 import OurStorySection from "./sections/OurStorySection";
