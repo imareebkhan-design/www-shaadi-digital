@@ -187,7 +187,7 @@ const productSchemas = [
 ];
 
 const PricingSection = () => {
-  const { openCheckout, signupModalData, closeSignupModal } = useRazorpay();
+  const { openCheckout, signupModalData, closeSignupModal, failureModalData, closeFailureModal, retryPayment } = useRazorpay();
 
   return (
   <section id="pricing" className="section-padding bg-background relative overflow-hidden">
