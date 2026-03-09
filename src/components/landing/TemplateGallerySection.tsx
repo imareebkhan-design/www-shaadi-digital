@@ -108,8 +108,6 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
         animation: `reelFadeUp 0.6s ease-out ${index * 100}ms both`,
         transition: "transform 0.5s cubic-bezier(0.34,1.2,0.64,1), border-color 0.3s ease",
       }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       {/* Hover shimmer overlay */}
       <div 
