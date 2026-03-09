@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { useState, forwardRef } from "react";
+import { useState } from "react";
 import logo from "@/assets/shaadi-digital-logo.svg";
 
-const Footer = forwardRef<HTMLElement>((props, ref) => {
+const Footer = () => {
   const [email, setEmail] = useState("");
 
   return (
-    <footer ref={ref} className="bg-[#0D0505] text-white/35 text-[13px] leading-[1.7]">
+    <footer className="bg-[#0D0505] text-white/35 text-[13px] leading-[1.7]">
       {/* Newsletter bar */}
       <div className="bg-secondary/[0.06] border-b border-secondary/10 px-5 md:px-16 py-7">
         <div className="max-w-[1100px] mx-auto flex flex-col md:flex-row items-center justify-between gap-5 md:gap-6">
@@ -123,8 +123,6 @@ const Footer = forwardRef<HTMLElement>((props, ref) => {
       </div>
     </footer>
   );
-});
-
-Footer.displayName = 'Footer';
+};
 
 export default Footer;
