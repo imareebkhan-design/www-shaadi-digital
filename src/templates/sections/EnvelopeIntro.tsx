@@ -25,12 +25,12 @@ const EnvelopeIntro = ({ brideName, groomName, onOpen }: EnvelopeIntroProps) => 
   }, [phase, onOpen]);
 
   // Automatically start opening after 2 seconds
-  useState(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       handleTap();
     }, 2000);
     return () => clearTimeout(timer);
-  });
+  }, [handleTap]);
 
   return (
     <AnimatePresence>
