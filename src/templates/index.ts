@@ -81,12 +81,12 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
   },
   "teal-luxury": {
     id: "teal-luxury",
-    name: "Teal Luxury",
+    name: "Marigold Mandap",
     component: TealLuxury,
-    community: "South Indian",
+    community: "Marathi",
     tone: "Luxury",
-    description: "Deep teal with jewelled accents",
-    thumbnail_gradient: "linear-gradient(135deg, #0f3d3e, #134e4a)",
+    description: "Warm marigold and saffron with mandap motifs",
+    thumbnail_gradient: "linear-gradient(135deg, #3A1A00, #B86010)",
     is_premium: true,
   },
   "ivory-classic": {

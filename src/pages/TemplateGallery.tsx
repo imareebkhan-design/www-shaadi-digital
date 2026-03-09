@@ -76,7 +76,7 @@ const cardBgClasses: Record<string, string> = {
   "midnight-blue": "bg-gradient-to-b from-[hsl(220,50%,5%)] via-[hsl(220,45%,18%)] to-[hsl(220,50%,4%)]",
   "golden-sehra": "bg-gradient-to-b from-[hsl(35,50%,5%)] via-[hsl(40,55%,18%)] to-[hsl(35,50%,4%)]",
   "pearl-nikah": "bg-gradient-to-b from-[hsl(250,25%,6%)] via-[hsl(250,25%,16%)] to-[hsl(250,25%,5%)]",
-  "teal-luxury": "bg-gradient-to-b from-[hsl(185,40%,5%)] via-[hsl(185,40%,16%)] to-[hsl(185,40%,4%)]",
+  "teal-luxury": "bg-marigold",
   "rose-garden": "bg-gradient-to-b from-[hsl(340,50%,6%)] via-[hsl(340,50%,18%)] to-[hsl(340,50%,5%)]",
   "chapel-white": "bg-gradient-to-b from-[hsl(30,10%,88%)] via-[hsl(30,15%,92%)] to-[hsl(30,10%,85%)]",
 };
@@ -259,9 +259,9 @@ const TemplateCard = ({
                 >
                   {ctaLabel}
                 </button>
-                {({"royal-maroon": "https://vivaah.shaadi.digital/", "emerald-south": "https://dravidian-gold.shaadi.digital/", "golden-sehra": "https://golden-sehra.shaadi.digital/", "pearl-nikah": "https://midnight-nikkah.shaadi.digital/", "midnight-blue": "https://midnight-blue.shaadi.digital/"} as Record<string, string>)[t.id] ? (
+              {({"royal-maroon": "https://vivaah.shaadi.digital/", "emerald-south": "https://dravidian-gold.shaadi.digital/", "golden-sehra": "https://golden-sehra.shaadi.digital/", "pearl-nikah": "https://midnight-nikkah.shaadi.digital/", "midnight-blue": "https://midnight-blue.shaadi.digital/", "teal-luxury": "https://marigold-mandap.shaadi.digital"} as Record<string, string>)[t.id] ? (
                   <a
-                    href={({"royal-maroon": "https://vivaah.shaadi.digital/", "emerald-south": "https://dravidian-gold.shaadi.digital/", "golden-sehra": "https://golden-sehra.shaadi.digital/", "pearl-nikah": "https://midnight-nikkah.shaadi.digital/", "midnight-blue": "https://midnight-blue.shaadi.digital/"} as Record<string, string>)[t.id]}
+                    href={({"royal-maroon": "https://vivaah.shaadi.digital/", "emerald-south": "https://dravidian-gold.shaadi.digital/", "golden-sehra": "https://golden-sehra.shaadi.digital/", "pearl-nikah": "https://midnight-nikkah.shaadi.digital/", "midnight-blue": "https://midnight-blue.shaadi.digital/", "teal-luxury": "https://marigold-mandap.shaadi.digital"} as Record<string, string>)[t.id]}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}

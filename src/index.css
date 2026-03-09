@@ -342,3 +342,17 @@
   @keyframes twinkle-3 { 0%,100% { opacity: 0.1; } 30% { opacity: 0.35; } 70% { opacity: 0.5; } }
   @keyframes pulse-glow { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.15); } }
 }
+
+/* Marigold Mandap card background */
+.bg-marigold {
+  background:
+    radial-gradient(ellipse 100% 70% at 50% 20%, rgba(210, 120, 20, 0.72) 0%, transparent 60%),
+    linear-gradient(185deg,
+      #0E0600 0%,
+      #3A1A00 20%,
+      #7A4008 45%,
+      #B86010 65%,
+      #4A2000 85%,
+      #180800 100%
+    );
+}

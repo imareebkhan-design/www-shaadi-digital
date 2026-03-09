@@ -68,8 +68,8 @@ export const TEMPLATE_THEMES: Record<string, TemplateTheme> = {
     accentLight: "350 80% 80%",
   },
   "teal-luxury": {
-    bgPrimary: "173 50% 15%",      // teal-950
-    bgSecondary: "173 45% 22%",    // teal-900
+    bgPrimary: "25 80% 10%",       // deep saffron-brown
+    bgSecondary: "30 70% 18%",     // warm amber
     textPrimary: "42 80% 95%",
     textMuted: "42 40% 70%",
     accent: "42 72% 52%",          // gold
