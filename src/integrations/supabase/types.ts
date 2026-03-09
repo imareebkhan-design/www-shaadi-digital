@@ -215,45 +215,40 @@ export type Database = {
         Row: {
           amount: number
           created_at: string
+          email: string | null
           id: string
-          invitation_id: string | null
-          plan: Database["public"]["Enums"]["invitation_plan"]
-          razorpay_order_id: string
+          plan: string
+          razorpay_order_id: string | null
           razorpay_payment_id: string | null
-          status: Database["public"]["Enums"]["payment_status"]
-          user_id: string
+          razorpay_signature: string | null
+          status: string
+          user_id: string | null
         }
         Insert: {
           amount: number
           created_at?: string
+          email?: string | null
           id?: string
-          invitation_id?: string | null
-          plan: Database["public"]["Enums"]["invitation_plan"]
-          razorpay_order_id: string
+          plan: string
+          razorpay_order_id?: string | null
           razorpay_payment_id?: string | null
-          status?: Database["public"]["Enums"]["payment_status"]
-          user_id: string
+          razorpay_signature?: string | null
+          status: string
+          user_id?: string | null
         }
         Update: {
           amount?: number
           created_at?: string
+          email?: string | null
           id?: string
-          invitation_id?: string | null
-          plan?: Database["public"]["Enums"]["invitation_plan"]
-          razorpay_order_id?: string
+          plan?: string
+          razorpay_order_id?: string | null
           razorpay_payment_id?: string | null
-          status?: Database["public"]["Enums"]["payment_status"]
-          user_id?: string
+          razorpay_signature?: string | null
+          status?: string
+          user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "payments_invitation_id_fkey"
-            columns: ["invitation_id"]
-            isOneToOne: false
-            referencedRelation: "invitations"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       rsvps: {
         Row: {
@@ -297,31 +292,28 @@ export type Database = {
         Row: {
           activated_at: string
           created_at: string
+          expires_at: string
           id: string
-          is_active: boolean
-          payment_id: string | null
-          plan_amount: number
-          plan_name: string
+          plan: string
+          razorpay_order_id: string | null
           user_id: string
         }
         Insert: {
           activated_at?: string
           created_at?: string
+          expires_at?: string
           id?: string
-          is_active?: boolean
-          payment_id?: string | null
-          plan_amount: number
-          plan_name: string
+          plan: string
+          razorpay_order_id?: string | null
           user_id: string
         }
         Update: {
           activated_at?: string
           created_at?: string
+          expires_at?: string
           id?: string
-          is_active?: boolean
-          payment_id?: string | null
-          plan_amount?: number
-          plan_name?: string
+          plan?: string
+          razorpay_order_id?: string | null
           user_id?: string
         }
         Relationships: []
