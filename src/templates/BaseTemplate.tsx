@@ -29,6 +29,7 @@ const placeholder = (value: string | undefined, fallback: string, isPreview: boo
 
 const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplateProps) => {
   const [envelopeOpened, setEnvelopeOpened] = useState(isPreview);
+  const [videoComplete, setVideoComplete] = useState(isPreview);
 
   const brideName = placeholder(data.bride_name, "Priya", isPreview);
   const groomName = placeholder(data.groom_name, "Arjun", isPreview);
