@@ -56,6 +56,8 @@ const TemplateVideoIntro = ({ videoUrl, onComplete, brideName, groomName }: Temp
             className="w-full h-full object-cover"
             playsInline
             muted
+            autoPlay
+            preload="auto"
             poster={undefined}
             src={videoUrl || "/api/placeholder/1920/1080"}
           />
