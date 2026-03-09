@@ -135,14 +135,25 @@ const BaseTemplate = ({ data, isPreview = false, gradient, motif, templateId = "
     ? new Date(data.wedding_date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
     : isPreview ? "15 December 2026" : null;
 
+  // CSS custom properties for template theming
+  const themeStyles = {
+    "--template-bg": theme.bgPrimary,
+    "--template-bg-secondary": theme.bgSecondary,
+    "--template-text": theme.textPrimary,
+    "--template-text-muted": theme.textMuted,
+    "--template-accent": theme.accent,
+    "--template-accent-light": theme.accentLight,
+  } as React.CSSProperties;
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" style={themeStyles}>
       {/* Envelope Intro */}
       {!envelopeOpened && (
         <EnvelopeIntro
           brideName={brideName}
           groomName={groomName}
           onOpen={() => setEnvelopeOpened(true)}
+          templateId={templateId}
         />
       )}
 
