@@ -6,6 +6,7 @@ import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Check } from "lucide-react";
 import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
+import PostPaymentSignupModal from "@/components/PostPaymentSignupModal";
 import {
   Accordion,
   AccordionContent,
@@ -91,7 +92,7 @@ function getButtonState(
 const Pricing = () => {
   const { user } = useAuth();
   const { plan: activePlan, hasPlan } = usePlan();
-  const { openCheckout } = useRazorpay();
+  const { openCheckout, signupModalData, closeSignupModal } = useRazorpay();
 
   const currentPlanName = activePlan?.plan || null;
 
@@ -213,6 +214,16 @@ const Pricing = () => {
       </section>
 
       <Footer />
+
+      {signupModalData && (
+        <PostPaymentSignupModal
+          open={!!signupModalData}
+          planId={signupModalData.planId}
+          amount={signupModalData.amount}
+          razorpayOrderId={signupModalData.razorpayOrderId}
+          onClose={closeSignupModal}
+        />
+      )}
     </div>
   );
 };

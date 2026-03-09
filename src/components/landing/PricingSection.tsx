@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
+import PostPaymentSignupModal from "@/components/PostPaymentSignupModal";
 
 const Check = () => (
   <div className="w-4 h-4 rounded-full bg-secondary/[0.12] border border-secondary/25 flex items-center justify-center shrink-0 mt-[1px]">
@@ -185,7 +186,7 @@ const productSchemas = [
 ];
 
 const PricingSection = () => {
-  const { openCheckout } = useRazorpay();
+  const { openCheckout, signupModalData, closeSignupModal } = useRazorpay();
 
   return (
   <section id="pricing" className="section-padding bg-background relative overflow-hidden">
@@ -273,6 +274,16 @@ const PricingSection = () => {
         ))}
       </div>
     </div>
+
+    {signupModalData && (
+      <PostPaymentSignupModal
+        open={!!signupModalData}
+        planId={signupModalData.planId}
+        amount={signupModalData.amount}
+        razorpayOrderId={signupModalData.razorpayOrderId}
+        onClose={closeSignupModal}
+      />
+    )}
   </section>
   );
 };
