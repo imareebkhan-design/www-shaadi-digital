@@ -113,7 +113,7 @@ export const templates: TemplateConfig[] = [
   {
     id: "midnight-blue",
     name: "Midnight Blue",
-    tagline: "Contemporary minimal design for the modern couple",
+    tagline: "Elegant destination wedding design for the modern couple",
     previewGradient: "linear-gradient(160deg,#0a0d1a,#0e1a3a,#1c2d6b)",
     religion: ["Hindu", "Christian"],
     region: ["Pan-India"],
