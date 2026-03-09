@@ -32,7 +32,7 @@ const reelBgClasses: Record<string, string> = {
   "midnight-blue": "from-[hsl(220,30%,8%)] via-[hsl(220,40%,22%)] to-[hsl(220,30%,6%)]",
   "golden-sehra": "from-[hsl(35,40%,8%)] via-[hsl(40,50%,22%)] to-[hsl(35,40%,6%)]",
   "pearl-nikah": "from-[hsl(250,20%,10%)] via-[hsl(250,20%,22%)] to-[hsl(250,20%,8%)]",
-  "teal-luxury": "from-[hsl(185,30%,8%)] via-[hsl(185,35%,20%)] to-[hsl(185,30%,6%)]",
+  "teal-luxury": "from-[hsl(25,80%,6%)] via-[hsl(30,70%,18%)] to-[hsl(25,80%,5%)]",
 };
 
 const getFilterMatch = (t: TemplateConfig, filter: FilterKey): boolean => {
