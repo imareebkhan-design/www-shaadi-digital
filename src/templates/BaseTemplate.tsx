@@ -81,13 +81,13 @@ const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplate
       />
 
       {/* 2. SAVE THE DATE */}
-      <SaveTheDateSection weddingDate={data.wedding_date} isPreview={isPreview} />
+      {videoComplete && <SaveTheDateSection weddingDate={data.wedding_date} isPreview={isPreview} />}
 
       {/* 3. OUR STORY */}
-      <OurStorySection story={data.our_story || data.personal_message} isPreview={isPreview} />
+      {videoComplete && <OurStorySection story={data.our_story || data.personal_message} isPreview={isPreview} />}
 
       {/* 4. THE COUPLE */}
-      <CoupleSection
+      {videoComplete && <CoupleSection
         brideName={brideName}
         groomName={groomName}
         brideFamily={brideFamily}
@@ -99,31 +99,31 @@ const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplate
         photoUrl={data.photo_url}
         gradient={gradient}
         isPreview={isPreview}
-      />
+      />}
 
       {/* 5. SCHEDULE */}
-      <ScheduleSection events={data.events} gradient={gradient} />
+      {videoComplete && <ScheduleSection events={data.events} gradient={gradient} />}
 
       {/* 6. GALLERY */}
-      <GallerySection photos={data.gallery_photos} brideName={brideName} groomName={groomName} isPreview={isPreview} />
+      {videoComplete && <GallerySection photos={data.gallery_photos} brideName={brideName} groomName={groomName} isPreview={isPreview} />}
 
       {/* 7. DRESSCODE */}
-      <DresscodeSection enabled={data.dresscode_enabled} text={data.dresscode_text} colors={data.dresscode_colors} isPreview={isPreview} />
+      {videoComplete && <DresscodeSection enabled={data.dresscode_enabled} text={data.dresscode_text} colors={data.dresscode_colors} isPreview={isPreview} />}
 
       {/* 8. GIFTS */}
-      <GiftsSection upiId={data.upi_id} giftRegistryUrl={data.gift_registry_url} brideName={brideName} groomName={groomName} />
+      {videoComplete && <GiftsSection upiId={data.upi_id} giftRegistryUrl={data.gift_registry_url} brideName={brideName} groomName={groomName} />}
 
       {/* 9. MAP & VENUE */}
-      <VenueMapSection events={data.events} venueDescription={data.venue_description} venuePhoto={data.venue_photo} isPreview={isPreview} />
+      {videoComplete && <VenueMapSection events={data.events} venueDescription={data.venue_description} venuePhoto={data.venue_photo} isPreview={isPreview} />}
 
       {/* 10. RSVP CTA */}
-      <RsvpSection brideName={brideName} groomName={groomName} rsvpDeadline={data.rsvp_deadline} isPreview={isPreview} />
+      {videoComplete && <RsvpSection brideName={brideName} groomName={groomName} rsvpDeadline={data.rsvp_deadline} isPreview={isPreview} />}
 
       {/* 11. MUSIC */}
-      <MusicSection musicUrl={data.music_url} isPreview={isPreview} />
+      {videoComplete && <MusicSection musicUrl={data.music_url} isPreview={isPreview} />}
 
       {/* 12. FOOTER */}
-      <FooterSection brideName={brideName} groomName={groomName} weddingDate={data.wedding_date} events={data.events} personalMessage={data.personal_message} />}
+      {videoComplete && <FooterSection brideName={brideName} groomName={groomName} weddingDate={data.wedding_date} events={data.events} personalMessage={data.personal_message} />}
     </div>
   );
 };
