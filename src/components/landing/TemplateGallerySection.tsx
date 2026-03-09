@@ -63,7 +63,7 @@ const CUSTOM_TEMPLATES = ["midnight-blue"];
 
 const VIDEO_TEMPLATES: Record<string, string> = {
   "royal-maroon": "/videos/royal-maroon-preview.mov",
-  "teal-luxury": "/videos/marigold-mandap.mov",
+  "teal-luxury": "/videos/marigold-mandap.mp4",
 };
 
 const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index: number; total: number; onGetInTouch: () => void }) => {
