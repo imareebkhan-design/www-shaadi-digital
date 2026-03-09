@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import logo from "@/assets/shaadi-digital-logo.svg";
 
-const Footer = () => {
+const Footer = forwardRef<HTMLElement>((props, ref) => {
   const [email, setEmail] = useState("");
 
   return (
