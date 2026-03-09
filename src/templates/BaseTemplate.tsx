@@ -78,7 +78,7 @@ const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplate
         heroMediaType={data.hero_media_type}
         heroMediaUrl={data.hero_media_url}
         isPreview={isPreview}
-      />
+      />}
 
       {/* 2. SAVE THE DATE */}
       {videoComplete && <SaveTheDateSection weddingDate={data.wedding_date} isPreview={isPreview} />}
