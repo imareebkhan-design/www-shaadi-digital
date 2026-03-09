@@ -61,6 +61,11 @@ const MandalaPattern = () => (
 
 const CUSTOM_TEMPLATES = ["midnight-blue"];
 
+const VIDEO_TEMPLATES: Record<string, string> = {
+  "royal-maroon": "/videos/royal-maroon-preview.mov",
+  "teal-luxury": "/videos/marigold-mandap.mov",
+};
+
 const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index: number; total: number; onGetInTouch: () => void }) => {
   const bgClass = reelBgClasses[t.id] || "from-maroon-dark via-primary to-maroon-dark";
   const badgeLabel = t.isFeatured ? "👑 Limited Ed." : t.isNew && !t.isComingSoon ? "✦ New" : null;
@@ -68,7 +73,33 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
     ? "bg-secondary/20 border-secondary/50 text-secondary"
     : "bg-secondary/15 border-secondary/40 text-secondary";
   const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [videoVisible, setVideoVisible] = useState(false);
+  const hasVideo = !!VIDEO_TEMPLATES[t.id];
+  const isAutoplayVideo = t.id === "teal-luxury";
+
+  /* IntersectionObserver for autoplay video cards (Marigold Mandap) */
+  useEffect(() => {
+    if (!isAutoplayVideo) return;
+    const card = cardRef.current;
+    const video = videoRef.current;
+    if (!card || !video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVideoVisible(true);
+          video.play().catch(() => {});
+        } else {
+          setVideoVisible(false);
+          video.pause();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [isAutoplayVideo]);
 
   const handleMouseEnter = useCallback(() => {
     if (t.id !== "royal-maroon") return;
