@@ -131,12 +131,23 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
             ))}
           </div>
           <div className="flex gap-2">
-            <Link
-              to={`/builder/${t.id}`}
-              className="flex-1 flex items-center justify-center gap-1.5 bg-secondary text-secondary-foreground font-body text-[11px] font-bold tracking-[1.5px] uppercase py-3 px-4 rounded-full transition-all hover:bg-secondary/90 hover:-translate-y-0.5 shadow-gold"
+          <Link
+            to={`/builder/${t.id}`}
+            className="flex-1 flex items-center justify-center gap-1.5 bg-secondary text-secondary-foreground font-body text-[11px] font-bold tracking-[1.5px] uppercase py-3 px-4 rounded-full transition-all hover:bg-secondary/90 hover:-translate-y-0.5 shadow-gold"
+          >
+            Use This Template
+          </Link>
+          {t.id === "royal-maroon" ? (
+            <a
+              href="https://vivaah.shaadi.digital/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-11 h-11 rounded-full border border-primary-foreground/20 bg-transparent text-primary-foreground/60 text-base transition-all hover:border-secondary hover:text-secondary hover:bg-secondary/10"
+              title="Preview"
             >
-              Use This Template
-            </Link>
+              👁
+            </a>
+          ) : (
             <Link
               to={`/templates/${t.id}`}
               className="flex items-center justify-center w-11 h-11 rounded-full border border-primary-foreground/20 bg-transparent text-primary-foreground/60 text-base transition-all hover:border-secondary hover:text-secondary hover:bg-secondary/10"
@@ -144,6 +155,7 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
             >
               👁
             </Link>
+          )}
           </div>
         </div>
       </div>
