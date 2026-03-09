@@ -70,6 +70,15 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
     <div
       className={`reel-card group flex-shrink-0 w-[300px] h-[520px] rounded-[20px] relative overflow-hidden scroll-snap-align-center cursor-pointer transition-transform duration-500 ease-[cubic-bezier(0.34,1.2,0.64,1)] border border-secondary/10 hover:scale-[1.04] hover:-translate-y-2 hover:border-secondary/30 bg-gradient-to-b ${bgClass}`}
     >
+      {/* Live iframe background for Royal Maroon */}
+      {t.id === "royal-maroon" && (
+        <iframe
+          src="https://vivaah.shaadi.digital/"
+          className="absolute inset-0 w-full h-full border-0 pointer-events-none z-0"
+          title="Royal Maroon Live Demo"
+        />
+      )}
+
       {/* Shimmer lines — gold */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary to-transparent opacity-40 z-10" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/20 to-transparent z-10" />
@@ -96,21 +105,23 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
 
       {/* Content */}
       <div className="absolute inset-0 z-[5] flex flex-col justify-between p-7">
-        {/* Top: Couple names */}
-        <div className="flex flex-col items-center text-center pt-10 flex-1 justify-center">
-          <span className="text-4xl mb-5 block drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] animate-[float_5s_ease-in-out_infinite]">
-            {t.motif}
-          </span>
-          <div className="font-serif text-[28px] font-normal text-primary-foreground leading-tight tracking-wide drop-shadow-[0_2px_20px_rgba(0,0,0,0.6)]">
-            {t.sampleData.brideName}
-            <span className="block italic text-xl font-light text-secondary opacity-85 my-1">&amp;</span>
-            {t.sampleData.groomName}
+        {/* Top: Couple names - hidden for royal-maroon since live demo is background */}
+        {t.id !== "royal-maroon" && (
+          <div className="flex flex-col items-center text-center pt-10 flex-1 justify-center">
+            <span className="text-4xl mb-5 block drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] animate-[float_5s_ease-in-out_infinite]">
+              {t.motif}
+            </span>
+            <div className="font-serif text-[28px] font-normal text-primary-foreground leading-tight tracking-wide drop-shadow-[0_2px_20px_rgba(0,0,0,0.6)]">
+              {t.sampleData.brideName}
+              <span className="block italic text-xl font-light text-secondary opacity-85 my-1">&amp;</span>
+              {t.sampleData.groomName}
+            </div>
+            <div className="w-10 h-px bg-gradient-to-r from-transparent via-secondary/60 to-transparent my-4" />
+            <span className="text-[9px] tracking-[3px] uppercase text-primary-foreground/35">
+              {t.sampleData.date} · {t.sampleData.city}
+            </span>
           </div>
-          <div className="w-10 h-px bg-gradient-to-r from-transparent via-secondary/60 to-transparent my-4" />
-          <span className="text-[9px] tracking-[3px] uppercase text-primary-foreground/35">
-            {t.sampleData.date} · {t.sampleData.city}
-          </span>
-        </div>
+        )}
 
         {/* Bottom: Info panel */}
         <div className="bg-gradient-to-t from-foreground/95 via-foreground/85 to-transparent -mx-7 -mb-7 px-6 pt-8 pb-6">
