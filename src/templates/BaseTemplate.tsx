@@ -51,8 +51,18 @@ const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplate
         />
       )}
 
+      {/* Template Video Preview */}
+      {envelopeOpened && !videoComplete && (
+        <TemplateVideoIntro
+          videoUrl={data.hero_media_type === "video" ? data.hero_media_url : undefined}
+          brideName={brideName}
+          groomName={groomName}
+          onComplete={() => setVideoComplete(true)}
+        />
+      )}
+
       {/* Floating music player */}
-      <FloatingMusicPlayer musicUrl={data.music_url} />
+      {videoComplete && <FloatingMusicPlayer musicUrl={data.music_url} />}
 
       {/* 1. HERO */}
       <HeroSection
