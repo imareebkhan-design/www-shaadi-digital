@@ -16,18 +16,113 @@ import RsvpSection from "./sections/RsvpSection";
 import MusicSection from "./sections/MusicSection";
 import FooterSection from "./sections/FooterSection";
 
+export interface TemplateTheme {
+  bgPrimary: string;       // Main background (e.g., "340 55% 20%" for burgundy)
+  bgSecondary: string;     // Secondary/lighter bg
+  textPrimary: string;     // Primary text on dark bg (usually light)
+  textMuted: string;       // Muted text
+  accent: string;          // Accent color (gold, etc.)
+  accentLight: string;     // Light variant of accent
+}
+
+// Pre-defined themes for each template
+export const TEMPLATE_THEMES: Record<string, TemplateTheme> = {
+  "royal-maroon": {
+    bgPrimary: "340 55% 20%",      // burgundy
+    bgSecondary: "345 60% 25%",    // maroon
+    textPrimary: "40 50% 95%",
+    textMuted: "40 50% 70%",
+    accent: "40 72% 52%",          // gold
+    accentLight: "42 80% 72%",
+  },
+  "emerald-south": {
+    bgPrimary: "152 50% 12%",      // deep emerald
+    bgSecondary: "152 45% 18%",    // emerald
+    textPrimary: "42 80% 95%",
+    textMuted: "42 50% 70%",
+    accent: "42 72% 52%",          // gold
+    accentLight: "42 80% 72%",
+  },
+  "midnight-blue": {
+    bgPrimary: "222 47% 11%",      // slate-900
+    bgSecondary: "217 33% 17%",    // slate-800
+    textPrimary: "210 40% 96%",
+    textMuted: "215 20% 65%",
+    accent: "45 93% 47%",          // amber
+    accentLight: "48 96% 70%",
+  },
+  "golden-punjabi": {
+    bgPrimary: "32 100% 10%",      // deep amber/brown
+    bgSecondary: "36 90% 18%",
+    textPrimary: "42 90% 95%",
+    textMuted: "40 60% 70%",
+    accent: "40 90% 50%",          // gold
+    accentLight: "45 95% 70%",
+  },
+  "rose-garden": {
+    bgPrimary: "345 82% 15%",      // rose-950
+    bgSecondary: "345 75% 25%",    // rose-900
+    textPrimary: "350 30% 96%",
+    textMuted: "350 30% 70%",
+    accent: "340 65% 60%",         // rose
+    accentLight: "350 80% 80%",
+  },
+  "teal-luxury": {
+    bgPrimary: "173 50% 15%",      // teal-950
+    bgSecondary: "173 45% 22%",    // teal-900
+    textPrimary: "42 80% 95%",
+    textMuted: "42 40% 70%",
+    accent: "42 72% 52%",          // gold
+    accentLight: "42 80% 72%",
+  },
+  "pearl-nikah": {
+    bgPrimary: "20 14% 15%",       // stone-900
+    bgSecondary: "24 10% 22%",     // stone-800
+    textPrimary: "30 25% 95%",
+    textMuted: "25 15% 65%",
+    accent: "42 72% 52%",          // gold
+    accentLight: "42 80% 72%",
+  },
+  "ivory-classic": {
+    bgPrimary: "35 30% 15%",       // warm brown
+    bgSecondary: "35 25% 22%",
+    textPrimary: "35 30% 95%",
+    textMuted: "35 20% 70%",
+    accent: "40 72% 52%",
+    accentLight: "42 80% 72%",
+  },
+  "saffron-fest": {
+    bgPrimary: "20 90% 15%",       // deep orange
+    bgSecondary: "24 85% 25%",
+    textPrimary: "35 90% 95%",
+    textMuted: "30 70% 75%",
+    accent: "35 95% 55%",          // saffron/marigold
+    accentLight: "40 95% 70%",
+  },
+  "blush-modern": {
+    bgPrimary: "300 60% 20%",      // fuchsia-950
+    bgSecondary: "295 55% 28%",
+    textPrimary: "330 30% 96%",
+    textMuted: "320 25% 70%",
+    accent: "330 80% 65%",         // pink
+    accentLight: "340 85% 80%",
+  },
+};
+
 interface BaseTemplateProps {
   data: InvitationData;
   isPreview?: boolean;
   gradient: string;
   motif: string;
   accentColor?: string;
+  templateId?: string;
 }
 
 const placeholder = (value: string | undefined, fallback: string, isPreview: boolean) =>
   value?.trim() ? value : isPreview ? fallback : value || "";
 
-const BaseTemplate = ({ data, isPreview = false, gradient, motif }: BaseTemplateProps) => {
+const BaseTemplate = ({ data, isPreview = false, gradient, motif, templateId = "royal-maroon" }: BaseTemplateProps) => {
+  const theme = TEMPLATE_THEMES[templateId] || TEMPLATE_THEMES["royal-maroon"];
   const [envelopeOpened, setEnvelopeOpened] = useState(isPreview);
   const [videoComplete, setVideoComplete] = useState(isPreview);
 
