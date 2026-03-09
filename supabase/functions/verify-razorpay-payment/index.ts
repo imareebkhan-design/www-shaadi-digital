@@ -92,6 +92,35 @@ Deno.serve(async (req) => {
     }
 
     if (isValid) {
+      // Fire confirmation email (non-blocking)
+      const now = new Date();
+      const expiresAt = new Date(now);
+      expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
+      try {
+        const emailPayload = {
+          email: email || "",
+          name: email?.split("@")[0] || "User",
+          plan,
+          amount: Math.round(amount / 100),
+          razorpay_payment_id,
+          razorpay_order_id,
+          activated_at: now.toISOString(),
+          expires_at: expiresAt.toISOString(),
+        };
+
+        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+        const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+
+        fetch(`${supabaseUrl}/functions/v1/send-confirmation-email`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${anonKey}` },
+          body: JSON.stringify(emailPayload),
+        }).catch((e) => console.error("Email send failed (non-blocking):", e));
+      } catch (emailErr) {
+        console.error("Email trigger error (non-blocking):", emailErr);
+      }
+
       return new Response(
         JSON.stringify({ success: true, order_id: razorpay_order_id }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
