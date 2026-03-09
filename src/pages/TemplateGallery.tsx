@@ -382,6 +382,7 @@ const TemplateGallery = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
   const [switchConfirm, setSwitchConfirm] = useState<{ templateId: string; name: string } | null>(null);
+  const [showContact, setShowContact] = useState(false);
   const isMobile = useIsMobile();
   const { user } = useAuth();
   const navigate = useNavigate();
