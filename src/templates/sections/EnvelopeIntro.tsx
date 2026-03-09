@@ -5,6 +5,7 @@ interface EnvelopeIntroProps {
   brideName: string;
   groomName: string;
   onOpen: () => void;
+  templateId?: string;
 }
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
