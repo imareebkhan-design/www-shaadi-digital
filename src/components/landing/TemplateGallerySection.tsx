@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { templates, type TemplateConfig } from "@/data/templates";
 
@@ -65,6 +65,26 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
   const badgeClass = t.isFeatured
     ? "bg-secondary/20 border-secondary/50 text-secondary"
     : "bg-secondary/15 border-secondary/40 text-secondary";
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoVisible, setVideoVisible] = useState(false);
+
+  const handleMouseEnter = useCallback(() => {
+    if (t.id !== "royal-maroon") return;
+    const v = videoRef.current;
+    if (!v) return;
+    setVideoVisible(true);
+    v.currentTime = 0;
+    v.play().catch(() => {});
+  }, [t.id]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (t.id !== "royal-maroon") return;
+    const v = videoRef.current;
+    if (!v) return;
+    setVideoVisible(false);
+    v.pause();
+    v.currentTime = 0;
+  }, [t.id]);
 
   return (
     <div
@@ -73,6 +93,8 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
         animation: `reelFadeUp 0.6s ease-out ${index * 100}ms both`,
         transition: "transform 0.5s cubic-bezier(0.34,1.2,0.64,1), border-color 0.3s ease",
       }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Hover shimmer overlay */}
       <div 
@@ -132,12 +154,20 @@ const ReelCard = ({ t, index, total }: { t: TemplateConfig; index: number; total
         </div>
       </div>
 
-      {/* Live iframe background for Royal Maroon */}
+      {/* Video background for Royal Maroon */}
       {t.id === "royal-maroon" && (
-        <iframe
-          src="https://vivaah.shaadi.digital/"
-          className="absolute inset-0 w-full h-full border-0 pointer-events-none z-0"
-          title="Royal Maroon Live Demo"
+        <video
+          ref={videoRef}
+          src="/videos/royal-maroon-preview.mov"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-[2]"
+          style={{
+            opacity: videoVisible ? 1 : 0,
+            transition: "opacity 0.3s ease",
+          }}
+          muted
+          loop
+          playsInline
+          preload="metadata"
         />
       )}
 
