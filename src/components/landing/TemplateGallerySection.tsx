@@ -378,6 +378,8 @@ const TemplateGallerySection = () => {
           New designs added every month
         </span>
       </div>
+
+      <ContactOptionsDialog open={showContact} onOpenChange={setShowContact} />
     </section>
   );
 };

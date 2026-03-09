@@ -120,8 +120,12 @@ const TemplateCard = ({
   const hasDraft = !!draftTemplateId;
   const isCurrentDraft = draftTemplateId === t.id;
 
+  const isCustomTemplate = t.id === "midnight-blue";
+
   const ctaLabel = t.isComingSoon
     ? null
+    : isCustomTemplate
+    ? "Get in Touch"
     : hasDraft
     ? isCurrentDraft
       ? "Continue editing"
@@ -130,6 +134,10 @@ const TemplateCard = ({
 
   const handleCtaClick = () => {
     if (t.isComingSoon) return;
+    if (isCustomTemplate) {
+      // handled by parent via onGetInTouch
+      return;
+    }
     if (hasDraft && !isCurrentDraft && onSwitchTemplate) {
       onSwitchTemplate(t.id);
     } else if (isCurrentDraft) {
