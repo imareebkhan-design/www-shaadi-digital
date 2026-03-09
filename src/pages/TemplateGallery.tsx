@@ -154,6 +154,7 @@ const TemplateCard = ({
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.04 }}
@@ -162,6 +163,20 @@ const TemplateCard = ({
     >
       {/* Top shimmer line */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary to-transparent opacity-50 z-10" />
+
+      {/* Video background */}
+      {hasVideo && (
+        <video
+          ref={videoRef}
+          src={videoSrc}
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-[2]"
+          style={{ opacity: videoVisible ? 1 : 0, transition: "opacity 0.3s ease" }}
+          muted
+          loop
+          playsInline
+          preload="auto"
+        />
+      )}
 
       {/* Badge */}
       {badgeLabel && (
