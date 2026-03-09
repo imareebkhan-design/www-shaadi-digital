@@ -274,6 +274,16 @@ const PricingSection = () => {
         ))}
       </div>
     </div>
+
+    {signupModalData && (
+      <PostPaymentSignupModal
+        open={!!signupModalData}
+        planId={signupModalData.planId}
+        amount={signupModalData.amount}
+        razorpayOrderId={signupModalData.razorpayOrderId}
+        onClose={closeSignupModal}
+      />
+    )}
   </section>
   );
 };
