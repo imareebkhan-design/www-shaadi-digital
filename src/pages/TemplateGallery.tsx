@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useRef, useRef } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/landing/Navbar";
