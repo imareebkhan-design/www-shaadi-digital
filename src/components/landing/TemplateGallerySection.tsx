@@ -259,6 +259,7 @@ const ReelCard = ({ t, index, total, onGetInTouch }: { t: TemplateConfig; index:
 
 const TemplateGallerySection = () => {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
+  const [showContact, setShowContact] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
   const filteredTemplates = displayTemplates.filter((t) => getFilterMatch(t, activeFilter));
