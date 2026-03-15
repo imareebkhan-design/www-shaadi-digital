@@ -24,9 +24,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (event, session) => {
         setSession(session);
         setLoading(false);
+
+        // After OAuth sign-in, redirect to dashboard
+        if (event === "SIGNED_IN" && session) {
+          const currentPath = window.location.pathname;
+          if (currentPath === "/" || currentPath === "/login" || currentPath === "/signup") {
+            const postLogin = sessionStorage.getItem("postLoginRedirect");
+            if (postLogin) {
+              sessionStorage.removeItem("postLoginRedirect");
+              window.location.href = postLogin;
+            } else {
+              const templateId = sessionStorage.getItem("selectedTemplateId");
+              if (templateId) {
+                sessionStorage.removeItem("selectedTemplateId");
+                window.location.href = `/builder/${templateId}`;
+              } else {
+                window.location.href = "/dashboard";
+              }
+            }
+          }
+        }
       }
     );
 
