@@ -64,7 +64,7 @@ export function useRazorpay() {
 
     processingRef.current = true;
     const plan = PLAN_CONFIG[planId];
-    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SP8s2WhxqMj8BB";
+    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
     setSelectedPlan(planId);
     setSelectedAmount(plan.amount);
