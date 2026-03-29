@@ -161,6 +161,9 @@ export function useRazorpay() {
           return;
         }
 
+        // Store order ID for publish_invitation RPC verification
+        sessionStorage.setItem("last_razorpay_order_id", response.razorpay_order_id);
+
         // If user is already logged in, activate plan directly
         if (user) {
           const now = new Date();
