@@ -117,7 +117,7 @@ export function useRazorpay() {
 
     lastOrderRef.current = { orderId: orderId!, planId, createdAt: Date.now() };
 
-    const options: RazorpayOptions = {
+    const options: any = {
       key: keyId,
       amount: plan.amount,
       currency: "INR",
