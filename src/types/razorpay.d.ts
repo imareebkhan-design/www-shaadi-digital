@@ -17,6 +17,9 @@ interface RazorpayOptions {
   modal?: {
     ondismiss?: () => void;
   };
+  external?: {
+    wallets?: string[];
+  };
   handler?: (response: RazorpayResponse) => void;
 }
 
