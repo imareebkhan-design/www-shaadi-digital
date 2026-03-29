@@ -343,10 +343,14 @@ const InvitationBuilder = () => {
 
     if (existing) slug = `${slug}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-    const { error } = await supabase
-      .from("invitations")
-      .update({ status: "published", plan, slug })
-      .eq("id", invitationId);
+    // Use secure RPC that verifies payment before publishing
+    const razorpayOrderId = sessionStorage.getItem("last_razorpay_order_id") || "";
+    const { error } = await supabase.rpc("publish_invitation" as any, {
+      _invitation_id: invitationId,
+      _plan: plan,
+      _slug: slug,
+      _razorpay_order_id: razorpayOrderId,
+    });
     setPublishLoading(false);
     if (error) { toast("Failed to publish. Please try again."); return; }
     setPublishedSlug(slug);

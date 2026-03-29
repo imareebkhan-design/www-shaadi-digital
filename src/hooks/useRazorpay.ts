@@ -64,7 +64,7 @@ export function useRazorpay() {
 
     processingRef.current = true;
     const plan = PLAN_CONFIG[planId];
-    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SP8s2WhxqMj8BB";
+    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
     setSelectedPlan(planId);
     setSelectedAmount(plan.amount);
@@ -160,6 +160,9 @@ export function useRazorpay() {
           toast.error("Payment verification failed. Please contact support.");
           return;
         }
+
+        // Store order ID for publish_invitation RPC verification
+        sessionStorage.setItem("last_razorpay_order_id", response.razorpay_order_id);
 
         // If user is already logged in, activate plan directly
         if (user) {

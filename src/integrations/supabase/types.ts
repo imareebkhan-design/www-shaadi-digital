@@ -137,6 +137,13 @@ export type Database = {
             referencedRelation: "invitations"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "events_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "public_invitations"
+            referencedColumns: ["id"]
+          },
         ]
       }
       invitations: {
@@ -325,6 +332,13 @@ export type Database = {
             referencedRelation: "invitations"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "rsvps_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "public_invitations"
+            referencedColumns: ["id"]
+          },
         ]
       }
       user_plans: {
@@ -386,10 +400,119 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_invitations: {
+        Row: {
+          bride_bio: string | null
+          bride_family: string | null
+          bride_full_name: string | null
+          bride_name: string | null
+          created_at: string | null
+          dresscode_colors: Json | null
+          dresscode_enabled: boolean | null
+          dresscode_text: string | null
+          gallery_photos: Json | null
+          gift_registry_url: string | null
+          groom_bio: string | null
+          groom_family: string | null
+          groom_full_name: string | null
+          groom_name: string | null
+          hero_media_type: string | null
+          hero_media_url: string | null
+          id: string | null
+          language: Database["public"]["Enums"]["invitation_language"] | null
+          music_url: string | null
+          our_story: string | null
+          personal_message: string | null
+          photo_url: string | null
+          rsvp_deadline: string | null
+          slug: string | null
+          status: Database["public"]["Enums"]["invitation_status"] | null
+          template_id: string | null
+          updated_at: string | null
+          venue_description: string | null
+          venue_photo: string | null
+          wedding_city: string | null
+          wedding_date: string | null
+        }
+        Insert: {
+          bride_bio?: string | null
+          bride_family?: string | null
+          bride_full_name?: string | null
+          bride_name?: string | null
+          created_at?: string | null
+          dresscode_colors?: Json | null
+          dresscode_enabled?: boolean | null
+          dresscode_text?: string | null
+          gallery_photos?: Json | null
+          gift_registry_url?: string | null
+          groom_bio?: string | null
+          groom_family?: string | null
+          groom_full_name?: string | null
+          groom_name?: string | null
+          hero_media_type?: string | null
+          hero_media_url?: string | null
+          id?: string | null
+          language?: Database["public"]["Enums"]["invitation_language"] | null
+          music_url?: string | null
+          our_story?: string | null
+          personal_message?: string | null
+          photo_url?: string | null
+          rsvp_deadline?: string | null
+          slug?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"] | null
+          template_id?: string | null
+          updated_at?: string | null
+          venue_description?: string | null
+          venue_photo?: string | null
+          wedding_city?: string | null
+          wedding_date?: string | null
+        }
+        Update: {
+          bride_bio?: string | null
+          bride_family?: string | null
+          bride_full_name?: string | null
+          bride_name?: string | null
+          created_at?: string | null
+          dresscode_colors?: Json | null
+          dresscode_enabled?: boolean | null
+          dresscode_text?: string | null
+          gallery_photos?: Json | null
+          gift_registry_url?: string | null
+          groom_bio?: string | null
+          groom_family?: string | null
+          groom_full_name?: string | null
+          groom_name?: string | null
+          hero_media_type?: string | null
+          hero_media_url?: string | null
+          id?: string | null
+          language?: Database["public"]["Enums"]["invitation_language"] | null
+          music_url?: string | null
+          our_story?: string | null
+          personal_message?: string | null
+          photo_url?: string | null
+          rsvp_deadline?: string | null
+          slug?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"] | null
+          template_id?: string | null
+          updated_at?: string | null
+          venue_description?: string | null
+          venue_photo?: string | null
+          wedding_city?: string | null
+          wedding_date?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      publish_invitation: {
+        Args: {
+          _invitation_id: string
+          _plan: string
+          _razorpay_order_id: string
+          _slug: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       event_type:
