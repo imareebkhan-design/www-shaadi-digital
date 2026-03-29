@@ -19,6 +19,7 @@ interface RazorpayOptions {
   };
   external?: {
     wallets?: string[];
+    handler?: (data: any) => void;
   };
   handler?: (response: RazorpayResponse) => void;
 }
