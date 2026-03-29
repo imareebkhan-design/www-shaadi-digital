@@ -131,6 +131,7 @@ export function useRazorpay() {
         contact: user?.phone || "",
       },
       theme: { color: "#C9941A" },
+      external: { wallets: ["amazonpay"] },
       handler: async (response: any) => {
         processingRef.current = false;
 
