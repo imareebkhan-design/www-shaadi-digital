@@ -41,6 +41,24 @@ export interface BuilderFormData {
   hero_media_url: string;
 }
 
+/** Which event_types to show for each wedding type */
+export const VISIBLE_EVENTS_BY_TYPE: Record<string, string[]> = {
+  hindu:    ["mehndi", "haldi", "sangeet", "baraat", "ceremony", "reception"],
+  sikh:     ["mehndi", "sangeet", "ceremony", "reception"],
+  muslim:   ["mehndi", "ceremony", "reception"],
+  christian:["ceremony", "reception"],
+  other:    ["ceremony", "reception"],
+};
+
+/** Display name of the main ceremony for each wedding type */
+export const CEREMONY_NAME_BY_TYPE: Record<string, string> = {
+  hindu:     "Vivah",
+  sikh:      "Anand Karaj",
+  muslim:    "Nikah",
+  christian: "Wedding Ceremony",
+  other:     "Wedding Ceremony",
+};
+
 export const DEFAULT_TAGLINES: Record<string, string> = {
   mehndi: "The Art of Love",
   haldi: "The Golden Glow",

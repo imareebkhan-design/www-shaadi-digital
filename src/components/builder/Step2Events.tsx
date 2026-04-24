@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Calendar, Clock, MapPin, Link as LinkIcon, Tag, FileText, Camera, Upload, CalendarDays } from "lucide-react";
-import { BuilderFormData, EventData, DEFAULT_TAGLINES } from "@/types/builder";
+import { BuilderFormData, EventData, DEFAULT_TAGLINES, VISIBLE_EVENTS_BY_TYPE } from "@/types/builder";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/ui/sonner";
@@ -12,6 +12,7 @@ interface Props {
   data: BuilderFormData;
   onChange: (data: Partial<BuilderFormData>) => void;
   errors: Record<string, string>;
+  weddingType?: string;
 }
 
 const DEFAULT_DESCRIPTIONS: Record<string, string> = {
@@ -32,27 +33,33 @@ const eventEmojis: Record<string, string> = {
   reception: "🥂",
 };
 
-const Step2Events = ({ data, onChange, errors }: Props) => {
+const Step2Events = ({ data, onChange, errors, weddingType = "hindu" }: Props) => {
   const { user } = useAuth();
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [uploading, setUploading] = useState<string | null>(null);
 
-  const updateEvent = (index: number, updates: Partial<EventData>) => {
-    const newEvents = [...data.events];
-    newEvents[index] = { ...newEvents[index], ...updates };
+  // Only show events relevant to this wedding type
+  const visibleTypes = VISIBLE_EVENTS_BY_TYPE[weddingType] ?? VISIBLE_EVENTS_BY_TYPE.hindu;
+  const visibleEvents = data.events.filter((e) => visibleTypes.includes(e.event_type));
+
+  // Map back to the full events array index for updates
+  const updateEvent = (eventType: string, updates: Partial<EventData>) => {
+    const newEvents = data.events.map((e) =>
+      e.event_type === eventType ? { ...e, ...updates } : e
+    );
     onChange({ events: newEvents });
   };
 
-  const handleToggle = (index: number, checked: boolean, event: EventData) => {
+  const handleToggle = (event: EventData, checked: boolean) => {
     if (event.event_type === "ceremony" && !checked) return;
     const updates: Partial<EventData> = { is_enabled: checked };
     if (checked && !event.description) {
       updates.description = DEFAULT_DESCRIPTIONS[event.event_type] || "";
     }
-    updateEvent(index, updates);
+    updateEvent(event.event_type, updates);
   };
 
-  const handlePhotoUpload = async (index: number, file: File, eventType: string) => {
+  const handlePhotoUpload = async (file: File, eventType: string) => {
     if (file.size > 5 * 1024 * 1024) { toast.error("File must be under 5MB"); return; }
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) { toast.error("Only JPG, PNG, WEBP"); return; }
     setUploading(eventType);
@@ -61,12 +68,12 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
     const { error } = await supabase.storage.from("couple-photos").upload(path, file, { upsert: true });
     if (error) { toast.error(error.message); setUploading(null); return; }
     const { data: urlData } = supabase.storage.from("couple-photos").getPublicUrl(path);
-    updateEvent(index, { event_photo: urlData.publicUrl });
+    updateEvent(eventType, { event_photo: urlData.publicUrl });
     setUploading(null);
     toast.success("Photo uploaded!");
   };
 
-  const enabledCount = data.events.filter(e => e.is_enabled).length;
+  const enabledCount = visibleEvents.filter(e => e.is_enabled).length;
 
   return (
     <div className="space-y-6">
@@ -89,7 +96,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
       )}
 
       <div className="space-y-3">
-        {data.events.map((event, index) => (
+        {visibleEvents.map((event) => (
           <div
             key={event.event_type}
             className={`border overflow-hidden transition-all duration-200 ${
@@ -103,7 +110,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
               <div className="flex items-center gap-3">
                 <Switch
                   checked={event.is_enabled}
-                  onCheckedChange={(checked) => handleToggle(index, checked, event)}
+                  onCheckedChange={(checked) => handleToggle(event, checked)}
                 />
                 <span className="text-lg mr-1">{eventEmojis[event.event_type] || "📌"}</span>
                 <div>
@@ -141,7 +148,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                         <Input
                           placeholder={DEFAULT_TAGLINES[event.event_type] || "e.g. A beautiful celebration"}
                           value={event.tagline || ""}
-                          onChange={(e) => updateEvent(index, { tagline: e.target.value })}
+                          onChange={(e) => updateEvent(event.event_type, { tagline: e.target.value })}
                           className="border-border/60"
                         />
                       </div>
@@ -152,7 +159,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                         <Input
                           placeholder="e.g. An intimate afternoon of art and celebration"
                           value={event.description || ""}
-                          onChange={(e) => updateEvent(index, { description: e.target.value })}
+                          onChange={(e) => updateEvent(event.event_type, { description: e.target.value })}
                           className="border-border/60"
                         />
                       </div>
@@ -164,7 +171,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
-                          onClick={() => updateEvent(index, { event_photo: "" })}
+                          onClick={() => updateEvent(event.event_type, { event_photo: "" })}
                           className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-body border transition-all ${
                             !event.event_photo
                               ? "border-primary bg-primary/5 text-primary"
@@ -191,7 +198,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                           className="hidden"
                           onChange={(e) => {
                             const f = e.target.files?.[0];
-                            if (f) handlePhotoUpload(index, f, event.event_type);
+                            if (f) handlePhotoUpload(f, event.event_type);
                           }}
                         />
                       </div>
@@ -217,7 +224,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                         <Input
                           type="date"
                           value={event.event_date}
-                          onChange={(e) => updateEvent(index, { event_date: e.target.value })}
+                          onChange={(e) => updateEvent(event.event_type, { event_date: e.target.value })}
                           className="border-border/60"
                         />
                       </div>
@@ -228,7 +235,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                         <Input
                           type="time"
                           value={event.event_time}
-                          onChange={(e) => updateEvent(index, { event_time: e.target.value })}
+                          onChange={(e) => updateEvent(event.event_type, { event_time: e.target.value })}
                           className="border-border/60"
                         />
                       </div>
@@ -240,7 +247,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                       <Input
                         placeholder="e.g. The Grand Ballroom"
                         value={event.venue_name}
-                        onChange={(e) => updateEvent(index, { venue_name: e.target.value })}
+                        onChange={(e) => updateEvent(event.event_type, { venue_name: e.target.value })}
                         className="border-border/60"
                       />
                     </div>
@@ -249,7 +256,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                       <Input
                         placeholder="Full address"
                         value={event.venue_address}
-                        onChange={(e) => updateEvent(index, { venue_address: e.target.value })}
+                        onChange={(e) => updateEvent(event.event_type, { venue_address: e.target.value })}
                         className="border-border/60"
                       />
                     </div>
@@ -260,7 +267,7 @@ const Step2Events = ({ data, onChange, errors }: Props) => {
                       <Input
                         placeholder="Paste a Google Maps share link"
                         value={event.maps_url}
-                        onChange={(e) => updateEvent(index, { maps_url: e.target.value })}
+                        onChange={(e) => updateEvent(event.event_type, { maps_url: e.target.value })}
                         className="border-border/60"
                       />
                     </div>

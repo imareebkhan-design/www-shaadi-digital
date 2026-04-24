@@ -235,10 +235,15 @@ const HeroSection = () => {
         </Link>
       </div>
 
-      {/* Micro trust copy */}
-      <p className={`relative z-[2] text-[11px] md:text-xs text-muted-foreground tracking-[0.5px] mt-5 transition-all duration-700 delay-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
-        ✓ 200+ templates &nbsp;·&nbsp; ✓ Live RSVP tracking &nbsp;·&nbsp; ✓ Edit anytime, free
-      </p>
+      {/* Pricing anchor + micro trust */}
+      <div className={`relative z-[2] text-center mt-5 transition-all duration-700 delay-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
+        <p className="text-[11px] md:text-xs text-muted-foreground tracking-[0.5px]">
+          ✓ 10 templates &nbsp;·&nbsp; ✓ Live RSVP tracking &nbsp;·&nbsp; ✓ Edit anytime, free
+        </p>
+        <p className="text-[11px] md:text-xs mt-1.5 font-medium" style={{ color: "hsl(var(--secondary))" }}>
+          Publish from ₹999 &nbsp;·&nbsp; one-time payment, no subscription
+        </p>
+      </div>
 
       {/* Trust badges */}
       <div className={`relative z-[2] grid grid-cols-2 md:flex mt-8 md:mt-12 bg-white/55 backdrop-blur-xl border border-secondary/[0.18] rounded-2xl overflow-hidden transition-all duration-700 delay-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>

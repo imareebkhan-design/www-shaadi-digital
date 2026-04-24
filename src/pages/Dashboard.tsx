@@ -519,6 +519,49 @@ const Dashboard = () => {
               ))}
             </motion.div>
 
+            {/* ───────── RSVP Usage Meter (Shubh plan) ───────── */}
+            {activePlan?.plan === "shubh" && invitation.status === "published" && (
+              <motion.div
+                initial="hidden" animate="visible" variants={fadeUp} custom={4}
+                className="bg-card border border-border/50 p-5 mb-6"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <p className="font-body text-sm font-medium text-foreground">RSVP capacity</p>
+                    <p className="font-body text-xs text-muted-foreground mt-0.5">Shubh plan — 100 RSVPs included</p>
+                  </div>
+                  <span className={`font-body text-lg font-semibold ${rsvps.length >= 80 ? "text-destructive" : "text-foreground"}`}>
+                    {rsvps.length} <span className="text-sm font-normal text-muted-foreground">/ 100</span>
+                  </span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden mb-3">
+                  <div
+                    className={`h-full rounded-full transition-all duration-700 ${
+                      rsvps.length >= 100 ? "bg-destructive" :
+                      rsvps.length >= 80  ? "bg-amber-500" : "bg-secondary"
+                    }`}
+                    style={{ width: `${Math.min((rsvps.length / 100) * 100, 100)}%` }}
+                  />
+                </div>
+                {rsvps.length >= 80 && (
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-border/60">
+                    <p className="font-body text-xs text-amber-700">
+                      {rsvps.length >= 100
+                        ? "You've hit the limit — guests can no longer RSVP. Upgrade now."
+                        : `${100 - rsvps.length} spots left before your guests can't RSVP. Upgrade before it's too late.`
+                      }
+                    </p>
+                    <Link
+                      to="/pricing"
+                      className="shrink-0 bg-primary text-primary-foreground px-5 py-2 text-[11px] font-body font-semibold tracking-wide uppercase hover:bg-primary/90 transition-colors"
+                    >
+                      Upgrade to Unlimited →
+                    </Link>
+                  </div>
+                )}
+              </motion.div>
+            )}
+
             {/* ───────── RSVP Dashboard ───────── */}
             {invitation.status === "published" && (
               <motion.div

@@ -8,6 +8,8 @@ interface Props {
   data: BuilderFormData;
   onChange: (data: Partial<BuilderFormData>) => void;
   errors: Record<string, string>;
+  weddingType: string;
+  onWeddingTypeChange: (type: string) => void;
 }
 
 const SectionDivider = ({ label }: { label: string }) => (
@@ -18,7 +20,15 @@ const SectionDivider = ({ label }: { label: string }) => (
   </div>
 );
 
-const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
+const WEDDING_TYPES = [
+  { id: "hindu",    label: "Hindu",    icon: "🪔" },
+  { id: "muslim",   label: "Muslim",   icon: "☪️" },
+  { id: "sikh",     label: "Sikh",     icon: "🪯" },
+  { id: "christian",label: "Christian",icon: "✝️" },
+  { id: "other",    label: "Other",    icon: "💍" },
+];
+
+const Step1CoupleNames = ({ data, onChange, errors, weddingType, onWeddingTypeChange }: Props) => {
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -26,8 +36,32 @@ const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
         <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 mb-3">
           <Heart className="w-4.5 h-4.5 text-primary" />
         </div>
-        <h2 className="font-display text-2xl md:text-3xl text-primary mb-1">Couple & Family Names</h2>
-        <p className="font-body text-sm text-muted-foreground">Tell us who's getting married</p>
+        <h2 className="font-display text-2xl md:text-3xl text-primary mb-1">Let's build your invite</h2>
+        <p className="font-body text-sm text-muted-foreground">About 5 min · saves automatically</p>
+      </div>
+
+      {/* ── Wedding Type ── */}
+      <div className="p-4 bg-callout/30 border border-secondary/10">
+        <p className="font-body text-sm font-medium text-foreground mb-3">What type of wedding?</p>
+        <div className="flex flex-wrap gap-2">
+          {WEDDING_TYPES.map((type) => (
+            <button
+              key={type.id}
+              type="button"
+              onClick={() => onWeddingTypeChange(type.id)}
+              className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-body border transition-all ${
+                weddingType === type.id
+                  ? "border-primary bg-primary/5 text-primary font-medium"
+                  : "border-border text-muted-foreground hover:border-primary/40"
+              }`}
+            >
+              <span style={{ fontSize: 14 }}>{type.icon}</span> {type.label}
+            </button>
+          ))}
+        </div>
+        <p className="text-[11px] text-muted-foreground mt-2">
+          We'll show only relevant ceremonies for your wedding type
+        </p>
       </div>
 
       {/* Names */}
@@ -89,7 +123,7 @@ const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
 
       <div>
         <label className="font-body text-sm font-medium text-foreground block mb-1.5">
-          Bride's Family <span className="text-destructive">*</span>
+          Bride's Family <span className="text-muted-foreground text-xs">(optional)</span>
         </label>
         <Input
           placeholder="e.g. Daughter of Mr. Vikram & Mrs. Anjali Sharma"
@@ -97,12 +131,11 @@ const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
           onChange={(e) => onChange({ bride_family: e.target.value })}
           className="border-border/60 focus:border-primary/40"
         />
-        {errors.bride_family && <p className="text-xs text-destructive mt-1">{errors.bride_family}</p>}
       </div>
 
       <div>
         <label className="font-body text-sm font-medium text-foreground block mb-1.5">
-          Groom's Family <span className="text-destructive">*</span>
+          Groom's Family <span className="text-muted-foreground text-xs">(optional)</span>
         </label>
         <Input
           placeholder="e.g. Son of Mr. Rajesh & Mrs. Sunita Mehta"
@@ -110,7 +143,6 @@ const Step1CoupleNames = ({ data, onChange, errors }: Props) => {
           onChange={(e) => onChange({ groom_family: e.target.value })}
           className="border-border/60 focus:border-primary/40"
         />
-        {errors.groom_family && <p className="text-xs text-destructive mt-1">{errors.groom_family}</p>}
       </div>
 
       <SectionDivider label="About the Couple" />

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import SEOHead from "@/components/SEOHead";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePlan } from "@/contexts/PlanContext";
 import { supabase } from "@/integrations/supabase/client";
 import { TEMPLATE_REGISTRY } from "@/templates";
 import type { InvitationData } from "@/templates/types";
@@ -16,12 +17,37 @@ import Step4Preview from "@/components/builder/Step4Preview";
 import Step5Publish from "@/components/builder/Step5Publish";
 import PublishSuccess from "@/components/builder/PublishSuccess";
 import TemplateSwitcherModal from "@/components/builder/TemplateSwitcherModal";
+import PaymentFailedModal from "@/components/PaymentFailedModal";
+import PostPaymentSignupModal from "@/components/PostPaymentSignupModal";
 import { Button } from "@/components/ui/button";
 import { Eye, ArrowLeft, ArrowRight, X, Check } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { defaultEvents, DEFAULT_TAGLINES } from "@/types/builder";
+import { useRazorpay } from "@/hooks/useRazorpay";
+import { defaultEvents, DEFAULT_TAGLINES, CEREMONY_NAME_BY_TYPE } from "@/types/builder";
 import { AnimatePresence } from "framer-motion";
+
+/** Map builder plan IDs (basic/premium/elite) to Razorpay plan IDs (shubh/shaadi/shaahi) */
+const BUILDER_TO_RAZORPAY_PLAN = {
+  basic: "shubh",
+  premium: "shaadi",
+  elite: "shaahi",
+} as const;
+
+/**
+ * Slugify that gracefully handles non-Latin scripts (Hindi, Urdu, Tamil, etc.).
+ * Strips non-ASCII after unicode normalization; falls back to random suffix if result is too short.
+ */
+const slugify = (s: string): string => {
+  const normalized = s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+  const latin = normalized
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  return latin.length >= 2 ? latin : `invite-${Math.random().toString(36).slice(2, 7)}`;
+};
 
 const getCeremonyLabel = (community: string): string => {
   switch (community) {
@@ -66,6 +92,7 @@ const InvitationBuilder = () => {
   const { templateId: urlTemplateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const { hasPlan, plan: userPlan } = usePlan();
   const isMobile = useIsMobile();
 
   const [activeTemplateId, setActiveTemplateId] = useState(urlTemplateId || "");
@@ -75,17 +102,39 @@ const InvitationBuilder = () => {
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [invitationId, setInvitationId] = useState<string | null>(null);
+  const [isLoadingData, setIsLoadingData] = useState(true);
   const [showMobilePreview, setShowMobilePreview] = useState(false);
   const [showTemplateSwitcher, setShowTemplateSwitcher] = useState(false);
   const [publishLoading, setPublishLoading] = useState(false);
   const [publishedSlug, setPublishedSlug] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const [weddingType, setWeddingType] = useState("hindu");
+  /** Plan staged for payment — shown in pre-payment confirmation modal before Razorpay opens */
+  const [prePaymentPlan, setPrePaymentPlan] = useState<"basic" | "premium" | "elite" | null>(null);
   const autoSaveTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const savedTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** Stores the selected plan while we wait for Razorpay payment to complete. */
+  const pendingPublishPlan = useRef<"basic" | "premium" | "elite" | null>(null);
 
   const [formData, setFormData] = useState<InvitationData>(
     defaultFormData(getCeremonyLabel(template?.community || ""))
   );
+
+  const {
+    openCheckout,
+    signupModalData,
+    closeSignupModal,
+    failureModalData,
+    closeFailureModal,
+    retryPayment,
+  } = useRazorpay({
+    onPaymentSuccess: async (razorpayOrderId) => {
+      if (pendingPublishPlan.current) {
+        await doPublish(pendingPublishPlan.current, razorpayOrderId);
+        pendingPublishPlan.current = null;
+      }
+    },
+  });
 
   // Keep activeTemplateId in sync with URL changes
   useEffect(() => {
@@ -141,6 +190,7 @@ const InvitationBuilder = () => {
     if (!user || !activeTemplateId) return;
 
     const loadOrCreate = async () => {
+      setIsLoadingData(true);
       const { data: existing } = await supabase
         .from("invitations")
         .select("*")
@@ -225,6 +275,8 @@ const InvitationBuilder = () => {
           );
         }
       }
+
+      setIsLoadingData(false);
     };
 
     loadOrCreate();
@@ -291,13 +343,32 @@ const InvitationBuilder = () => {
     savedTimeout.current = setTimeout(() => setSaveStatus("idle"), 3000);
   }, [invitationId, user, formData]);
 
-  // Auto-save every 30 seconds
+  /**
+   * Stable ref that always points to the latest saveToSupabase.
+   * Lets the interval call it without resetting on every formData change.
+   */
+  const saveRef = useRef<() => Promise<void>>(async () => {});
+  useEffect(() => { saveRef.current = saveToSupabase; }, [saveToSupabase]);
+
+  // Auto-save every 30 seconds — interval is created ONCE and never reset.
   useEffect(() => {
-    autoSaveTimer.current = setInterval(() => saveToSupabase(), 30000);
+    autoSaveTimer.current = setInterval(() => saveRef.current(), 30_000);
     return () => { if (autoSaveTimer.current) clearInterval(autoSaveTimer.current); };
-  }, [saveToSupabase]);
+  }, []); // ← intentionally empty: interval must not reset on every keystroke
 
   const handleBlur = useCallback(() => { saveToSupabase(); }, [saveToSupabase]);
+
+  /** When user picks a wedding type, update state and rename the ceremony event accordingly. */
+  const handleWeddingTypeChange = useCallback((type: string) => {
+    setWeddingType(type);
+    const ceremonyName = CEREMONY_NAME_BY_TYPE[type] || "Wedding Ceremony";
+    setFormData((prev) => ({
+      ...prev,
+      events: prev.events.map((e) =>
+        e.event_type === "ceremony" ? { ...e, event_name: ceremonyName } : e
+      ),
+    }));
+  }, []);
 
   const updateFormData = (updates: Partial<InvitationData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
@@ -308,8 +379,7 @@ const InvitationBuilder = () => {
     if (s === 1) {
       if (!formData.bride_name.trim()) newErrors.bride_name = "Bride's name is required";
       if (!formData.groom_name.trim()) newErrors.groom_name = "Groom's name is required";
-      if (!formData.bride_family.trim()) newErrors.bride_family = "Bride's family is required";
-      if (!formData.groom_family.trim()) newErrors.groom_family = "Groom's family is required";
+      // bride_family and groom_family are optional — they improve the invite but shouldn't block progress
     }
     if (s === 2) {
       const ceremonyEvent = formData.events.find((e) => e.event_type === "ceremony");
@@ -327,12 +397,15 @@ const InvitationBuilder = () => {
 
   const handleBack = () => setStep((s) => Math.max(s - 1, 1));
 
-  const handlePublish = async (plan: "basic" | "premium" | "elite") => {
+  /** Core publish — called either directly (if plan exists) or after payment success. */
+  const doPublish = useCallback(async (
+    selectedPlan: "basic" | "premium" | "elite",
+    razorpayOrderId: string,
+  ) => {
     if (!invitationId || !user) return;
     setPublishLoading(true);
     await saveToSupabase();
 
-    const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").trim();
     let slug = `${slugify(formData.bride_name)}-and-${slugify(formData.groom_name)}`;
 
     const { data: existing } = await supabase
@@ -343,21 +416,54 @@ const InvitationBuilder = () => {
 
     if (existing) slug = `${slug}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-    // Use secure RPC that verifies payment before publishing
-    const razorpayOrderId = sessionStorage.getItem("last_razorpay_order_id") || "";
     const { error } = await supabase.rpc("publish_invitation" as any, {
       _invitation_id: invitationId,
-      _plan: plan,
+      _plan: selectedPlan,
       _slug: slug,
       _razorpay_order_id: razorpayOrderId,
     });
+
     setPublishLoading(false);
-    if (error) { toast("Failed to publish. Please try again."); return; }
+
+    if (error) {
+      toast("Failed to publish. Please try again.");
+      return;
+    }
+
     setPublishedSlug(slug);
     toast("🎉 Your invitation is live!");
-  };
+  }, [invitationId, user, formData, saveToSupabase]);
 
-  if (!template || !TemplateComponent || authLoading) {
+  /**
+   * Entry point from Step5Publish CTA.
+   * - If user already has an active paid plan → publish directly.
+   * - Otherwise → show pre-payment "what you get" modal first, then open Razorpay.
+   */
+  const handlePublish = useCallback(async (selectedPlan: "basic" | "premium" | "elite") => {
+    if (!invitationId || !user) return;
+
+    const storedOrderId =
+      (userPlan?.razorpay_order_id) ||
+      sessionStorage.getItem("last_razorpay_order_id") ||
+      "";
+
+    if (hasPlan && storedOrderId) {
+      await doPublish(selectedPlan, storedOrderId);
+      return;
+    }
+
+    // Show confirmation screen before opening Razorpay
+    setPrePaymentPlan(selectedPlan);
+  }, [invitationId, user, hasPlan, userPlan, doPublish]);
+
+  /** Called from the pre-payment modal's "Pay & Publish" button */
+  const confirmAndPay = useCallback((selectedPlan: "basic" | "premium" | "elite") => {
+    setPrePaymentPlan(null);
+    pendingPublishPlan.current = selectedPlan;
+    openCheckout(BUILDER_TO_RAZORPAY_PLAN[selectedPlan]);
+  }, [openCheckout]);
+
+  if (!template || !TemplateComponent || authLoading || isLoadingData) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
@@ -367,8 +473,8 @@ const InvitationBuilder = () => {
 
   const renderStep = () => {
     switch (step) {
-      case 1: return <Step1CoupleNames data={formData as any} onChange={updateFormData as any} errors={errors} />;
-      case 2: return <Step2Events data={formData as any} onChange={updateFormData as any} errors={errors} />;
+      case 1: return <Step1CoupleNames data={formData as any} onChange={updateFormData as any} errors={errors} weddingType={weddingType} onWeddingTypeChange={handleWeddingTypeChange} />;
+      case 2: return <Step2Events data={formData as any} onChange={updateFormData as any} errors={errors} weddingType={weddingType} />;
       case 3: return <Step3PhotoLanguage data={formData as any} onChange={updateFormData as any} errors={errors} />;
       case 4: return (
         <Step4Preview
@@ -556,6 +662,78 @@ const InvitationBuilder = () => {
           />
         )}
       </AnimatePresence>
+
+      {/* Post-payment signup modal (for unauthenticated payments — edge case) */}
+      {signupModalData && (
+        <PostPaymentSignupModal
+          open={!!signupModalData}
+          planId={signupModalData.planId}
+          amount={signupModalData.amount}
+          razorpayOrderId={signupModalData.razorpayOrderId}
+          onClose={closeSignupModal}
+        />
+      )}
+
+      {/* Payment failure modal */}
+      {failureModalData && (
+        <PaymentFailedModal
+          open={!!failureModalData}
+          data={failureModalData}
+          onRetry={retryPayment}
+          onClose={closeFailureModal}
+        />
+      )}
+
+      {/* ── Pre-payment confirmation modal ── */}
+      {prePaymentPlan && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,0.55)" }}
+          onClick={() => setPrePaymentPlan(null)}
+        >
+          <div
+            className="bg-background border border-border w-full max-w-sm p-6 space-y-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-center">
+              <p className="text-2xl mb-2">🎉</p>
+              <h3 className="font-display text-xl text-primary mb-1">Ready to go live?</h3>
+              <p className="font-body text-xs text-muted-foreground">
+                Your invitation is built. Here's what happens next.
+              </p>
+            </div>
+
+            <div className="space-y-3 py-2 border-t border-b border-border">
+              {[
+                "Your invite goes live the moment payment clears",
+                "Share the link on WhatsApp or copy it anywhere",
+                "Edit details anytime — link stays the same forever",
+                "Every RSVP appears in your dashboard instantly",
+              ].map((text) => (
+                <div key={text} className="flex items-start gap-2.5 font-body text-sm text-muted-foreground">
+                  <Check className="w-4 h-4 text-secondary mt-0.5 shrink-0" />
+                  {text}
+                </div>
+              ))}
+            </div>
+
+            <div className="space-y-2.5">
+              <Button
+                className="w-full bg-primary text-primary-foreground rounded-none h-12 font-body text-sm shadow-md"
+                onClick={() => confirmAndPay(prePaymentPlan)}
+              >
+                Pay & Publish →
+              </Button>
+              <button
+                className="w-full font-body text-xs text-muted-foreground py-2 hover:text-foreground transition-colors"
+                onClick={() => setPrePaymentPlan(null)}
+              >
+                Go back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
