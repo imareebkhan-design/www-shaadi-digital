@@ -583,20 +583,12 @@ const InvitationBuilder = () => {
                 className="absolute top-[10px] left-1/2 -translate-x-1/2 z-20 rounded-full"
                 style={{ width: 72, height: 20, background: "#1a1a1a" }}
               />
-              {/* Scrollable template inside, scaled down */}
+              {/* Scrollable template inside — zoom scales layout correctly, scroll works */}
               <div
-                className="absolute overflow-hidden"
+                className="absolute overflow-y-auto overflow-x-hidden"
                 style={{ top: 8, left: 8, right: 8, bottom: 8, borderRadius: 32 }}
               >
-                <div
-                  className="overflow-y-auto"
-                  style={{
-                    width: 430,
-                    height: 932,
-                    transform: "scale(0.614)",
-                    transformOrigin: "top left",
-                  }}
-                >
+                <div style={{ width: 430, zoom: 0.614 }}>
                   <WeddingTemplate config={invitationDataToConfig(formData)} templateId={activeTemplateId!} />
                 </div>
               </div>
