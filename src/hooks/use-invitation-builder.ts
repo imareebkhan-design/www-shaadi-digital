@@ -5,7 +5,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { usePlan } from "@/contexts/PlanContext";
 import { TEMPLATE_REGISTRY } from "@/templates";
 import type { InvitationData } from "@/templates/types";
-import { defaultEvents, DEFAULT_TAGLINES, CEREMONY_NAME_BY_TYPE } from "@/types/builder";
+import { getVisibleSteps, validateStep, getCeremonyLabel, getVisibleEventTypes, getPaymentPlans } from "@/templates/stepEngine";
+import { defaultEvents, DEFAULT_TAGLINES } from "@/types/builder";
 import { useRazorpay } from "@/hooks/useRazorpay";
 import { fetchDraftInvitation, createDraftInvitation, updateDraftEvents, updateDraftInvitation, updateInvitationTemplate, publishInvitation } from "@/services/invitationService";
 
@@ -16,19 +17,6 @@ const BUILDER_TO_RAZORPAY_PLAN = {
 } as const;
 
 export const stepLabels = ["Names", "Events", "Photos", "Preview", "Publish"] as const;
-
-export const getCeremonyLabel = (community: string): string => {
-  switch (community) {
-    case "Muslim":
-      return "Nikah";
-    case "Sikh":
-      return "Anand Karaj";
-    case "South Indian":
-      return "Kalyanam";
-    default:
-      return "Vivah";
-  }
-};
 
 export const defaultInvitationData = (ceremonyLabel: string): InvitationData => ({
   bride_name: "",
@@ -60,7 +48,7 @@ export const defaultInvitationData = (ceremonyLabel: string): InvitationData => 
   hero_media_url: "",
 });
 
-export const validateBuilderStep = (step: number, formData: InvitationData) => {
+export const validateBuilderStep = (step: number, formData: InvitationData, workflow?: any) => {
   const errors: Record<string, string> = {};
 
   if (step === 1) {
@@ -237,7 +225,9 @@ export const useInvitationBuilder = (urlTemplateId?: string) => {
 
   const handleWeddingTypeChange = useCallback((type: string) => {
     setWeddingType(type);
-    const ceremonyName = CEREMONY_NAME_BY_TYPE[type] || "Wedding Ceremony";
+    if (!template?.workflow) return;
+
+    const ceremonyName = getCeremonyLabel(template.workflow, type);
     setFormData((prev) => ({
       ...prev,
       events: prev.events.map((event) =>

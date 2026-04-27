@@ -1,5 +1,7 @@
 import type { ComponentType } from "react";
 import type { InvitationData, TemplateProps } from "./types";
+import type { TemplateWorkflow } from "./workflow";
+import { createStandardWorkflow, createMinimalistWorkflow, createLuxuryWorkflow } from "./workflow";
 import RoyalMaroon from "./RoyalMaroon";
 import EmeraldSouth from "./EmeraldSouth";
 import MidnightBlue from "./MidnightBlue";
@@ -41,6 +43,7 @@ export interface TemplateRegistryEntry extends TemplateMeta {
   thumbnail_gradient: string;
   description: string;
   tone: string;
+  workflow: TemplateWorkflow; // NEW: Workflow config for dynamic steps
 }
 
 export type TemplateConfig = TemplateMeta;
@@ -218,6 +221,7 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     isNew: false,
     isFeatured: true,
     isPremium: false,
+    workflow: createStandardWorkflow("royal-maroon"),
     isComingSoon: false,
     availableOn: ["basic", "premium", "elite"],
     sampleData: { brideName: "Priya", groomName: "Arjun", date: "15 · 12 · 2026", city: "Jaipur" },
