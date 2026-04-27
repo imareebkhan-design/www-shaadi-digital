@@ -34,12 +34,12 @@ const ContactOptionsDialog = ({ open, onOpenChange }: ContactOptionsDialogProps)
     }
     setSubmitting(true);
     try {
-      const { error } = await supabase.from("contact_requests" as any).insert({
+      const { error } = await supabase.from("contact_requests").insert({
         name: form.name.trim(),
         phone: form.phone.trim(),
         message: form.message.trim() || null,
         template_id: "midnight-blue",
-      } as any);
+      });
       if (error) throw error;
       toast.success("We've received your request! We'll get back to you soon. 🙏");
       setForm({ name: "", phone: "", message: "" });

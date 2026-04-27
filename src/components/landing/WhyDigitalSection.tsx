@@ -77,7 +77,7 @@ const WhyDigitalSection = () => (
         {cards.map((c, i) => (
           <div
             key={c.title}
-            className={`bg-white/[0.03] border-l border-secondary/25 border-b border-b-white/[0.04] p-7 grid grid-cols-[48px_1fr] gap-x-5 items-start relative transition-all duration-[350ms] hover:bg-secondary/[0.07] hover:border-l-secondary/60 hover:translate-x-1 cursor-default ${i === 0 ? "rounded-t-lg" : ""} ${i === cards.length - 1 ? "rounded-b-lg !border-b-secondary/15" : ""}`}
+            className={`bg-white/[0.03] border-l border-secondary/25 border-b border-b-white/[0.04] p-7 grid grid-cols-[48px_1fr] gap-x-5 items-start relative transition-all transition-duration-[350ms] hover:bg-secondary/[0.07] hover:border-l-secondary/60 hover:translate-x-1 cursor-default ${i === 0 ? "rounded-t-lg" : ""} ${i === cards.length - 1 ? "rounded-b-lg !border-b-secondary/15" : ""}`}
           >
             <div className="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
               {c.icon}

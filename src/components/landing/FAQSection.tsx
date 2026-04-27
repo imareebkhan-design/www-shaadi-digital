@@ -90,7 +90,7 @@ const FAQSection = () => {
                 </div>
                 <span className={`w-7 h-7 rounded-full border border-secondary/25 flex items-center justify-center shrink-0 text-secondary text-base leading-none transition-all duration-300 ${openIndex === i ? "bg-secondary !text-[hsl(var(--maroon-dark))] !border-secondary rotate-45" : ""}`}>+</span>
               </div>
-              <div className={`overflow-hidden transition-all duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${openIndex === i ? "max-h-[300px] pb-[22px]" : "max-h-0"}`}>
+              <div className={`overflow-hidden transition-all transition-duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${openIndex === i ? "max-h-[300px] pb-[22px]" : "max-h-0"}`}>
                 <div className="pl-9 text-sm text-muted-foreground leading-[1.9] font-light [&>strong]:text-[hsl(var(--maroon-dark))] [&>strong]:font-medium" dangerouslySetInnerHTML={{ __html: f.a }} />
               </div>
             </div>

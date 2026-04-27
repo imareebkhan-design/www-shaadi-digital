@@ -5,7 +5,7 @@ import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import TemplatePreviewModal from "@/components/TemplatePreviewModal";
 import ContactOptionsDialog from "@/components/ContactOptionsDialog";
-import { templates, FILTER_OPTIONS, type TemplateConfig } from "@/data/templates";
+import { templates, FILTER_OPTIONS, type TemplateConfig } from "@/templates";
 import { Search, SlidersHorizontal, X, Bell, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";

@@ -79,7 +79,8 @@ const PostPaymentSignupModal = ({
       }
 
       // 2. Update payments table — set user_id where razorpay_order_id matches
-      await (supabase.from("payments" as any) as any)
+      await supabase
+        .from("payments")
         .update({ user_id: userId, email: email.trim() })
         .eq("razorpay_order_id", razorpayOrderId);
 
@@ -88,7 +89,7 @@ const PostPaymentSignupModal = ({
       const expiresAt = new Date(now);
       expiresAt.setFullYear(expiresAt.getFullYear() + 1);
 
-      const { error: planError } = await (supabase.from("user_plans" as any) as any).insert({
+      const { error: planError } = await supabase.from("user_plans").insert({
         user_id: userId,
         plan: planId,
         razorpay_order_id: razorpayOrderId,

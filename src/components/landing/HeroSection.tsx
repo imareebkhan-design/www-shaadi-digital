@@ -1,6 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 
+type Particle = {
+  w: number;
+  top: string;
+  dur: string;
+  del: string;
+  op: number;
+} & ({ left: string } | { right: string });
+
 const MandalaLarge = () => (
   <svg className="absolute pointer-events-none w-[700px] h-[700px] -top-[200px] -right-[180px] opacity-[0.055] hidden md:block" style={{ animation: "spin 80s linear infinite" }} viewBox="0 0 500 500" fill="none">
     <circle cx="250" cy="250" r="240" stroke="hsl(var(--secondary))" strokeWidth="1" />
@@ -36,7 +44,7 @@ const MandalaSmall = () => (
   </svg>
 );
 
-const particles = [
+const particles: Particle[] = [
   { w: 6, top: "18%", left: "12%", dur: "14s", del: "0s", op: 0.35 },
   { w: 4, top: "35%", left: "22%", dur: "18s", del: "3s", op: 0.2 },
   { w: 8, top: "60%", right: "15%", dur: "12s", del: "1s", op: 0.25 },
@@ -71,7 +79,10 @@ const createTypingSound = () => {
       gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.045);
       osc.start(audioCtx.currentTime);
       osc.stop(audioCtx.currentTime + 0.05);
-    } catch {}
+    } catch (error) {
+      // Silently handle audio context errors
+      console.warn("Audio playback failed:", error);
+    }
   };
 };
 
@@ -163,7 +174,8 @@ const HeroSection = () => {
             className="absolute rounded-full pointer-events-none"
             style={{
               width: p.w, height: p.w,
-              top: p.top, left: p.left, right: (p as any).right,
+              top: p.top,
+              ...( 'left' in p ? { left: p.left } : { right: p.right }),
               background: `radial-gradient(circle, rgba(201,148,26,0.5) 0%, transparent 70%)`,
               animation: `floatP ${p.dur} ease-in-out infinite`,
               animationDelay: p.del,
@@ -219,7 +231,7 @@ const HeroSection = () => {
       </p>
 
       {/* CTAs */}
-      <div className={`relative z-[2] flex flex-col md:flex-row gap-3.5 w-full md:w-auto items-center justify-center mt-8 md:mt-9 px-4 md:px-0 transition-all duration-700 delay-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+      <div className={`relative z-[2] flex flex-col md:flex-row gap-3.5 w-full md:w-auto items-center justify-center mt-8 md:mt-9 px-4 md:px-0 transition-all duration-700 animation-delay-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
         <Link
           to="/signup"
           className="relative overflow-hidden w-full md:w-auto bg-primary text-primary-foreground px-10 py-4 min-h-[52px] flex items-center justify-center text-[11px] font-semibold tracking-[2px] uppercase rounded-full hover:bg-[hsl(var(--maroon-dark))] hover:-translate-y-[3px] transition-all duration-300 shadow-[0_8px_32px_rgba(123,28,46,0.28)]"
@@ -235,18 +247,13 @@ const HeroSection = () => {
         </Link>
       </div>
 
-      {/* Pricing anchor + micro trust */}
-      <div className={`relative z-[2] text-center mt-5 transition-all duration-700 delay-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
-        <p className="text-[11px] md:text-xs text-muted-foreground tracking-[0.5px]">
-          ✓ 10 templates &nbsp;·&nbsp; ✓ Live RSVP tracking &nbsp;·&nbsp; ✓ Edit anytime, free
-        </p>
-        <p className="text-[11px] md:text-xs mt-1.5 font-medium" style={{ color: "hsl(var(--secondary))" }}>
-          Publish from ₹999 &nbsp;·&nbsp; one-time payment, no subscription
-        </p>
-      </div>
+      {/* Micro trust copy */}
+      <p className={`relative z-[2] text-[11px] md:text-xs text-muted-foreground tracking-[0.5px] mt-5 transition-all duration-700 animation-delay-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
+        ✓ 200+ templates &nbsp;·&nbsp; ✓ Live RSVP tracking &nbsp;·&nbsp; ✓ Edit anytime, free
+      </p>
 
       {/* Trust badges */}
-      <div className={`relative z-[2] grid grid-cols-2 md:flex mt-8 md:mt-12 bg-white/55 backdrop-blur-xl border border-secondary/[0.18] rounded-2xl overflow-hidden transition-all duration-700 delay-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+      <div className={`relative z-[2] grid grid-cols-2 md:flex mt-8 md:mt-12 bg-white/55 backdrop-blur-xl border border-secondary/[0.18] rounded-2xl overflow-hidden transition-all duration-700 animation-delay-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
         {[
           { icon: "🛡️", label: "100% Secure" },
           { icon: "⏱️", label: "Ready in 10 Minutes" },
@@ -261,7 +268,7 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll hint - hidden on mobile */}
-      <div className={`absolute bottom-9 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 text-[9px] tracking-[3px] uppercase z-[2] transition-opacity duration-1000 delay-[1500ms] ${afterHeadline ? "opacity-100" : "opacity-0"}`} style={{ color: "rgba(92,26,26,0.3)" }}>
+      <div className={`absolute bottom-9 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 text-[9px] tracking-[3px] uppercase z-[2] transition-opacity duration-1000 animation-delay-[1500ms] ${afterHeadline ? "opacity-100" : "opacity-0"}`} style={{ color: "rgba(92,26,26,0.3)" }}>
         <span>Scroll</span>
         <div className="w-5 h-8 border border-secondary/35 rounded-[10px] flex items-start justify-center pt-[5px]">
           <div className="w-1 h-1 rounded-full bg-secondary/60 animate-[scrollDot_2s_ease_infinite]" />

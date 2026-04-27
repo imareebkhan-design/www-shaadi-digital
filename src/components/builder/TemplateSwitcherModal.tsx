@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { X, ArrowLeft, LayoutGrid } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { templates as allTemplates } from "@/data/templates";
+import { templates as allTemplates } from "@/templates";
 import { TEMPLATE_REGISTRY } from "@/templates";
 import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import { invitationDataToConfig } from "@/templates/types";

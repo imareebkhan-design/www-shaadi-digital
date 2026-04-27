@@ -1,5 +1,5 @@
 import { BuilderFormData } from "@/types/builder";
-import { TemplateConfig } from "@/data/templates";
+import { TemplateConfig } from "@/templates";
 import { format } from "date-fns";
 
 interface Props {

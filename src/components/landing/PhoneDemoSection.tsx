@@ -1,5 +1,14 @@
 import { Link } from "react-router-dom";
 
+type Dot = {
+  lg: boolean;
+} & (
+  | { top: string; left: string }
+  | { top: string; right: string }
+  | { bottom: string; left: string }
+  | { bottom: string; right: string }
+);
+
 const PhoneDemoSection = () => (
   <section className="relative overflow-hidden py-16 md:py-24 px-5 md:px-8 bg-background">
     {/* Ambient glow */}
@@ -7,15 +16,15 @@ const PhoneDemoSection = () => (
 
     {/* Scattered dots - hidden on mobile */}
     <div className="hidden md:block">
-      {[
+      {([
         { top: "8%", left: "6%", lg: false },
         { top: "15%", left: "18%", lg: false },
         { top: "22%", right: "14%", lg: true },
         { top: "40%", right: "6%", lg: false },
         { bottom: "25%", left: "10%", lg: true },
         { bottom: "12%", right: "20%", lg: false },
-      ].map((d, i) => (
-        <div key={i} className={`absolute rounded-full pointer-events-none ${d.lg ? "w-2 h-2 bg-secondary/15" : "w-[5px] h-[5px] bg-secondary/25"}`} style={{ top: d.top, left: d.left, right: (d as any).right, bottom: (d as any).bottom }} />
+      ] as Dot[]).map((d, i) => (
+        <div key={i} className={`absolute rounded-full pointer-events-none ${d.lg ? "w-2 h-2 bg-secondary/15" : "w-[5px] h-[5px] bg-secondary/25"}`} style={{ ...d }} />
       ))}
     </div>
 

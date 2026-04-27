@@ -4,13 +4,35 @@ import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
 import PostPaymentSignupModal from "@/components/PostPaymentSignupModal";
 import PaymentFailedModal from "@/components/PaymentFailedModal";
 
+type PlanFeature = {
+  text: string;
+  dim: boolean;
+  isNew: boolean;
+};
+
+type Plan = {
+  planId: PlanId;
+  name: string;
+  nameHindi: string;
+  price: string;
+  period: string;
+  featured: boolean;
+  groupLabel: string;
+  features: PlanFeature[];
+  btn: string;
+  btnStyle: "outline" | "solid";
+  note: string;
+  badge?: string;
+  oldPrice?: string;
+};
+
 const Check = () => (
   <div className="w-4 h-4 rounded-full bg-secondary/[0.12] border border-secondary/25 flex items-center justify-center shrink-0 mt-[1px]">
     <svg className="w-2 h-2" viewBox="0 0 10 10" fill="none" stroke="#C9941A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="2 5 4 7 8 3" /></svg>
   </div>
 );
 
-const plans = [
+const plans: Plan[] = [
   {
     planId: "shubh" as PlanId,
     name: "Shubh",
@@ -217,9 +239,9 @@ const PricingSection = () => {
                 : "bg-card border-r border-secondary/10 last:border-r-0 hover:bg-[#fdfaf5] transition-colors"
             }`}
           >
-            {p.featured && (p as any).badge && (
+            {p.featured && p.badge && (
               <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-secondary to-[#E8B84B] text-center py-1.5 text-[9px] font-bold tracking-[2.5px] uppercase" style={{ color: "hsl(var(--maroon-dark))" }}>
-                {(p as any).badge}
+                {p.badge}
               </div>
             )}
 
@@ -233,9 +255,9 @@ const PricingSection = () => {
 
             <div className={`text-xs mt-1 font-light ${p.featured ? "text-white/45" : "text-muted-foreground"}`}>{p.period}</div>
 
-            {(p as any).oldPrice && (
+            {p.oldPrice && (
               <div className="inline-flex items-center gap-1.5 mt-2.5 text-[11px] text-secondary/80">
-                <s className="text-muted-foreground opacity-60">{(p as any).oldPrice}</s> Save ₹500
+                <s className="text-muted-foreground opacity-60">{p.oldPrice}</s> Save ₹500
               </div>
             )}
 

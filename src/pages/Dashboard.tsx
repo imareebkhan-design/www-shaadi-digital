@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { getTemplateById } from "@/data/templates";
+import { getTemplateById } from "@/templates";
 import {
   LogOut, Copy, ExternalLink, Edit, Share2, Sparkles,
   Users, Download, Plus, ArrowUpRight, Eye, Heart, Calendar, MessageSquare, Check, Mail
