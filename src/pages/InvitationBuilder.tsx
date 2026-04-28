@@ -31,6 +31,7 @@ const InvitationBuilder = () => {
     activeTemplateId,
     template,
     step,
+    maxStep,
     errors,
     isLoadingData,
     publishLoading,
@@ -66,7 +67,6 @@ const InvitationBuilder = () => {
 
   const workflowSteps = template?.workflow ? getVisibleSteps(template.workflow, formData) : undefined;
   const workflowLabels = workflowSteps?.map((stepId) => stepLabelMap[stepId]) ?? undefined;
-  const totalSteps = workflowSteps?.length ?? 5;
 
   const renderStep = () => {
     if (!template?.workflow) {
@@ -81,7 +81,7 @@ const InvitationBuilder = () => {
       weddingType,
       onWeddingTypeChange: handleWeddingTypeChange,
       updateFormData,
-      onProceed: () => setStep((current) => Math.min(current + 1, totalSteps)),
+      onProceed: () => setStep((current) => Math.min(current + 1, maxStep)),
       onGoBack: () => setStep((current) => Math.max(current - 1, 1)),
       templateId: activeTemplateId!,
       publishLoading,
@@ -127,7 +127,7 @@ const InvitationBuilder = () => {
       <div className="flex h-screen">
         {/* ─── LEFT: Form panel (40%) ─── */}
         <div className={`${isMobile ? "w-full" : "w-2/5"} h-screen overflow-y-auto border-r border-border relative`}>
-          <StepIndicator currentStep={step} totalSteps={totalSteps} labels={workflowLabels} templateId={activeTemplateId} onChangeTemplate={() => setShowTemplateSwitcher(true)} />
+          <StepIndicator currentStep={step} totalSteps={maxStep} labels={workflowLabels} templateId={activeTemplateId} onChangeTemplate={() => setShowTemplateSwitcher(true)} />
 
           <div className="p-6 md:p-8 max-w-xl mx-auto pb-32">
             {renderStep()}

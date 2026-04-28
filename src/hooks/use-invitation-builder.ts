@@ -337,6 +337,7 @@ export const useInvitationBuilder = (urlTemplateId?: string) => {
     activeTemplateId,
     template,
     step,
+    maxStep,
     errors,
     isLoadingData,
     publishLoading,
