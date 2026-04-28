@@ -15,7 +15,7 @@ interface SEOHeadProps {
 
 const DEFAULTS = {
   title: "Digital Wedding Invitations India | Shaadi.Digital",
-  description: "India's most loved digital wedding invitation platform. 12+ templates, WhatsApp delivery, live RSVP tracking. Starting ₹999.",
+  description: "India's most loved digital wedding invitation platform. WhatsApp delivery, live RSVP tracking, and personalised wedding templates for every tradition. Starting ₹999.",
   ogImage: "https://shaadi.digital/og-image.jpg",
   ogSiteName: "Shaadi.Digital",
 };

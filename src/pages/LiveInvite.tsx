@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
+import ErrorState from "@/components/ui/ErrorState";
 import { supabase } from "@/integrations/supabase/client";
 import { TEMPLATE_REGISTRY } from "@/templates";
 import type { InvitationData } from "@/templates/types";
 import { invitationDataToConfig } from "@/templates/types";
 import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import RsvpForm from "@/components/invite/RsvpForm";
-import { normalizeSlug } from "@/lib/slugUtils";
+import { normalizeSlug, validateSlug } from "@/lib/slugService";
 import type { Tables } from "@/integrations/supabase/types";
 
 type InvitationRow = Tables["invitations"]["Row"];
@@ -21,12 +22,29 @@ const LiveInvite = () => {
   const [rawInvitation, setRawInvitation] = useState<InvitationRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [invalidSlug, setInvalidSlug] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!slug) { setNotFound(true); setLoading(false); return; }
+  const loadInvitation = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    setNotFound(false);
+    setInvalidSlug(false);
 
-    const fetchData = async () => {
-      const normalizedSlug = normalizeSlug(slug);
+    if (!slug) {
+      setInvalidSlug(true);
+      setLoading(false);
+      return;
+    }
+
+    const normalizedSlug = normalizeSlug(slug);
+    if (!validateSlug(normalizedSlug)) {
+      setInvalidSlug(true);
+      setLoading(false);
+      return;
+    }
+
+    try {
       const { data: inv } = await supabase
         .from("invitations")
         .select("*")
@@ -34,7 +52,11 @@ const LiveInvite = () => {
         .eq("status", "published")
         .maybeSingle() as { data: InvitationRow | null };
 
-      if (!inv) { setNotFound(true); setLoading(false); return; }
+      if (!inv) {
+        setNotFound(true);
+        return;
+      }
+
       setInvitationId(inv.id);
       setTemplateId(inv.template_id);
       setRawInvitation(inv);
@@ -88,11 +110,17 @@ const LiveInvite = () => {
       };
 
       setInvitationData(data);
+    } catch (fetchError) {
+      console.error(fetchError);
+      setError("Unable to load the invitation right now. Please try again later.");
+    } finally {
       setLoading(false);
-    };
-
-    fetchData();
+    }
   }, [slug]);
+
+  useEffect(() => {
+    loadInvitation();
+  }, [loadInvitation]);
 
   if (loading) {
     return (
@@ -106,20 +134,37 @@ const LiveInvite = () => {
     );
   }
 
+  if (invalidSlug) {
+    return (
+      <ErrorState
+        title="Invalid invitation link"
+        message="The invitation URL appears malformed. Please verify the link and try again."
+        ctaLabel="Go home"
+        ctaHref="/"
+      />
+    );
+  }
+
+  if (error) {
+    return (
+      <ErrorState
+        title="Unable to load invitation"
+        message={error}
+        ctaLabel="Retry"
+        onRetry={loadInvitation}
+        ctaHref="/"
+      />
+    );
+  }
+
   if (notFound || !invitationData || !templateId) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-8 text-center">
-        <div className="text-5xl mb-6">💔</div>
-        <h1 className="font-display text-3xl font-bold mb-3" style={{ color: "hsl(var(--maroon-dark))" }}>
-          Invitation Not Found
-        </h1>
-        <p className="text-muted-foreground max-w-md leading-relaxed">
-          This invitation is no longer available. It may have been removed or the link may be incorrect.
-        </p>
-        <a href="/" className="mt-8 text-sm text-secondary hover:text-primary transition-colors underline underline-offset-4">
-          Go to Shaadi.Digital
-        </a>
-      </div>
+      <ErrorState
+        title="Invitation Not Found"
+        message="This invitation is no longer available. It may have been removed or the link may be incorrect."
+        ctaLabel="Go home"
+        ctaHref="/"
+      />
     );
   }
 

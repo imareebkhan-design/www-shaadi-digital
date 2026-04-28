@@ -447,6 +447,7 @@ if (!workflowValidation.valid) {
 }
 
 export const TEMPLATE_ID_LIST = templates.map((t) => t.id) as string[];
+export const AVAILABLE_TEMPLATE_COUNT = templates.length;
 
 export const getTemplateById = (id: string) => templates.find((t) => t.id === id);
 export const getTemplateConfigById = (id: string) => templates.find((t) => t.id === id);

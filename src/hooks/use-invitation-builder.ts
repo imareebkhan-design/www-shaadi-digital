@@ -6,10 +6,13 @@ import { usePlan } from "@/contexts/PlanContext";
 import { TEMPLATE_REGISTRY } from "@/templates";
 import type { InvitationData } from "@/templates/types";
 import type { TemplateWorkflow } from "@/templates/workflow";
-import { getVisibleSteps, validateStep, getCeremonyLabel, getVisibleEventTypes, getPaymentPlans } from "@/templates/stepEngine";
+import { getVisibleSteps, getCeremonyLabel, getVisibleEventTypes, getPaymentPlans } from "@/templates/stepEngine";
 import { defaultEvents, DEFAULT_TAGLINES } from "@/types/builder";
 import { useRazorpay } from "@/hooks/useRazorpay";
 import { fetchDraftInvitation, createDraftInvitation, updateDraftEvents, updateDraftInvitation, updateInvitationTemplate, publishInvitation } from "@/services/invitationService";
+import { createAutoSaveManager } from "@/services/autosaveService";
+import { validateBuilderStep } from "@/services/validationService";
+import { createSlug } from "@/lib/slugService";
 
 const BUILDER_TO_RAZORPAY_PLAN = {
   basic: "shubh",
@@ -73,17 +76,6 @@ export const validateBuilderStep = (step: number, formData: InvitationData, work
   return errors;
 };
 
-const slugify = (value: string): string => {
-  const normalized = value.normalize("NFKD").replace(/[̀-ͯ]/g, "");
-  const latin = normalized
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-  return latin.length >= 2 ? latin : `invite-${Math.random().toString(36).slice(2, 7)}`;
-};
-
 export const useInvitationBuilder = (urlTemplateId?: string) => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
@@ -108,13 +100,18 @@ export const useInvitationBuilder = (urlTemplateId?: string) => {
       setStep(maxStep);
     }
   }, [step, maxStep]);
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "failed">("idle");
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [templateLoadError, setTemplateLoadError] = useState<string | null>(null);
+  const [draftLoadError, setDraftLoadError] = useState<string | null>(null);
+  const [unsavedChanges, setUnsavedChanges] = useState(false);
+  const [hasRecoveredDraft, setHasRecoveredDraft] = useState(false);
+
   const [weddingType, setWeddingType] = useState("hindu");
   const [prePaymentPlan, setPrePaymentPlan] = useState<"basic" | "premium" | "elite" | null>(null);
   const [formData, setFormData] = useState<InvitationData>(() => defaultInvitationData(getCeremonyLabel(template?.community || "")));
 
-  const saveRef = useRef<() => Promise<void>>(async () => {});
-  const autoSaveTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const autoSaveManager = useRef<ReturnType<typeof createAutoSaveManager> | null>(null);
   const savedTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingPublishPlan = useRef<"basic" | "premium" | "elite" | null>(null);
   const initialEvents = useRef(formData.events);
@@ -148,95 +145,129 @@ export const useInvitationBuilder = (urlTemplateId?: string) => {
   }, [template, navigate, authLoading]);
 
   useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (unsavedChanges && saveStatus !== "saved") {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [unsavedChanges, saveStatus]);
+
+  useEffect(() => {
     if (!user || !activeTemplateId) return;
 
     const loadOrCreate = async () => {
       setIsLoadingData(true);
+      setDraftLoadError(null);
+      setTemplateLoadError(null);
 
-      const { invitation, events } = await fetchDraftInvitation(user.id, activeTemplateId);
-
-      if (invitation) {
-        setInvitationId(invitation.id);
-        setFormData((prev) => ({
-          ...prev,
-          bride_name: invitation.bride_name || "",
-          groom_name: invitation.groom_name || "",
-          bride_family: invitation.bride_family || "",
-          groom_family: invitation.groom_family || "",
-          bride_full_name: invitation.bride_full_name || "",
-          groom_full_name: invitation.groom_full_name || "",
-          bride_bio: invitation.bride_bio || "",
-          groom_bio: invitation.groom_bio || "",
-          personal_message: invitation.personal_message || "",
-          our_story: invitation.our_story || "",
-          wedding_date: invitation.wedding_date || events.find((event) => event.event_type === "ceremony")?.event_date || "",
-          wedding_city: invitation.wedding_city || "",
-          photo_url: invitation.photo_url || undefined,
-          gallery_photos: invitation.gallery_photos || [],
-          language: invitation.language || "english",
-          upi_id: invitation.upi_id || "",
-          gift_registry_url: invitation.gift_registry_url || "",
-          dresscode_enabled: invitation.dresscode_enabled || false,
-          dresscode_text: invitation.dresscode_text || "",
-          dresscode_colors: invitation.dresscode_colors || [],
-          music_url: invitation.music_url || "",
-          venue_description: invitation.venue_description || "",
-          venue_photo: invitation.venue_photo || "",
-          rsvp_deadline: invitation.rsvp_deadline || "",
-          hero_media_type: invitation.hero_media_type || "photo",
-          hero_media_url: invitation.hero_media_url || "",
-          events: prev.events.map((defaultEvt) => {
-            const saved = events.find((event) => event.event_type === defaultEvt.event_type);
-            if (!saved) return defaultEvt;
-            return {
-              ...defaultEvt,
-              is_enabled: saved.is_enabled,
-              event_date: saved.event_date || "",
-              event_time: saved.event_time || "",
-              venue_name: saved.venue_name || "",
-              venue_address: saved.venue_address || "",
-              maps_url: saved.maps_url || "",
-              tagline: saved.tagline || DEFAULT_TAGLINES[saved.event_type] || "",
-              description: saved.description || "",
-              event_photo: saved.event_photo || "",
-            };
-          }),
-        }));
-      } else {
-        const newInvitation = await createDraftInvitation(user.id, activeTemplateId, initialEvents.current);
-        if (newInvitation) {
-          setInvitationId(newInvitation.id);
+      try {
+        if (!TEMPLATE_REGISTRY[activeTemplateId]) {
+          setTemplateLoadError(`Template "${activeTemplateId}" is not available.`);
+          navigate("/templates");
+          return;
         }
-      }
 
-      setIsLoadingData(false);
+        const { invitation, events } = await fetchDraftInvitation(user.id, activeTemplateId);
+
+        if (invitation) {
+          setInvitationId(invitation.id);
+          setFormData((prev) => ({
+            ...prev,
+            bride_name: invitation.bride_name || "",
+            groom_name: invitation.groom_name || "",
+            bride_family: invitation.bride_family || "",
+            groom_family: invitation.groom_family || "",
+            bride_full_name: invitation.bride_full_name || "",
+            groom_full_name: invitation.groom_full_name || "",
+            bride_bio: invitation.bride_bio || "",
+            groom_bio: invitation.groom_bio || "",
+            personal_message: invitation.personal_message || "",
+            our_story: invitation.our_story || "",
+            wedding_date: invitation.wedding_date || events.find((event) => event.event_type === "ceremony")?.event_date || "",
+            wedding_city: invitation.wedding_city || "",
+            photo_url: invitation.photo_url || undefined,
+            gallery_photos: invitation.gallery_photos || [],
+            language: invitation.language || "english",
+            upi_id: invitation.upi_id || "",
+            gift_registry_url: invitation.gift_registry_url || "",
+            dresscode_enabled: invitation.dresscode_enabled || false,
+            dresscode_text: invitation.dresscode_text || "",
+            dresscode_colors: invitation.dresscode_colors || [],
+            music_url: invitation.music_url || "",
+            venue_description: invitation.venue_description || "",
+            venue_photo: invitation.venue_photo || "",
+            rsvp_deadline: invitation.rsvp_deadline || "",
+            hero_media_type: invitation.hero_media_type || "photo",
+            hero_media_url: invitation.hero_media_url || "",
+            events: prev.events.map((defaultEvt) => {
+              const saved = events.find((event) => event.event_type === defaultEvt.event_type);
+              if (!saved) return defaultEvt;
+              return {
+                ...defaultEvt,
+                is_enabled: saved.is_enabled,
+                event_date: saved.event_date || "",
+                event_time: saved.event_time || "",
+                venue_name: saved.venue_name || "",
+                venue_address: saved.venue_address || "",
+                maps_url: saved.maps_url || "",
+                tagline: saved.tagline || DEFAULT_TAGLINES[saved.event_type] || "",
+                description: saved.description || "",
+                event_photo: saved.event_photo || "",
+              };
+            }),
+          }));
+          setHasRecoveredDraft(false);
+        } else {
+          const newInvitation = await createDraftInvitation(user.id, activeTemplateId, initialEvents.current);
+          if (newInvitation) {
+            setInvitationId(newInvitation.id);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        setDraftLoadError("Failed to load or create draft invitation.");
+      } finally {
+        setIsLoadingData(false);
+      }
     };
 
     loadOrCreate();
   }, [activeTemplateId, user]);
 
+
   const saveToSupabase = useCallback(async () => {
     if (!invitationId || !user) return;
     setSaveStatus("saving");
+    setSaveError(null);
 
-    await updateDraftInvitation(invitationId, formData);
-    await updateDraftEvents(invitationId, formData.events);
-
-    setSaveStatus("saved");
-    if (savedTimeout.current) clearTimeout(savedTimeout.current);
-    savedTimeout.current = setTimeout(() => setSaveStatus("idle"), 3000);
+    try {
+      await updateDraftInvitation(invitationId, formData);
+      await updateDraftEvents(invitationId, formData.events);
+      setSaveStatus("saved");
+      setUnsavedChanges(false);
+      if (savedTimeout.current) clearTimeout(savedTimeout.current);
+      savedTimeout.current = setTimeout(() => setSaveStatus("idle"), 3000);
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : "Unable to save changes";
+      setSaveError(errorMsg);
+      setSaveStatus("failed");
+      console.error("Save failed:", error);
+    }
   }, [formData, invitationId, user]);
 
-  useEffect(() => {
-    saveRef.current = saveToSupabase;
-  }, [saveToSupabase]);
 
   useEffect(() => {
-    autoSaveTimer.current = setInterval(() => saveRef.current(), 30_000);
+    autoSaveManager.current?.stop();
+    autoSaveManager.current = createAutoSaveManager(saveToSupabase);
+    autoSaveManager.current.start();
     return () => {
-      if (autoSaveTimer.current) clearInterval(autoSaveTimer.current);
+      autoSaveManager.current?.stop();
     };
-  }, []);
+  }, [saveToSupabase]);
 
   const handleBlur = useCallback(() => {
     saveToSupabase();
@@ -259,7 +290,9 @@ export const useInvitationBuilder = (urlTemplateId?: string) => {
 
   const updateFormData = useCallback((updates: Partial<InvitationData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
+    setUnsavedChanges(true);
   }, []);
+
 
   const validateStep = useCallback((stepNumber: number) => {
     const newErrors = validateBuilderStep(stepNumber, formData, template?.workflow);
@@ -279,28 +312,40 @@ export const useInvitationBuilder = (urlTemplateId?: string) => {
   const doPublish = useCallback(async (selectedPlan: "basic" | "premium" | "elite", razorpayOrderId: string) => {
     if (!invitationId || !user) return;
     setPublishLoading(true);
-    await saveToSupabase();
+    setSaveError(null);
 
-    let slug = `${slugify(formData.bride_name)}-and-${slugify(formData.groom_name)}`;
-    const { data: existing } = await supabase
-      .from("invitations")
-      .select("id")
-      .eq("slug", slug)
-      .maybeSingle();
+    try {
+      await saveToSupabase();
 
-    if (existing) slug = `${slug}-${Math.floor(1000 + Math.random() * 9000)}`;
+      let slug = createSlug(formData.bride_name, formData.groom_name);
+      const { data: existing } = await supabase
+        .from("invitations")
+        .select("id")
+        .eq("slug", slug)
+        .maybeSingle();
 
-    const { error } = await publishInvitation(invitationId, selectedPlan, slug, razorpayOrderId);
-    setPublishLoading(false);
+      if (existing) slug = `${slug}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-    if (error) {
-      toast("Failed to publish. Please try again.");
-      return;
+      const { error } = await publishInvitation(invitationId, selectedPlan, slug, razorpayOrderId);
+      setPublishLoading(false);
+
+      if (error) {
+        setSaveError("Failed to publish invitation. Please try again.");
+        console.error("Publish error:", error);
+        return;
+      }
+
+      setPublishedSlug(slug);
+      setUnsavedChanges(false);
+      toast("🎉 Your invitation is live!");
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : "Publish failed";
+      setSaveError(errorMsg);
+      setPublishLoading(false);
+      console.error("Publish error:", error);
     }
-
-    setPublishedSlug(slug);
-    toast("🎉 Your invitation is live!");
   }, [formData.bride_name, formData.groom_name, invitationId, saveToSupabase, user]);
+
 
   const handlePublish = useCallback(async (selectedPlan: "basic" | "premium" | "elite") => {
     if (!invitationId || !user) return;
@@ -343,6 +388,10 @@ export const useInvitationBuilder = (urlTemplateId?: string) => {
     publishLoading,
     publishedSlug,
     saveStatus,
+    saveError,
+    templateLoadError,
+    draftLoadError,
+    unsavedChanges,
     weddingType,
     prePaymentPlan,
     formData,

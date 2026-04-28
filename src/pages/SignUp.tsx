@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
+import { AVAILABLE_TEMPLATE_COUNT } from "@/templates";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 
@@ -77,7 +78,7 @@ const SignUp = () => {
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8 relative overflow-hidden">
       <SEOHead
         title="Create Free Wedding Invitation | Shaadi.Digital"
-        description="Sign up free and design your digital wedding invitation in 10 minutes. 12+ templates, WhatsApp delivery & live RSVP tracking. Trusted by 50,000+ couples."
+        description={`Sign up free and design your digital wedding invitation in 10 minutes. ${AVAILABLE_TEMPLATE_COUNT} templates, WhatsApp delivery & live RSVP tracking. Trusted by 50,000+ couples.`}
         canonical="https://shaadi.digital/signup"
         noIndex
       />

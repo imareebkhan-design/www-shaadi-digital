@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ContactOptionsDialog from "@/components/ContactOptionsDialog";
-import { templates, type TemplateConfig } from "@/templates";
+import { AVAILABLE_TEMPLATE_COUNT, templates, type TemplateConfig } from "@/templates";
 
 /* Show first 6 templates for reels display */
 const displayTemplates = [...templates]

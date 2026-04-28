@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { BuilderFormData } from "@/types/builder";
 import SEOHead from "@/components/SEOHead";
+import ErrorState from "@/components/ui/ErrorState";
 import { useParams } from "react-router-dom";
 import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import StepIndicator from "@/components/builder/StepIndicator";
@@ -37,6 +38,10 @@ const InvitationBuilder = () => {
     publishLoading,
     publishedSlug,
     saveStatus,
+    saveError,
+    templateLoadError,
+    draftLoadError,
+    unsavedChanges,
     weddingType,
     prePaymentPlan,
     formData,
@@ -92,6 +97,28 @@ const InvitationBuilder = () => {
     });
   };
 
+  if (templateLoadError) {
+    return (
+      <ErrorState
+        title="Template Not Found"
+        message={templateLoadError}
+        ctaLabel="Browse templates"
+        ctaHref="/templates"
+      />
+    );
+  }
+
+  if (draftLoadError) {
+    return (
+      <ErrorState
+        title="Unable to Load Draft"
+        message={draftLoadError}
+        ctaLabel="Go home"
+        ctaHref="/"
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background" onBlur={handleBlur}>
       <SEOHead
@@ -100,8 +127,14 @@ const InvitationBuilder = () => {
         noIndex
       />
 
-      {/* Save status — refined pill */}
-      {saveStatus !== "idle" && (
+      {/* Save failure banner */}
+      {saveStatus === "failed" && saveError && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-destructive/20 border border-destructive/50 px-4 py-3 rounded-full font-body text-xs text-destructive shadow-md">
+          <span>⚠️</span>
+          {saveError}
+        </div>
+      )}
+
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-card/95 backdrop-blur-sm border border-border px-4 py-2 shadow-elegant font-body text-xs text-muted-foreground rounded-full">
           {saveStatus === "saving" ? (
             <>

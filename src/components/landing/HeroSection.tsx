@@ -249,7 +249,7 @@ const HeroSection = () => {
 
       {/* Micro trust copy */}
       <p className={`relative z-[2] text-[11px] md:text-xs text-muted-foreground tracking-[0.5px] mt-5 transition-all duration-700 animation-delay-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${afterHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
-        ✓ 12+ templates &nbsp;·&nbsp; ✓ Live RSVP tracking &nbsp;·&nbsp; ✓ Edit anytime, free
+        ✓ {AVAILABLE_TEMPLATE_COUNT} templates &nbsp;·&nbsp; ✓ Live RSVP tracking &nbsp;·&nbsp; ✓ Edit anytime, free
       </p>
 
       {/* Trust badges */}

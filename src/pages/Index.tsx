@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
+import { AVAILABLE_TEMPLATE_COUNT } from "@/templates";
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import PhoneDemoSection from "@/components/landing/PhoneDemoSection";
@@ -19,13 +20,13 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Digital Wedding Invitations India | Shaadi.Digital"
-        description="India's most loved digital wedding invitations. 12+ templates for every tradition — Punjabi, South Indian, Muslim & more. WhatsApp delivery, live RSVP tracking. Starting ₹999."
+        description={`India's most loved digital wedding invitations. ${AVAILABLE_TEMPLATE_COUNT} templates for every tradition — Punjabi, South Indian, Muslim & more. WhatsApp delivery, live RSVP tracking. Starting ₹999.`}
         canonical="https://shaadi.digital/"
         schemaJson={{
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
           "name": "Shaadi.Digital",
-          "description": "India's most loved digital wedding invitation platform with 12+ templates, WhatsApp delivery, and live RSVP tracking.",
+          "description": `India's most loved digital wedding invitation platform with ${AVAILABLE_TEMPLATE_COUNT} templates, WhatsApp delivery, and live RSVP tracking.`, 
           "applicationCategory": "Wedding Planning",
           "operatingSystem": "Web, iOS, Android",
           "offers": {

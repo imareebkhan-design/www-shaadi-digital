@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import SEOHead from "@/components/SEOHead";
+import ErrorState from "@/components/ui/ErrorState";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import RsvpForm from "@/components/invite/RsvpForm";
-import { normalizeSlug } from "@/lib/slugUtils";
+import { normalizeSlug, validateSlug } from "@/lib/slugService";
 
 const RsvpPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -13,26 +14,54 @@ const RsvpPage = () => {
   const [groomName, setGroomName] = useState("Groom");
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [invalidSlug, setInvalidSlug] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!slug) { setNotFound(true); setLoading(false); return; }
+  const loadRsvp = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    setNotFound(false);
+    setInvalidSlug(false);
+
+    if (!slug) {
+      setInvalidSlug(true);
+      setLoading(false);
+      return;
+    }
+
     const normalizedSlug = normalizeSlug(slug);
-    const fetch = async () => {
+    if (!validateSlug(normalizedSlug)) {
+      setInvalidSlug(true);
+      setLoading(false);
+      return;
+    }
+
+    try {
       const { data } = await supabase
         .from("invitations")
         .select("id, bride_name, groom_name")
         .eq("slug", normalizedSlug)
         .eq("status", "published")
         .maybeSingle();
-      if (!data) { setNotFound(true); } else {
+
+      if (!data) {
+        setNotFound(true);
+      } else {
         setInvitationId(data.id);
         setBrideName(data.bride_name || "Bride");
         setGroomName(data.groom_name || "Groom");
       }
+    } catch (fetchError) {
+      console.error(fetchError);
+      setError("Unable to load this RSVP. Please try again.");
+    } finally {
       setLoading(false);
-    };
-    fetch();
+    }
   }, [slug]);
+
+  useEffect(() => {
+    loadRsvp();
+  }, [loadRsvp]);
 
   if (loading) return (
     <div className="min-h-screen bg-background flex items-center justify-center p-8">
@@ -40,14 +69,32 @@ const RsvpPage = () => {
     </div>
   );
 
+  if (invalidSlug) return (
+    <ErrorState
+      title="Invalid RSVP link"
+      message="The RSVP link appears malformed. Please check the link and try again."
+      ctaLabel="Go home"
+      ctaHref="/"
+    />
+  );
+
+  if (error) return (
+    <ErrorState
+      title="Unable to load RSVP"
+      message={error}
+      ctaLabel="Retry"
+      onRetry={loadRsvp}
+      ctaHref="/"
+    />
+  );
+
   if (notFound || !invitationId) return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-8 text-center">
-      <div className="text-5xl mb-6">💔</div>
-      <h1 className="font-display text-2xl font-bold mb-3" style={{ color: "hsl(var(--maroon-dark))" }}>
-        Invitation Not Found
-      </h1>
-      <p className="text-muted-foreground">This RSVP link is no longer valid.</p>
-    </div>
+    <ErrorState
+      title="Invitation Not Found"
+      message="This RSVP link is no longer valid or the invitation is unpublished."
+      ctaLabel="Go home"
+      ctaHref="/"
+    />
   );
 
   return (

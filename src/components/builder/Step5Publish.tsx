@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Shield, Lock, Smartphone } from "lucide-react";
 import { motion } from "framer-motion";
 import { format, differenceInDays, parseISO } from "date-fns";
+import { isFeatureAvailable, getPlanFeatures } from "@/lib/featureFlags";
 
 interface Props {
   onSelectPlan: (plan: "basic" | "premium" | "elite") => void;
@@ -71,6 +72,13 @@ const plans = [
 ];
 
 const formatPrice = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+
+const isFeatureAllowedForPlan = (featureName: string, plan: "basic" | "premium" | "elite"): boolean => {
+  const planFeatures = getPlanFeatures(plan);
+  if (featureName.includes("Auto-reminders")) return planFeatures.autoReminders !== false;
+  if (featureName.includes("Cinematic video background")) return planFeatures.videoBackgrounds !== false;
+  return true;
+};
 
 const Step5Publish = ({ onSelectPlan, loading, brideName, groomName, weddingDate }: Props) => {
   const [selected, setSelected] = useState<"basic" | "premium" | "elite">("premium");
@@ -175,12 +183,18 @@ const Step5Publish = ({ onSelectPlan, loading, brideName, groomName, weddingDate
             </div>
 
             <div className="mt-4 space-y-1.5">
-              {plan.features.map((f) => (
-                <span key={f} className="flex items-start gap-2 font-body text-xs text-muted-foreground">
-                  <Check className="w-3 h-3 text-secondary mt-0.5 shrink-0" />
-                  {f}
-                </span>
-              ))}
+              {plan.features
+                .filter((f) => {
+                  if (f.includes("Auto-reminders")) return isFeatureAllowedForPlan(f, plan.id);
+                  if (f.includes("Cinematic video background")) return isFeatureAllowedForPlan(f, plan.id);
+                  return true;
+                })
+                .map((f) => (
+                  <span key={f} className="flex items-start gap-2 font-body text-xs text-muted-foreground">
+                    <Check className="w-3 h-3 text-secondary mt-0.5 shrink-0" />
+                    {f}
+                  </span>
+                ))}
             </div>
           </motion.button>
         ))}

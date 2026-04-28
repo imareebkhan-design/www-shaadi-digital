@@ -2,7 +2,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import SEOHead from "@/components/SEOHead";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { normalizeSlug } from "@/lib/slugUtils";
+import ErrorState from "@/components/ui/ErrorState";
+import { normalizeSlug, validateSlug } from "@/lib/slugService";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -56,6 +57,7 @@ const Dashboard = () => {
   const [customSlug, setCustomSlug] = useState("");
   const [slugSaving, setSlugSaving] = useState(false);
   const [slugError, setSlugError] = useState("");
+  const [dashboardError, setDashboardError] = useState<string | null>(null);
   const [shareMessage, setShareMessage] = useState("");
   const [linkCopied, setLinkCopied] = useState(false);
   const [manualRsvp, setManualRsvp] = useState({
@@ -71,23 +73,29 @@ const Dashboard = () => {
 
     const fetchData = async () => {
       setLoading(true);
-      const { data: profile } = await supabase
-        .from("users").select("*").eq("auth_user_id", user.id).maybeSingle();
-      setUserProfile(profile);
+      try {
+        const { data: profile } = await supabase
+          .from("users").select("*").eq("auth_user_id", user.id).maybeSingle();
+        setUserProfile(profile);
 
-      const { data: inv } = await supabase
-        .from("invitations").select("*").eq("user_id", user.id)
-        .order("created_at", { ascending: false }).limit(1).maybeSingle();
-      setInvitation(inv);
+        const { data: inv } = await supabase
+          .from("invitations").select("*").eq("user_id", user.id)
+          .order("created_at", { ascending: false }).limit(1).maybeSingle();
+        setInvitation(inv);
 
-      if (inv && inv.status === "published") {
-        const { data: rsvpData } = await supabase
-          .from("rsvps").select("*").eq("invitation_id", inv.id)
-          .order("submitted_at", { ascending: false });
-        setRsvps(rsvpData || []);
+        if (inv && inv.status === "published") {
+          const { data: rsvpData } = await supabase
+            .from("rsvps").select("*").eq("invitation_id", inv.id)
+            .order("submitted_at", { ascending: false });
+          setRsvps(rsvpData || []);
+        }
+        if (inv?.slug) setCustomSlug(inv.slug);
+      } catch (error) {
+        console.error(error);
+        setDashboardError("Unable to load your dashboard. Please check your connection and try again.");
+      } finally {
+        setLoading(false);
       }
-      if (inv?.slug) setCustomSlug(inv.slug);
-      setLoading(false);
     };
     fetchData();
   }, [user, authLoading, navigate]);
@@ -111,13 +119,11 @@ const Dashboard = () => {
     }
   };
 
-  const sanitizeSlug = (val: string) => normalizeSlug(val);
-
   const saveCustomSlug = async () => {
     if (!invitation) return;
-    const slug = sanitizeSlug(customSlug);
-    if (!slug || slug.length < 3) {
-      setSlugError("Slug must be at least 3 characters");
+    const slug = normalizeSlug(customSlug);
+    if (!validateSlug(slug)) {
+      setSlugError("Slug must be 3-200 characters and contain only letters, numbers, and hyphens.");
       return;
     }
     setSlugSaving(true);
@@ -252,6 +258,17 @@ const Dashboard = () => {
     : null;
 
   // --- Loading Skeleton ---
+  if (dashboardError) {
+    return (
+      <ErrorState
+        title="Unable to load dashboard"
+        message={dashboardError}
+        ctaLabel="Return home"
+        ctaHref="/"
+      />
+    );
+  }
+
   if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -729,10 +746,10 @@ const Dashboard = () => {
                               </div>
                               <Button
                                 onClick={saveCustomSlug}
-                                disabled={slugSaving || sanitizeSlug(customSlug) === invitation?.slug}
+                                disabled={slugSaving || normalizeSlug(customSlug) === invitation?.slug}
                                 className="bg-primary text-primary-foreground rounded-none font-body text-xs tracking-wider h-10 px-6 shrink-0"
                               >
-                                {slugSaving ? "Saving…" : sanitizeSlug(customSlug) === invitation?.slug ? "✓ Saved" : "Save Link"}
+                                {slugSaving ? "Saving…" : normalizeSlug(customSlug) === invitation?.slug ? "✓ Saved" : "Save Link"}
                               </Button>
                             </div>
                             {slugError && (
