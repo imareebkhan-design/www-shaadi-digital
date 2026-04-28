@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { usePlan } from "@/contexts/PlanContext";
 import { TEMPLATE_REGISTRY } from "@/templates";
 import type { InvitationData } from "@/templates/types";
+import type { TemplateWorkflow } from "@/templates/workflow";
 import { getVisibleSteps, validateStep, getCeremonyLabel, getVisibleEventTypes, getPaymentPlans } from "@/templates/stepEngine";
 import { defaultEvents, DEFAULT_TAGLINES } from "@/types/builder";
 import { useRazorpay } from "@/hooks/useRazorpay";
@@ -48,7 +49,15 @@ export const defaultInvitationData = (ceremonyLabel: string): InvitationData => 
   hero_media_url: "",
 });
 
-export const validateBuilderStep = (step: number, formData: InvitationData, workflow?: any) => {
+export const validateBuilderStep = (step: number, formData: InvitationData, workflow?: TemplateWorkflow) => {
+  if (workflow) {
+    const visibleSteps = getVisibleSteps(workflow, formData);
+    const stepId = visibleSteps[step - 1];
+    if (stepId) {
+      return validateStep(workflow, stepId, formData);
+    }
+  }
+
   const errors: Record<string, string> = {};
 
   if (step === 1) {
@@ -236,23 +245,24 @@ export const useInvitationBuilder = (urlTemplateId?: string) => {
           : event,
       ),
     }));
-  }, []);
+  }, [template?.workflow]);
 
   const updateFormData = useCallback((updates: Partial<InvitationData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
   }, []);
 
   const validateStep = useCallback((stepNumber: number) => {
-    const newErrors = validateBuilderStep(stepNumber, formData);
+    const newErrors = validateBuilderStep(stepNumber, formData, template?.workflow);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }, [formData]);
+  }, [formData, template?.workflow]);
 
   const handleNext = useCallback(async () => {
     if (!validateStep(step)) return;
     await saveToSupabase();
-    setStep((current) => Math.min(current + 1, stepLabels.length));
-  }, [saveToSupabase, step, validateStep]);
+    const maxStep = template?.workflow ? getVisibleSteps(template.workflow, formData).length : stepLabels.length;
+    setStep((current) => Math.min(current + 1, maxStep));
+  }, [saveToSupabase, step, validateStep, template?.workflow, formData]);
 
   const handleBack = useCallback(() => setStep((current) => Math.max(current - 1, 1)), []);
 

@@ -43,7 +43,8 @@ export interface TemplateRegistryEntry extends TemplateMeta {
   thumbnail_gradient: string;
   description: string;
   tone: string;
-  workflow: TemplateWorkflow; // NEW: Workflow config for dynamic steps
+  workflow: TemplateWorkflow; // Required: Workflow config for dynamic steps
+  isLegacy?: boolean; // Mark templates that need migration (for tracking)
 }
 
 export type TemplateConfig = TemplateMeta;
@@ -222,6 +223,7 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     isFeatured: true,
     isPremium: false,
     workflow: createStandardWorkflow("royal-maroon"),
+    isLegacy: false,
     isComingSoon: false,
     availableOn: ["basic", "premium", "elite"],
     sampleData: { brideName: "Priya", groomName: "Arjun", date: "15 · 12 · 2026", city: "Jaipur" },
@@ -242,6 +244,8 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     region: ["South"],
     style: ["Traditional", "Floral"],
     colorFamily: ["Green", "Gold"],
+    workflow: createStandardWorkflow("emerald-south"),
+    isLegacy: true,
     isNew: true,
     isFeatured: false,
     isPremium: false,
@@ -265,6 +269,8 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     region: ["Pan-India"],
     style: ["Modern", "Minimal"],
     colorFamily: ["Blue", "Gold"],
+    workflow: createMinimalistWorkflow("midnight-blue"),
+    isLegacy: true,
     isNew: true,
     isFeatured: false,
     isPremium: false,
@@ -288,6 +294,8 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     region: ["North"],
     style: ["Traditional", "Royal"],
     colorFamily: ["Gold", "Red"],
+    workflow: createStandardWorkflow("golden-punjabi"),
+    isLegacy: true,
     isNew: true,
     isFeatured: false,
     isPremium: true,
@@ -311,6 +319,8 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     region: ["Pan-India"],
     style: ["Floral", "Modern"],
     colorFamily: ["Pink", "Gold"],
+    workflow: createStandardWorkflow("rose-garden"),
+    isLegacy: true,
     isNew: true,
     isFeatured: false,
     isPremium: false,
@@ -334,6 +344,8 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     region: ["West"],
     style: ["Royal", "Traditional"],
     colorFamily: ["Gold", "Red"],
+    workflow: createLuxuryWorkflow("teal-luxury"),
+    isLegacy: true,
     isNew: false,
     isFeatured: false,
     isPremium: true,
@@ -357,6 +369,8 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     region: ["North", "Pan-India"],
     style: ["Traditional", "Royal"],
     colorFamily: ["Ivory", "Gold"],
+    workflow: createStandardWorkflow("ivory-classic"),
+    isLegacy: true,
     isNew: true,
     isFeatured: false,
     isPremium: true,
@@ -380,6 +394,8 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     region: ["West"],
     style: ["Royal", "Traditional"],
     colorFamily: ["Gold", "Red"],
+    workflow: createLuxuryWorkflow("saffron-fest"),
+    isLegacy: true,
     isNew: false,
     isFeatured: false,
     isPremium: true,
@@ -403,6 +419,8 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     region: ["Pan-India"],
     style: ["Modern", "Minimal"],
     colorFamily: ["Pink", "Purple"],
+    workflow: createMinimalistWorkflow("blush-modern"),
+    isLegacy: true,
     isNew: false,
     isFeatured: false,
     isPremium: false,

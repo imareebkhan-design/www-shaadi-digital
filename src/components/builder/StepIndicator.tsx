@@ -8,13 +8,15 @@ interface StepIndicatorProps {
   totalSteps: number;
   templateId?: string;
   onChangeTemplate?: () => void;
+  labels?: string[];
 }
 
-const stepLabels = ["Names", "Events", "Photos", "Preview", "Publish"];
+const defaultStepLabels = ["Names", "Events", "Photos", "Preview", "Publish"];
 
-const StepIndicator = ({ currentStep, totalSteps, templateId, onChangeTemplate }: StepIndicatorProps) => {
+const StepIndicator = ({ currentStep, totalSteps, templateId, onChangeTemplate, labels }: StepIndicatorProps) => {
   const isMobile = useIsMobile();
   const templateEntry = templateId ? TEMPLATE_REGISTRY[templateId] : null;
+  const stepLabels = labels ?? defaultStepLabels;
 
   return (
     <div className="w-full bg-card border-b border-border px-6 py-5">

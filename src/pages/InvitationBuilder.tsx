@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Eye, ArrowLeft, ArrowRight, X, Check } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useInvitationBuilder } from "@/hooks/use-invitation-builder";
+import { getVisibleSteps, renderDynamicStep } from "@/templates/stepEngine";
 import { AnimatePresence } from "framer-motion";
 
 const InvitationBuilder = () => {
@@ -54,32 +55,71 @@ const InvitationBuilder = () => {
     closeFailureModal,
     retryPayment,
   } = useInvitationBuilder(urlTemplateId);
-const renderStep = () => {
+
+  const stepLabelMap = {
+    names: "Names",
+    events: "Events",
+    photos: "Photos",
+    preview: "Preview",
+    publish: "Publish",
+  } as const;
+
+  const workflowSteps = template?.workflow ? getVisibleSteps(template.workflow, formData) : undefined;
+  const workflowLabels = workflowSteps?.map((stepId) => stepLabelMap[stepId]) ?? undefined;
+  const totalSteps = workflowSteps?.length ?? 5;
+
+  const renderStep = () => {
+    if (template?.workflow && workflowSteps) {
+      return renderDynamicStep({
+        workflow: template.workflow,
+        currentStep: step,
+        formData,
+        errors,
+        weddingType,
+        onWeddingTypeChange: handleWeddingTypeChange,
+        updateFormData,
+        onProceed: () => setStep((current) => Math.min(current + 1, totalSteps)),
+        onGoBack: () => setStep((current) => Math.max(current - 1, 1)),
+        templateId: activeTemplateId!,
+        publishLoading,
+        onSelectPlan: handlePublish,
+        brideName: formData.bride_name,
+        groomName: formData.groom_name,
+        weddingDate: formData.wedding_date,
+      });
+    }
+
     switch (step) {
-      case 1: return <Step1CoupleNames data={formData as BuilderFormData} onChange={updateFormData as (data: Partial<BuilderFormData>) => void} errors={errors} weddingType={weddingType} onWeddingTypeChange={handleWeddingTypeChange} />;
-      case 2: return <Step2Events data={formData as BuilderFormData} onChange={updateFormData as (data: Partial<BuilderFormData>) => void} errors={errors} weddingType={weddingType} />;
-      case 3: return <Step3PhotoLanguage data={formData as BuilderFormData} onChange={updateFormData as (data: Partial<BuilderFormData>) => void} errors={errors} />;
-      case 4: return (
-        <Step4Preview
-          data={formData}
-          templateId={activeTemplateId!}
-          onProceed={() => setStep(5)}
-          onGoBack={() => setStep(3)}
-        />
-      );
-      case 5: return publishedSlug ? (
-        <PublishSuccess
-          brideName={formData.bride_name}
-          groomName={formData.groom_name}
-          slug={publishedSlug}
-          weddingDate={formData.wedding_date}
-          weddingCity={formData.wedding_city}
-          language={formData.language}
-        />
-      ) : (
-        <Step5Publish onSelectPlan={handlePublish} loading={publishLoading} brideName={formData.bride_name} groomName={formData.groom_name} weddingDate={formData.wedding_date} />
-      );
-      default: return null;
+      case 1:
+        return <Step1CoupleNames data={formData as BuilderFormData} onChange={updateFormData as (data: Partial<BuilderFormData>) => void} errors={errors} weddingType={weddingType} onWeddingTypeChange={handleWeddingTypeChange} />;
+      case 2:
+        return <Step2Events data={formData as BuilderFormData} onChange={updateFormData as (data: Partial<BuilderFormData>) => void} errors={errors} weddingType={weddingType} />;
+      case 3:
+        return <Step3PhotoLanguage data={formData as BuilderFormData} onChange={updateFormData as (data: Partial<BuilderFormData>) => void} errors={errors} />;
+      case 4:
+        return (
+          <Step4Preview
+            data={formData}
+            templateId={activeTemplateId!}
+            onProceed={() => setStep(5)}
+            onGoBack={() => setStep(3)}
+          />
+        );
+      case 5:
+        return publishedSlug ? (
+          <PublishSuccess
+            brideName={formData.bride_name}
+            groomName={formData.groom_name}
+            slug={publishedSlug}
+            weddingDate={formData.wedding_date}
+            weddingCity={formData.wedding_city}
+            language={formData.language}
+          />
+        ) : (
+          <Step5Publish onSelectPlan={handlePublish} loading={publishLoading} brideName={formData.bride_name} groomName={formData.groom_name} weddingDate={formData.wedding_date} />
+        );
+      default:
+        return null;
     }
   };
 
@@ -118,7 +158,7 @@ const renderStep = () => {
       <div className="flex h-screen">
         {/* ─── LEFT: Form panel (40%) ─── */}
         <div className={`${isMobile ? "w-full" : "w-2/5"} h-screen overflow-y-auto border-r border-border relative`}>
-          <StepIndicator currentStep={step} totalSteps={5} templateId={activeTemplateId} onChangeTemplate={() => setShowTemplateSwitcher(true)} />
+          <StepIndicator currentStep={step} totalSteps={totalSteps} labels={workflowLabels} templateId={activeTemplateId} onChangeTemplate={() => setShowTemplateSwitcher(true)} />
 
           <div className="p-6 md:p-8 max-w-xl mx-auto pb-32">
             {renderStep()}
