@@ -4,6 +4,9 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import templateWorkflowRequired from "./eslint-rules/template-workflow-required.js";
+import noBuilderCoreTemplateLogic from "./eslint-rules/no-builder-core-template-logic.js";
+import noDuplicateModules from "./eslint-rules/no-duplicate-modules.js";
+import noWorkflowBloat from "./eslint-rules/no-workflow-bloat.js";
 
 export default tseslint.config(
   { ignores: ["dist"] },
@@ -20,6 +23,9 @@ export default tseslint.config(
       "custom": {
         rules: {
           "template-workflow-required": templateWorkflowRequired,
+          "no-builder-core-template-logic": noBuilderCoreTemplateLogic,
+          "no-duplicate-modules": noDuplicateModules,
+          "no-workflow-bloat": noWorkflowBloat,
         },
       },
     },
@@ -28,6 +34,9 @@ export default tseslint.config(
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "@typescript-eslint/no-unused-vars": "off",
       "custom/template-workflow-required": "error",
+      "custom/no-builder-core-template-logic": "error",
+      "custom/no-duplicate-modules": "warn",
+      "custom/no-workflow-bloat": "warn",
     },
   },
 );

@@ -19,32 +19,45 @@ export default {
 
   create: function (context) {
     return {
-      Property: function (node) {
-        // Check if we're in TEMPLATE_REGISTRY
-        if (
-          node.key.name === "TEMPLATE_REGISTRY" &&
-          node.parent.type === "ObjectExpression"
-        ) {
-          // Check each property in the registry
-          node.parent.properties.forEach((prop) => {
-            if (prop.type === "Property" && prop.value.type === "ObjectExpression") {
-              const hasWorkflow = prop.value.properties.some(
-                (objProp) =>
-                  objProp.type === "Property" && objProp.key.name === "workflow"
-              );
-
-              if (!hasWorkflow) {
-                context.report({
-                  node: prop,
-                  messageId: "missingWorkflow",
-                  data: {
-                    templateId: prop.key.value,
-                  },
-                });
-              }
-            }
-          });
+      VariableDeclarator(node) {
+        if (node.id.type !== "Identifier" || node.id.name !== "TEMPLATE_REGISTRY") {
+          return;
         }
+        if (!node.init || node.init.type !== "ObjectExpression") {
+          return;
+        }
+
+        node.init.properties.forEach((prop) => {
+          if (prop.type !== "Property" || prop.value.type !== "ObjectExpression") {
+            return;
+          }
+
+          const hasWorkflow = prop.value.properties.some((objProp) => {
+            if (objProp.type !== "Property") {
+              return false;
+            }
+            if (objProp.key.type === "Identifier") {
+              return objProp.key.name === "workflow";
+            }
+            if (objProp.key.type === "Literal") {
+              return objProp.key.value === "workflow";
+            }
+            return false;
+          });
+
+          const templateId =
+            prop.key.type === "Literal" ? prop.key.value : prop.key.type === "Identifier" ? prop.key.name : "unknown";
+
+          if (!hasWorkflow) {
+            context.report({
+              node: prop,
+              messageId: "missingWorkflow",
+              data: {
+                templateId,
+              },
+            });
+          }
+        });
       },
     };
   },

@@ -98,6 +98,16 @@ export const useInvitationBuilder = (urlTemplateId?: string) => {
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [publishLoading, setPublishLoading] = useState(false);
   const [publishedSlug, setPublishedSlug] = useState<string | null>(null);
+
+  // Clamp step to valid range when workflow changes
+  const workflowSteps = template?.workflow ? getVisibleSteps(template.workflow, formData) : [];
+  const maxStep = workflowSteps.length || 5;
+
+  useEffect(() => {
+    if (step > maxStep) {
+      setStep(maxStep);
+    }
+  }, [step, maxStep]);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const [weddingType, setWeddingType] = useState("hindu");
   const [prePaymentPlan, setPrePaymentPlan] = useState<"basic" | "premium" | "elite" | null>(null);

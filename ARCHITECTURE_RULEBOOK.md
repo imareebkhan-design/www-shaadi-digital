@@ -63,3 +63,17 @@
 - Keep modules small, explicit, and reusable.
 - Keep workflows as data, not as code.
 - Document new modules and workflow patterns at the time of creation.
+
+## 🔗 Live enforcement
+
+The following code artifacts connect the rulebook to the implementation and catch violations early:
+
+- `eslint.config.js` loads custom architecture checks from `eslint-rules/`
+- `eslint-rules/template-workflow-required.js` ensures every template has a valid workflow config
+- `eslint-rules/no-builder-core-template-logic.js` blocks template-specific branching in builder core files
+- `eslint-rules/no-workflow-bloat.js` warns when workflow config leaks domain logic that should belong in modules
+- `src/templates/workflowValidator.ts` validates workflow structure and module references at startup
+- `src/templates/registry.ts` fails fast when invalid workflow configurations are registered
+- `scripts/new-module-template.ts` helps developers create new modules with rulebook-safe defaults
+
+Use `npm run validate:architecture` to run the lint-based architecture checks.

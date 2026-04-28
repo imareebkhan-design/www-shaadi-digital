@@ -60,6 +60,16 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Architecture rulebook
+
+This repo uses a dedicated architecture rulebook to keep the invitation builder modular and workflow-driven.
+
+- `ARCHITECTURE_RULEBOOK.md` documents the intended module/workflow boundaries.
+- Custom ESLint rules in `eslint-rules/` enforce those conventions during local development.
+- Runtime workflow validation in `src/templates/registry.ts` and `src/templates/workflowValidator.ts` prevents invalid templates from loading.
+
+Use `npm run validate:architecture` to verify the architecture rules via ESLint.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.

@@ -9,6 +9,8 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
+    "new-module": "node scripts/new-module-template.ts",
+    "validate:architecture": "npm run lint",
     "test": "vitest run",
     "test:watch": "vitest"
   },
