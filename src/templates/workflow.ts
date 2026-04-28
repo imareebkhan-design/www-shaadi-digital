@@ -1,12 +1,7 @@
 /**
- * Template Workflow Engine
- * ─────────────────────────
- * Defines how each template controls:
- * - Step sequence and visibility
- * - Event types and visibility per template
- * - Field requirements and validation per template
- * - Payment models per template
- * - Wedding type handling per template
+ * Simplified Template Workflow Engine
+ * ───────────────────────────────────
+ * Minimal workflow system using reusable modules
  */
 
 export type StepId = "names" | "events" | "photos" | "preview" | "publish";
@@ -20,25 +15,6 @@ export interface StepConfig {
   requiredFields?: string[];
   /** Show this step only if condition is true */
   condition?: (data: any) => boolean;
-}
-
-export interface EventTypeConfig {
-  id: string;
-  label: string;
-  emoji: string;
-  defaultTagline: string;
-  defaultDescription: string;
-  /** Whether this event type is shown by default for this template */
-  visibleByDefault: boolean;
-}
-
-export interface FieldVisibilityConfig {
-  [fieldName: string]: {
-    visible: boolean;
-    required: boolean;
-    /** Show field only if condition is true */
-    condition?: (data: any) => boolean;
-  };
 }
 
 export interface ValidationRule {
@@ -65,21 +41,20 @@ export interface TemplateWorkflow {
   /** Step sequence for this template */
   steps: StepConfig[];
 
-  /** Event types available in this template */
-  eventTypes: EventTypeConfig[];
-
-  /** Field visibility rules (e.g., dresscode, music, etc.) */
-  fieldVisibility: FieldVisibilityConfig;
+  /** Module configuration */
+  modules: {
+    events?: string;
+    media?: string;
+    ceremony?: string;
+    language?: string;
+    custom?: string;
+  };
 
   /** Custom validation rules for this template */
   validationRules: ValidationRule[];
 
   /** Payment plans available for this template */
   paymentPlans: PaymentPlanConfig[];
-
-  /** Wedding type handling */
-  ceremonyNameByWeddingType: Record<string, string>;
-  visibleEventsByWeddingType: Record<string, string[]>;
 
   /** Whether template supports template switching after initialization */
   allowTemplateSwitching: boolean;
@@ -98,20 +73,12 @@ export const createStandardWorkflow = (templateId: string): TemplateWorkflow => 
     { id: "preview", label: "Preview", visible: true, required: true },
     { id: "publish", label: "Publish", visible: true, required: true },
   ],
-  eventTypes: [
-    { id: "mehndi", label: "Mehndi", emoji: "🌿", defaultTagline: "The Art of Love", defaultDescription: "An intimate afternoon...", visibleByDefault: false },
-    { id: "haldi", label: "Haldi", emoji: "🌼", defaultTagline: "The Golden Glow", defaultDescription: "A joyful morning...", visibleByDefault: false },
-    { id: "sangeet", label: "Sangeet", emoji: "🎶", defaultTagline: "The Night of Stars", defaultDescription: "An enchanting evening...", visibleByDefault: false },
-    { id: "baraat", label: "Baraat", emoji: "🐴", defaultTagline: "The Grand Arrival", defaultDescription: "A grand and festive...", visibleByDefault: false },
-    { id: "ceremony", label: "Ceremony", emoji: "🕉️", defaultTagline: "The Sacred Union", defaultDescription: "The sacred union...", visibleByDefault: true },
-    { id: "reception", label: "Reception", emoji: "🥂", defaultTagline: "The Grand Celebration", defaultDescription: "An elegant evening...", visibleByDefault: false },
-  ],
-  fieldVisibility: {
-    dresscode_enabled: { visible: true, required: false },
-    music_url: { visible: true, required: false },
-    gallery_photos: { visible: true, required: false },
-    venue_photo: { visible: true, required: false },
-    hero_media_url: { visible: true, required: false },
+  modules: {
+    events: "events.standard",
+    media: "media.standard",
+    ceremony: "ceremony.standard",
+    language: "language.standard",
+    custom: "custom.standard",
   },
   validationRules: [
     { field: "bride_name", message: "Bride name is required", validate: (v) => v?.trim?.().length > 0 },
@@ -122,20 +89,6 @@ export const createStandardWorkflow = (templateId: string): TemplateWorkflow => 
     { id: "premium", razorpayId: "shaadi", name: "Shaadi", price: 1999, originalPrice: 2499, features: ["Priority support", "Unlimited RSVPs", "1 year"], popular: true, available: true },
     { id: "elite", razorpayId: "shaahi", name: "Shaahi", price: 4999, features: ["Everything in Premium", "Custom domain", "Priority support"], popular: false, available: true },
   ],
-  ceremonyNameByWeddingType: {
-    hindu: "Vivah",
-    sikh: "Anand Karaj",
-    muslim: "Nikah",
-    christian: "Wedding Ceremony",
-    other: "Wedding Ceremony",
-  },
-  visibleEventsByWeddingType: {
-    hindu: ["mehndi", "haldi", "sangeet", "baraat", "ceremony", "reception"],
-    sikh: ["mehndi", "sangeet", "ceremony", "reception"],
-    muslim: ["mehndi", "ceremony", "reception"],
-    christian: ["ceremony", "reception"],
-    other: ["ceremony", "reception"],
-  },
   allowTemplateSwitching: true,
 });
 
@@ -151,15 +104,12 @@ export const createMinimalistWorkflow = (templateId: string): TemplateWorkflow =
     { id: "photos", label: "Photos", visible: true, required: false },
     { id: "publish", label: "Publish", visible: true, required: true },
   ],
-  eventTypes: [
-    { id: "ceremony", label: "Ceremony", emoji: "💍", defaultTagline: "Our Special Day", defaultDescription: "", visibleByDefault: true },
-  ],
-  visibleEventsByWeddingType: {
-    hindu: ["ceremony"],
-    sikh: ["ceremony"],
-    muslim: ["ceremony"],
-    christian: ["ceremony"],
-    other: ["ceremony"],
+  modules: {
+    events: "events.minimalist",
+    media: "media.minimalist",
+    ceremony: "ceremony.standard",
+    language: "language.standard",
+    custom: "custom.minimalist",
   },
 });
 
@@ -170,14 +120,11 @@ export const createMinimalistWorkflow = (templateId: string): TemplateWorkflow =
 export const createLuxuryWorkflow = (templateId: string): TemplateWorkflow => ({
   ...createStandardWorkflow(templateId),
   templateId,
-  fieldVisibility: {
-    ...createStandardWorkflow(templateId).fieldVisibility,
-    dresscode_enabled: { visible: true, required: true },
-    gift_registry_url: { visible: true, required: false },
-    venue_photo: { visible: true, required: true },
+  modules: {
+    events: "events.luxury",
+    media: "media.luxury",
+    ceremony: "ceremony.standard",
+    language: "language.standard",
+    custom: "custom.luxury",
   },
-  validationRules: [
-    ...createStandardWorkflow(templateId).validationRules,
-    { field: "venue_description", message: "Venue description required", validate: (v) => v?.trim?.().length > 0 },
-  ],
 });

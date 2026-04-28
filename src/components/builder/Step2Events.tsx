@@ -2,45 +2,37 @@ import { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Calendar, Clock, MapPin, Link as LinkIcon, Tag, FileText, Camera, Upload, CalendarDays } from "lucide-react";
-import { BuilderFormData, EventData, DEFAULT_TAGLINES, VISIBLE_EVENTS_BY_TYPE } from "@/types/builder";
+import { BuilderFormData, EventData } from "@/types/builder";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/ui/sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import type { TemplateWorkflow } from "@/templates/workflow";
+import type { EventModule, WeddingType } from "@/templates/modules";
+import { getModule } from "@/templates/modules/registry";
 
 interface Props {
   data: BuilderFormData;
   onChange: (data: Partial<BuilderFormData>) => void;
   errors: Record<string, string>;
   weddingType?: string;
+  workflow?: TemplateWorkflow;
 }
 
-const DEFAULT_DESCRIPTIONS: Record<string, string> = {
-  mehndi: "An intimate afternoon of intricate henna artistry, music, and celebration with close family and friends.",
-  haldi: "A joyful morning ceremony filled with turmeric, blessings, and laughter shared with loved ones.",
-  sangeet: "An enchanting evening of music, dance performances, and joyous celebrations under the stars.",
-  baraat: "A grand and festive procession as the groom arrives with family and friends in high spirits.",
-  ceremony: "The sacred union of two souls, bound by love, blessings, and the warmth of family.",
-  reception: "An elegant evening of celebration, good food, and cherished moments with all who joined us on this journey.",
-};
-
-const eventEmojis: Record<string, string> = {
-  mehndi: "🌿",
-  haldi: "🌼",
-  sangeet: "🎶",
-  baraat: "🐴",
-  ceremony: "🕉️",
-  reception: "🥂",
-};
-
-const Step2Events = ({ data, onChange, errors, weddingType = "hindu" }: Props) => {
+const Step2Events = ({ data, onChange, errors, weddingType = "hindu", workflow }: Props) => {
   const { user } = useAuth();
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [uploading, setUploading] = useState<string | null>(null);
 
+  // Get event module from workflow
+  const eventModule = workflow?.modules?.events ? getModule<EventModule>(workflow.modules.events) : null;
+
   // Only show events relevant to this wedding type
-  const visibleTypes = VISIBLE_EVENTS_BY_TYPE[weddingType] ?? VISIBLE_EVENTS_BY_TYPE.hindu;
+  const visibleTypes = eventModule?.getVisibleEventTypes(weddingType as WeddingType) ?? ["ceremony"];
   const visibleEvents = data.events.filter((e) => visibleTypes.includes(e.event_type));
+
+  // Get event labels from module
+  const eventLabels = eventModule?.getEventLabels() ?? {};
 
   // Map back to the full events array index for updates
   const updateEvent = (eventType: string, updates: Partial<EventData>) => {
@@ -54,7 +46,7 @@ const Step2Events = ({ data, onChange, errors, weddingType = "hindu" }: Props) =
     if (event.event_type === "ceremony" && !checked) return;
     const updates: Partial<EventData> = { is_enabled: checked };
     if (checked && !event.description) {
-      updates.description = DEFAULT_DESCRIPTIONS[event.event_type] || "";
+      updates.description = eventLabels[event.event_type]?.defaultDescription || "";
     }
     updateEvent(event.event_type, updates);
   };
@@ -112,10 +104,10 @@ const Step2Events = ({ data, onChange, errors, weddingType = "hindu" }: Props) =
                   checked={event.is_enabled}
                   onCheckedChange={(checked) => handleToggle(event, checked)}
                 />
-                <span className="text-lg mr-1">{eventEmojis[event.event_type] || "📌"}</span>
+                <span className="text-lg mr-1">{eventLabels[event.event_type]?.emoji || "📌"}</span>
                 <div>
                   <span className="font-display text-base font-semibold text-foreground">
-                    {event.event_name}
+                    {eventLabels[event.event_type]?.name || event.event_name}
                   </span>
                   {event.event_type === "ceremony" && (
                     <span className="ml-2 text-[10px] bg-secondary/20 text-secondary px-2 py-0.5 font-body font-medium">Required</span>
@@ -146,7 +138,7 @@ const Step2Events = ({ data, onChange, errors, weddingType = "hindu" }: Props) =
                           <Tag className="w-3 h-3" /> Tagline
                         </label>
                         <Input
-                          placeholder={DEFAULT_TAGLINES[event.event_type] || "e.g. A beautiful celebration"}
+                          placeholder={eventLabels[event.event_type]?.defaultTagline || "e.g. A beautiful celebration"}
                           value={event.tagline || ""}
                           onChange={(e) => updateEvent(event.event_type, { tagline: e.target.value })}
                           className="border-border/60"
@@ -157,7 +149,7 @@ const Step2Events = ({ data, onChange, errors, weddingType = "hindu" }: Props) =
                           <FileText className="w-3 h-3" /> Short Description
                         </label>
                         <Input
-                          placeholder="e.g. An intimate afternoon of art and celebration"
+                          placeholder={eventLabels[event.event_type]?.defaultDescription || "e.g. An intimate afternoon of art and celebration"}
                           value={event.description || ""}
                           onChange={(e) => updateEvent(event.event_type, { description: e.target.value })}
                           className="border-border/60"

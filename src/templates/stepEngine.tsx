@@ -2,12 +2,14 @@
  * Dynamic Step Engine
  * ───────────────────
  * Renders steps dynamically based on template workflow config.
- * Replaces the hardcoded switch statement in InvitationBuilder.tsx
+ * Uses modular system for template-specific logic.
  */
 
 import { ReactNode } from "react";
 import type { TemplateWorkflow, StepId } from "@/templates/workflow";
 import type { InvitationData } from "@/templates/types";
+import type { EventModule, MediaModule, CeremonyModule } from "@/templates/modules";
+import { getModule } from "@/templates/modules/registry";
 
 import Step1CoupleNames from "@/components/builder/Step1CoupleNames";
 import Step2Events from "@/components/builder/Step2Events";
@@ -91,23 +93,6 @@ export const validateStep = (
 };
 
 /**
- * Get field visibility from workflow
- */
-export const isFieldVisible = (
-  workflow: TemplateWorkflow,
-  fieldName: string,
-  formData: InvitationData,
-): boolean => {
-  const fieldConfig = workflow.fieldVisibility[fieldName];
-  if (!fieldConfig) return true; // Default: visible if not configured
-
-  if (!fieldConfig.visible) return false;
-  if (fieldConfig.condition && !fieldConfig.condition(formData)) return false;
-
-  return true;
-};
-
-/**
  * Get payment plans available for this workflow
  */
 export const getPaymentPlans = (workflow: TemplateWorkflow) => {
@@ -118,14 +103,18 @@ export const getPaymentPlans = (workflow: TemplateWorkflow) => {
  * Get ceremony label for wedding type
  */
 export const getCeremonyLabel = (workflow: TemplateWorkflow, weddingType: string): string => {
-  return workflow.ceremonyNameByWeddingType[weddingType] || "Wedding Ceremony";
+  if (!workflow.modules.ceremony) return "Wedding Ceremony";
+  const ceremonyModule = getModule<CeremonyModule>(workflow.modules.ceremony);
+  return ceremonyModule.getCeremonyName(weddingType as any);
 };
 
 /**
  * Get visible event types for wedding type
  */
 export const getVisibleEventTypes = (workflow: TemplateWorkflow, weddingType: string): string[] => {
-  return workflow.visibleEventsByWeddingType[weddingType] || ["ceremony"];
+  if (!workflow.modules.events) return ["ceremony"];
+  const eventModule = getModule<EventModule>(workflow.modules.events);
+  return eventModule.getVisibleEventTypes(weddingType as any);
 };
 
 /**

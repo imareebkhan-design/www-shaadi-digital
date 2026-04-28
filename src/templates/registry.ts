@@ -2,6 +2,7 @@ import type { ComponentType } from "react";
 import type { InvitationData, TemplateProps } from "./types";
 import type { TemplateWorkflow } from "./workflow";
 import { createStandardWorkflow, createMinimalistWorkflow, createLuxuryWorkflow } from "./workflow";
+import { validateAllWorkflows } from "./workflowValidator";
 import RoyalMaroon from "./RoyalMaroon";
 import EmeraldSouth from "./EmeraldSouth";
 import MidnightBlue from "./MidnightBlue";
@@ -44,7 +45,6 @@ export interface TemplateRegistryEntry extends TemplateMeta {
   description: string;
   tone: string;
   workflow: TemplateWorkflow; // Required: Workflow config for dynamic steps
-  isLegacy?: boolean; // Mark templates that need migration (for tracking)
 }
 
 export type TemplateConfig = TemplateMeta;
@@ -245,7 +245,6 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     style: ["Traditional", "Floral"],
     colorFamily: ["Green", "Gold"],
     workflow: createStandardWorkflow("emerald-south"),
-    isLegacy: true,
     isNew: true,
     isFeatured: false,
     isPremium: false,
@@ -431,6 +430,21 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateRegistryEntry> = {
     motif: "✿",
   },
 };
+
+// Validate all workflows at startup
+const workflowValidation = validateAllWorkflows(
+  Object.fromEntries(
+    Object.entries(TEMPLATE_REGISTRY).map(([id, entry]) => [id, entry.workflow])
+  )
+);
+
+if (!workflowValidation.valid) {
+  console.error("🚨 Workflow validation failed:", workflowValidation.errors);
+  // In development, throw error to prevent startup
+  if (process.env.NODE_ENV === "development") {
+    throw new Error("Invalid workflow configurations detected. Check console for details.");
+  }
+}
 
 export const TEMPLATE_ID_LIST = templates.map((t) => t.id) as string[];
 
