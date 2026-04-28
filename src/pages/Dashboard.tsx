@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import SEOHead from "@/components/SEOHead";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { normalizeSlug } from "@/lib/slugUtils";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -110,8 +111,7 @@ const Dashboard = () => {
     }
   };
 
-  const sanitizeSlug = (val: string) =>
-    val.toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+  const sanitizeSlug = (val: string) => normalizeSlug(val);
 
   const saveCustomSlug = async () => {
     if (!invitation) return;
@@ -162,7 +162,7 @@ const Dashboard = () => {
       brideName: invitation.bride_name || "Bride",
       groomName: invitation.groom_name || "Groom",
       formattedDate: formattedWeddingDate,
-      city: (invitation as any).wedding_city,
+      city: invitation.wedding_city || undefined,
       inviteUrl,
       language: invitation.language || "english",
     });
@@ -187,7 +187,7 @@ const Dashboard = () => {
       brideName: invitation.bride_name || "Bride",
       groomName: invitation.groom_name || "Groom",
       formattedDate: formattedWeddingDate,
-      city: (invitation as any).wedding_city,
+      city: invitation.wedding_city || undefined,
       inviteUrl,
       language: "english",
     });
@@ -622,7 +622,7 @@ const Dashboard = () => {
                           </div>
                           <div>
                             <Label className="font-body text-sm">Meal Preference</Label>
-                            <Select value={manualRsvp.meal_preference} onValueChange={(v) => setManualRsvp(p => ({ ...p, meal_preference: v as any }))}>
+                            <Select value={manualRsvp.meal_preference} onValueChange={(v) => setManualRsvp(p => ({ ...p, meal_preference: v as typeof p.meal_preference }))}>
                               <SelectTrigger><SelectValue /></SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="veg">Veg</SelectItem>

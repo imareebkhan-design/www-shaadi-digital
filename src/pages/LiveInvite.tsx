@@ -8,13 +8,17 @@ import { invitationDataToConfig } from "@/templates/types";
 import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import RsvpForm from "@/components/invite/RsvpForm";
 import { normalizeSlug } from "@/lib/slugUtils";
+import type { Tables } from "@/integrations/supabase/types";
+
+type InvitationRow = Tables["invitations"]["Row"];
+type EventRow = Tables["events"]["Row"];
 
 const LiveInvite = () => {
   const { slug } = useParams<{ slug: string }>();
   const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
   const [invitationId, setInvitationId] = useState<string | null>(null);
   const [templateId, setTemplateId] = useState<string | null>(null);
-  const [rawInvitation, setRawInvitation] = useState<any>(null);
+  const [rawInvitation, setRawInvitation] = useState<InvitationRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -28,7 +32,7 @@ const LiveInvite = () => {
         .select("*")
         .eq("slug", normalizedSlug)
         .eq("status", "published")
-        .maybeSingle();
+        .maybeSingle() as { data: InvitationRow | null };
 
       if (!inv) { setNotFound(true); setLoading(false); return; }
       setInvitationId(inv.id);
@@ -39,21 +43,21 @@ const LiveInvite = () => {
         .from("events")
         .select("*")
         .eq("invitation_id", inv.id)
-        .order("event_date", { ascending: true });
+        .order("event_date", { ascending: true }) as { data: EventRow[] | null };
 
       const data: InvitationData = {
         bride_name: inv.bride_name || "Bride",
         groom_name: inv.groom_name || "Groom",
         bride_family: inv.bride_family || "",
         groom_family: inv.groom_family || "",
-        bride_full_name: (inv as any).bride_full_name || undefined,
-        groom_full_name: (inv as any).groom_full_name || undefined,
-        bride_bio: (inv as any).bride_bio || undefined,
-        groom_bio: (inv as any).groom_bio || undefined,
+        bride_full_name: inv.bride_full_name || undefined,
+        groom_full_name: inv.groom_full_name || undefined,
+        bride_bio: inv.bride_bio || undefined,
+        groom_bio: inv.groom_bio || undefined,
         personal_message: inv.personal_message || undefined,
         our_story: inv.our_story || undefined,
         wedding_date: inv.wedding_date || "",
-        wedding_city: (inv as any).wedding_city || undefined,
+        wedding_city: inv.wedding_city || undefined,
         photo_url: inv.photo_url || undefined,
         gallery_photos: (inv.gallery_photos as string[]) || [],
         language: inv.language || "english",
@@ -63,12 +67,12 @@ const LiveInvite = () => {
         dresscode_text: inv.dresscode_text || undefined,
         dresscode_colors: (inv.dresscode_colors as string[]) || [],
         music_url: inv.music_url || undefined,
-        venue_description: (inv as any).venue_description || undefined,
-        venue_photo: (inv as any).venue_photo || undefined,
-        rsvp_deadline: (inv as any).rsvp_deadline || undefined,
-        hero_media_type: (inv as any).hero_media_type || undefined,
-        hero_media_url: (inv as any).hero_media_url || undefined,
-        events: (events || []).map((e: any) => ({
+        venue_description: inv.venue_description || undefined,
+        venue_photo: inv.venue_photo || undefined,
+        rsvp_deadline: inv.rsvp_deadline || undefined,
+        hero_media_type: inv.hero_media_type || undefined,
+        hero_media_url: inv.hero_media_url || undefined,
+        events: (events || []).map((e) => ({
           event_type: e.event_type,
           event_name: e.event_name,
           event_date: e.event_date || "",
@@ -149,16 +153,16 @@ const LiveInvite = () => {
     ? `Join us for our wedding celebration on ${formattedDate} in ${city}. Tap to open your invitation.`
     : `You're invited to ${brideName} & ${groomName}'s wedding celebration. View details and RSVP.`;
 
-  // OG image via edge function with cache-busting
+  const canonicalSlug = rawInvitation?.slug || (slug ? normalizeSlug(slug) : "");
   const updatedAt = rawInvitation?.updated_at ? new Date(rawInvitation.updated_at).getTime() : "";
-  const ogImageUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-og-image?slug=${slug}${updatedAt ? `&v=${updatedAt}` : ""}`;
+  const ogImageUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-og-image?slug=${canonicalSlug}${updatedAt ? `&v=${updatedAt}` : ""}`;
 
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
         title={ogTitle}
         description={ogDescription}
-        canonical={`https://shaadi.digital/invite/${slug}`}
+        canonical={`https://shaadi.digital/invite/${canonicalSlug}`}
         ogImage={ogImageUrl}
         ogImageWidth="1200"
         ogImageHeight="630"

@@ -386,7 +386,7 @@ const TemplateGallerySection = () => {
           className="relative inline-flex items-center gap-3 bg-transparent border border-secondary/35 text-primary-foreground/80 font-body text-[11px] font-medium tracking-[3px] uppercase py-4 px-12 rounded-full transition-all overflow-hidden group hover:border-secondary/60 hover:text-secondary hover:-translate-y-0.5 hover:shadow-gold"
         >
           <span className="absolute inset-0 bg-gradient-to-br from-secondary/15 to-primary/30 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <span className="relative z-[1]">View All 20+ Templates</span>
+          <span className="relative z-[1]">View all templates</span>
           <span className="relative z-[1]">→</span>
         </Link>
         <span className="block text-xs text-primary-foreground/20 mt-4 tracking-wide font-light">
