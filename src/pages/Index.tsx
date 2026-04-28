@@ -19,13 +19,13 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Digital Wedding Invitations India | Shaadi.Digital"
-        description="India's most loved digital wedding invitations. 200+ templates for every tradition — Punjabi, South Indian, Muslim & more. WhatsApp delivery, live RSVP tracking. Starting ₹999."
+        description="India's most loved digital wedding invitations. 20+ templates for every tradition — Punjabi, South Indian, Muslim & more. WhatsApp delivery, live RSVP tracking. Starting ₹999."
         canonical="https://shaadi.digital/"
         schemaJson={{
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
           "name": "Shaadi.Digital",
-          "description": "India's most loved digital wedding invitation platform with 200+ templates, WhatsApp delivery, and live RSVP tracking.",
+          "description": "India's most loved digital wedding invitation platform with 20+ templates, WhatsApp delivery, and live RSVP tracking.",
           "applicationCategory": "Wedding Planning",
           "operatingSystem": "Web, iOS, Android",
           "offers": {

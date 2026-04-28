@@ -485,7 +485,7 @@ const TemplateGallery = () => {
     <div className="min-h-screen" style={{ background: pageBg }}>
       <SEOHead
         title="Wedding Invitation Templates | Shaadi.Digital"
-        description="200+ digital wedding invitation templates for every Indian tradition — Hindu, Muslim, Sikh, Christian. Preview free, customise in minutes."
+        description="20+ digital wedding invitation templates for every Indian tradition — Hindu, Muslim, Sikh, Christian. Preview free, customise in minutes."
         canonical="https://shaadi.digital/templates"
       />
       <Helmet>

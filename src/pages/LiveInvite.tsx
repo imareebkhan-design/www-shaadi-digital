@@ -7,6 +7,7 @@ import type { InvitationData } from "@/templates/types";
 import { invitationDataToConfig } from "@/templates/types";
 import { WeddingTemplate } from "@/templates/WeddingTemplate";
 import RsvpForm from "@/components/invite/RsvpForm";
+import { normalizeSlug } from "@/lib/slugUtils";
 
 const LiveInvite = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -21,10 +22,11 @@ const LiveInvite = () => {
     if (!slug) { setNotFound(true); setLoading(false); return; }
 
     const fetchData = async () => {
+      const normalizedSlug = normalizeSlug(slug);
       const { data: inv } = await supabase
         .from("invitations")
         .select("*")
-        .eq("slug", slug)
+        .eq("slug", normalizedSlug)
         .eq("status", "published")
         .maybeSingle();
 

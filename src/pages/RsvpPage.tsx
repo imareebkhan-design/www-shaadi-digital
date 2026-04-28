@@ -4,6 +4,7 @@ import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import RsvpForm from "@/components/invite/RsvpForm";
+import { normalizeSlug } from "@/lib/slugUtils";
 
 const RsvpPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -15,11 +16,12 @@ const RsvpPage = () => {
 
   useEffect(() => {
     if (!slug) { setNotFound(true); setLoading(false); return; }
+    const normalizedSlug = normalizeSlug(slug);
     const fetch = async () => {
       const { data } = await supabase
         .from("invitations")
         .select("id, bride_name, groom_name")
-        .eq("slug", slug)
+        .eq("slug", normalizedSlug)
         .eq("status", "published")
         .maybeSingle();
       if (!data) { setNotFound(true); } else {

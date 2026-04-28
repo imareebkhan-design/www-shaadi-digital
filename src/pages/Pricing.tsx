@@ -8,6 +8,7 @@ import { Check } from "lucide-react";
 import { useRazorpay, type PlanId } from "@/hooks/useRazorpay";
 import PostPaymentSignupModal from "@/components/PostPaymentSignupModal";
 import PaymentFailedModal from "@/components/PaymentFailedModal";
+import { isFeatureAvailable } from "@/lib/featureFlags";
 import {
   Accordion,
   AccordionContent,
@@ -32,7 +33,7 @@ const plans = [
       "WhatsApp sharing",
       "Google Maps integration",
       "Mobile optimised",
-    ],
+    ].filter(() => true), // Basic features are all available
   },
   {
     id: "shaadi" as PlanId,
@@ -47,9 +48,9 @@ const plans = [
       "Unlimited Events",
       "WhatsApp sharing",
       "RSVP Dashboard + Analytics",
-      "Password protection",
+      ...(isFeatureAvailable('passwordProtection') ? ["Password protection"] : []),
       "Custom invite URL",
-      "Automated guest reminders",
+      ...(isFeatureAvailable('autoReminders') ? ["Automated guest reminders"] : []),
     ],
   },
   {
@@ -61,12 +62,12 @@ const plans = [
     featured: false,
     features: [
       "Everything in Premium",
-      "Custom designed invite (done-for-you)",
-      "Dedicated support",
+      ...(isFeatureAvailable('customDesign') ? ["Custom designed invite (done-for-you)"] : []),
+      ...(isFeatureAvailable('dedicatedManager') ? ["Dedicated support"] : []),
       "Video & music support",
       "Digital gift registry link",
-      "NRI timezone settings",
-      "Priority 24/7 support",
+      ...(isFeatureAvailable('nriTimezone') ? ["NRI timezone settings"] : []),
+      ...(isFeatureAvailable('premiumSupport') ? ["Priority 24/7 support"] : []),
     ],
   },
 ];

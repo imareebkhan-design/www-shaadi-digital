@@ -77,7 +77,7 @@ const SignUp = () => {
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8 relative overflow-hidden">
       <SEOHead
         title="Create Free Wedding Invitation | Shaadi.Digital"
-        description="Sign up free and design your digital wedding invitation in 10 minutes. 200+ templates, WhatsApp delivery & live RSVP tracking. Trusted by 50,000+ couples."
+        description="Sign up free and design your digital wedding invitation in 10 minutes. 20+ templates, WhatsApp delivery & live RSVP tracking. Trusted by 50,000+ couples."
         canonical="https://shaadi.digital/signup"
         noIndex
       />
@@ -203,7 +203,7 @@ const SignUp = () => {
             </p>
             <p className="text-sm font-body">
               <Link to="/templates" className="text-primary font-medium hover:underline">
-                Browse 200+ templates first →
+                Browse 20+ templates first →
               </Link>
             </p>
           </div>

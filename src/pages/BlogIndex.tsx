@@ -112,7 +112,7 @@ const POSTS: BlogPost[] = [
           Design Collection
         </div>
         <div className="font-subheading text-[26px] text-white/85 leading-tight mt-1">
-          200+<br /><em className="italic" style={{ color: "hsl(var(--gold-light))" }}>Templates</em>
+          20+<br /><em className="italic" style={{ color: "hsl(var(--gold-light))" }}>Templates</em>
         </div>
         <div className="text-[8px] uppercase tracking-[2px] text-white/30 mt-1.5">Every Indian Tradition</div>
       </div>
